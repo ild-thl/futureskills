@@ -24,7 +24,8 @@ class InstitutionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'max:255',
+            'url' => 'max:255'
         ];
     }
 }

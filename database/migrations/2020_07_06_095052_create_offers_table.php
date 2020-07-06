@@ -14,7 +14,13 @@ class CreateOffersTable extends Migration
     public function up()
     {
         Schema::create('offers', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->enum('type', ['online-course', 'webinar','presence-event','presence-series'])->nullable(true);
+            $table->text('description')->nullable(true);
+            $table->string('image_path')->nullable(true);   
+            $table->unsignedBigInteger('institution_id');
+            $table->foreign('institution_id')->references('id')->on('institutions');                 
             $table->timestamps();
         });
     }

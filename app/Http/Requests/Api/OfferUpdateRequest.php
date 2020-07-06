@@ -24,7 +24,11 @@ class OfferUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'unique:offers|max:255',
+            'type' => '',
+            'description' => 'nullable|string',
+            'image_path' => 'nullable|string',
+            'institution_id' => ''
         ];
     }
 }
