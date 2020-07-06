@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "f11072b2-15f4-4771-8efa-d2da914c3f58",
+		"name": "FutureSkillsLocal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorized",
+			"item": [
+				{
+					"name": "Offer",
+					"item": [
+						{
+							"name": "Create Offer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Angebot XYB",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "online-course",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Beschreibung zu Angebot B",
+											"type": "text"
+										},
+										{
+											"key": "image_path",
+											"value": "http://upload.wikimedia.org/wikipedia/commons/3/3e/LetterA.svg",
+											"type": "text"
+										},
+										{
+											"key": "institution_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/offer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"offer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Offer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/offer/1?title=Kurs AA",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"offer",
+										"1"
+									],
+									"query": [
+										{
+											"key": "title",
+											"value": "Kurs AA"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Offers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/offer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"offer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Offer with ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/offer/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"offer",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Offer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/offer/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"offer",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Institution",
+					"item": [
+						{
+							"name": "Create Institution",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "LMS FutureSkills",
+											"type": "text"
+										},
+										{
+											"key": "url",
+											"value": "https://lms.futureskills-sh.de",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/institution",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"institution"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Institutions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/institution",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"institution"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Institution with ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/institution/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"institution",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Institution",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/institution/3?title=greatest institution",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"institution",
+										"3"
+									],
+									"query": [
+										{
+											"key": "title",
+											"value": "greatest institution"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Institution",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/institution/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"institution",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Access Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "{{grantType}}",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{clientId}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{clientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "url",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/oauth/token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5MGY5ZDZiNC0xZGY3LTQyNWQtODdjZC1jMDkxYjdiNWZjMTQiLCJqdGkiOiI4NDA5YTlhOTJhZmU2NjViOWY5NjE1NmZkY2I1ODU5Yzg0YzVkM2EwMWFiZTZlMzM5MmQwOTZkYjc5MTVmODQ3MWNiY2Q2NmE2YTRmZjc4NCIsImlhdCI6MTU5NDAzNTQ5NSwibmJmIjoxNTk0MDM1NDk1LCJleHAiOjE2MjU1NzE0OTQsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.GETWgEUc1864BdljZu2ocWSqiWglMcEMlm0c12F5ziBMygcQfZ-n0GUaahd61di2CczBavAP4wRm9R0fU0-INdiqcuTJWCMZOK-673AsBDNryyuBNfxf59NixCq5n2IfYyM33e-zzI_iEZ2XDzOAlil-yLoWriGwF3JBtZ3VnUtBbuS7eHjRKFFfGnpJt6zmFv1jPwO5Sd-4PStiiL-uU1IlIt_peO3gccmTZr177IO3tocXP_KMgKqdqTL2yF2Ja60qiHbjWULqDPpRe3Jol5dnccEfIyu2lqWkrCKRLYUxv-LZhENc4LxHfFMilEdeHXxuTnhx7gHcAv5LegrX6MHD1NlPh6fdzpWIcLfYGb1UQuhDdX00ifikl9tRcuSOJNdwLKOI9i-XYAWWhzNOfqFNBPxNH8GQ78PhJUe-Kcwyr29QEyJSJzjjRCj2A1ENYd4zxhconOue_XfiEvT5k58Qm4mivBZbf6_MM5pgZhpprFx-jbQ8qdRhMojWqu23gqrSqVoJ6T3A2kCsjp_eqXjzoIamAgBW5-bkog-NrVx4nowdGj-QAl7X47rs4miA3b9GE0-Bz2NQfZCbFOoCZVJOqfsccMEa_RbN6xq0EEQl-AP3iyfj8LpCHPuxdVw2aHbBvRCjEXWDo9uNgSFBi8bT_A4TFcWSgvTSGEziiUk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9cd28ce7-efdd-472e-8931-cdea619fbbed",
+				"type": "text/javascript",
+				"exec": [
+					"const echoPostRequest = {",
+					"  url: pm.variables.get('url')+'/oauth/token',",
+					"  method: 'POST',",
+					"  header: 'Content-Type:application/json',",
+					"  body: {",
+					"    mode: 'application/json',",
+					"    raw: JSON.stringify(",
+					"        {",
+					"        \tclient_id:pm.variables.get('clientId'),",
+					"        \tclient_secret:pm.variables.get('clientSecret'),",
+					"        \tpassword:pm.variables.get('password'),",
+					"        \tusername:pm.variables.get('username'),",
+					"        \tgrant_type:pm.variables.get('grantType')",
+					"        })",
+					"  }",
+					"};",
+					"",
+					"var getToken = true;",
+					"",
+					"if (!pm.variables.get('accessTokenExpiry') || ",
+					"    !pm.variables.get('currentAccessToken')) {",
+					"    console.log('Token or expiry date are missing')",
+					"} else if (pm.variables.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+					"    console.log('Token is expired')",
+					"} else {",
+					"    getToken = false;",
+					"    console.log('Token and expiry date are all good');",
+					"}",
+					"",
+					"if (getToken === true) {",
+					"    pm.sendRequest(echoPostRequest, function (err, res) {",
+					"    console.log(err ? err : res.json());",
+					"        if (err === null) {",
+					"            console.log('Saving the token and expiry date')",
+					"            var responseJson = res.json();",
+					"            pm.variables.set('currentAccessToken', responseJson.access_token)",
+					"    ",
+					"            var expiryDate = new Date();",
+					"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+					"            pm.variables.set('accessTokenExpiry', expiryDate.getTime());",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2f83223e-0f19-4ef2-bedf-067382f79b39",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "4b6ef12b-4f0b-4a77-ac97-17df1c6bd20c",
+			"key": "url",
+			"value": "localhost:8000",
+			"type": "string"
+		},
+		{
+			"id": "4a1dbc00-4e98-48c9-b5ec-f2ba3928438e",
+			"key": "grantType",
+			"value": "password",
+			"type": "string"
+		},
+		{
+			"id": "0474769a-7203-4651-912f-6304cc29ceaf",
+			"key": "clientId",
+			"value": "90f9d6b4-1df7-425d-87cd-c091b7b5fc14",
+			"type": "string"
+		},
+		{
+			"id": "c7cb191c-c429-430c-8ec6-16aa8bde3508",
+			"key": "clientSecret",
+			"value": "sbJyKeZg27SkQY79vmjDmsBygi0RyrO27n4uf8nf",
+			"type": "string"
+		},
+		{
+			"id": "47eb295f-b334-40f5-9c2a-b22b5d86b524",
+			"key": "username",
+			"value": "admin@futureskills-sh.de",
+			"type": "string"
+		},
+		{
+			"id": "a1c2af70-2058-4562-a9b0-7896955a1f0a",
+			"key": "password",
+			"value": "secret",
+			"type": "string"
+		},
+		{
+			"id": "a6c65676-f02f-4671-b0e0-c63d86151ac9",
+			"key": "currentAccessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d2b5cdd7-fcfc-43b2-af2d-97965c18be70",
+			"key": "accessTokenExpiry",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
