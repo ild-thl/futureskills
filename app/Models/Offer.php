@@ -50,4 +50,12 @@ class Offer extends Model
     {
         return $this->belongsTo('App\Models\Institution');
     }
+
+    /**
+     * Get the users for the offer.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }
