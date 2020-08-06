@@ -39,10 +39,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the offers for the institution.
+     * Get the offers for the user.
      */
     public function offers()
     {
         return $this->hasMany('App\Offer');
+    }
+
+    /**
+     * Get the subscriptions for the user.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Subscription');
     }
 }

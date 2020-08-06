@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('offer', 'Api\OfferController');
     Route::resource('institution', 'Api\InstitutionController');
-    #Route::resource('offer_user', 'Api\OfferUserController');
+    Route::resource('subscription', 'Api\SubscriptionController');
 
-    Route::get('/offer_user/{offer_id}/{user_id}/attach', 'Api\OfferUserController@attachUser' );
+   # Route::get('/offer_user/{offer_id}/{user_id}/attach', 'Api\OfferUserController@attachUser' );
 });
