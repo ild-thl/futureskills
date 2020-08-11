@@ -25,7 +25,8 @@ class SubscriptionStoreRequest extends FormRequest
     {
         return [
             'user_id' => 'required|integer',
-            'offer_id' => 'required|integer'
+            'offer_id' => 'required|integer',
+            'status' => 'required|string'
         ];
     }
 }

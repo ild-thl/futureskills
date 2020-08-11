@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
 
     }
 
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -50,6 +50,38 @@ class SubscriptionController extends Controller
         return response()->json($subscriptions, 200);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexOffersForUser( $user_id )
+    {
+        $subscriptions = Subscription::where( 'user_id', $user_id )->get();
+        return response()->json($subscriptions, 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexUsersForOffer( $offer_id )
+    {
+        $subscriptions = Subscription::where( 'offer_id', $offer_id )->get();
+        return response()->json($subscriptions, 200);
+    }
+
+    /**
+     * Display a specific subscription.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showFromIds( $user_id, $offer_id )
+    {
+        $subscriptions = Subscription::where( ['offer_id' => $offer_id, 'user_id' => $user_id ] )->get();
+        return response()->json($subscriptions, 200);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -69,28 +101,16 @@ class SubscriptionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Subscription  $subscription
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Subscription $subscription)
-    {
-        return response()->json($subscription, 200);
-    }
-
-
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\Api\SubscriptionUpdateRequest  $request
      * @param  \App\Models\Subscription  $subscription
      * @return \Illuminate\Http\Response
      */
-    public function update(SubscriptionUpdateRequest $request, Subscription $subscription)
+    public function update( SubscriptionUpdateRequest $request, $user_id )
     {
         $validatedData = $request->validated();
+        dd($validatedData, $request, $user_id, $offer_id );
 
         $subscription->fill($validatedData);
         $subscription->save();

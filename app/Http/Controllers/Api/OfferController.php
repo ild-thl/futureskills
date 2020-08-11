@@ -50,6 +50,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
+        dd($offer);
         return response()->json($offer, 200);
     }
 
