@@ -23,9 +23,11 @@ class SubscriptionStoreRequest extends FormRequest
      */
     public function rules()
     {
+       #dd($this->get("status", "user_id"));
+
         return [
-            'user_id' => 'required|integer',
-            'offer_id' => 'required|integer',
+            'user_id' => 'required|unique:subscriptions,user_id,NULL,subscriptions,offer_id,'.$this->get('offer_id').'|integer',
+            'offer_id' => 'required|unique:subscriptions,offer_id,NULL,subscriptions,user_id,'.$this->get('user_id').'|integer',
             'status' => 'required|string'
         ];
     }
