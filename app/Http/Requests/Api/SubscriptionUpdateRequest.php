@@ -24,8 +24,6 @@ class SubscriptionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer',
-            'offer_id' => 'required|integer',
             'status' => 'required|string'
         ];
     }
