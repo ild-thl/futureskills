@@ -14,17 +14,15 @@ class CreateSubscriptionsTable extends Migration
     public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('offer_id')->nullable();
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('offer_id');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
-            $table->primary(['user_id', 'offer_id']);
             $table->foreign('user_id')
                 ->references('id')->on('users');
-                #->onDelete('cascade');
             $table->foreign('offer_id')
                 ->references('id')->on('offers');
-                #->onDelete('cascade');
         });
     }
 
