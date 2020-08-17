@@ -19,5 +19,14 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('secret'),
             ]);
         }
+
+        $katy = DB::table('users')->where('name', 'Katy')->first();
+        if(!$katy) {
+            DB::table('users')->insert([
+                'name' => 'Katy',
+                'email' => 'katy@futureskills-sh.de',
+                'password' => bcrypt('secret'),
+            ]);
+        }
     }
 }

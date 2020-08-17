@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
+    public $users;
      /**
      * The attributes that are mass assignable.
      *
@@ -16,7 +17,22 @@ class Offer extends Model
         'type',
         'description',
         'image_path',
-        'institution_id'
+        'institution_id',
+        'subtitle',
+        'language',
+        'hashtag',
+        'ects',
+        'time_requirement',
+        'executed_from',
+        'executed_until',
+        'listed_from',
+        'isted_until',
+        'author',
+        'sponsor',
+        'exam',
+        'requirements',
+        'niveau',
+        'target_group'
     ];
 
     /**
@@ -34,5 +50,18 @@ class Offer extends Model
     public function institution()
     {
         return $this->belongsTo('App\Models\Institution');
-    }    
+    }
+
+    /**
+     * Get the users for the offer.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
