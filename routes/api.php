@@ -29,3 +29,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
 });
+
+// Additional routes that don't require authentication
+Route::get('offer', 'Api\OfferController@index');
+Route::get('offer/{offer}', 'Api\OfferController@show');
+Route::get('institution', 'Api\InstitutionController@index');
+Route::get('institution/{institution}', 'Api\InstitutionController@show');
