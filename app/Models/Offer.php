@@ -26,13 +26,15 @@ class Offer extends Model
         'executed_from',
         'executed_until',
         'listed_from',
-        'isted_until',
+        'listed_until',
         'author',
         'sponsor',
         'exam',
         'requirements',
         'niveau',
-        'target_group'
+        'target_group',
+        'url',
+        'sort_flag'
     ];
 
     /**

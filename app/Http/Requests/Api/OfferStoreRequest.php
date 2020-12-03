@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OfferStoreRequest extends FormRequest
 {
@@ -25,10 +26,10 @@ class OfferStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|unique:offers|max:255',
-            'type' => '',
+            'type' => Rule::in(['online-course', 'webinar','presence-event','presence-series', 'self-study-course']),
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
-            'institution_id' => '',
+            'institution_id' => 'integer',
             'subtitle' => 'nullable|string',
             'language' => 'nullable|string',
             'hashtag' => 'nullable|string',
@@ -42,7 +43,9 @@ class OfferStoreRequest extends FormRequest
             'exam' => 'nullable|string',
             'requirements' => 'nullable|text',
             'niveau' => 'nullable|string',
-            'target_group' => 'nullable|string'
+            'target_group' => 'nullable|string',
+            'url' => 'nullable|url',
+            'sort_flag' => 'nullable|integer'
         ];
     }
 }
