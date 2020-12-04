@@ -34,7 +34,10 @@ class Offer extends Model
         'niveau',
         'target_group',
         'url',
-        'sort_flag'
+        'sort_flag',
+        'competence_tech',
+        'competence_digital',
+        'competence_classic'
     ];
 
     /**
