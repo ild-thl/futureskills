@@ -21,7 +21,7 @@ class OfferController extends Controller
     public function index()
     {
         $offers = Offer::all();
-        return response()->json($offers, 200);
+        return response()->json($offers->sortByDesc("sort_flag"), 200);
     }
 
 

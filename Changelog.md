@@ -9,6 +9,7 @@
 - Offer model has more fields and returns more data after storage
 - Subscription table is deleted and created without constraints
 - Set lcobucci/jwt to 3.3.2 for compatibility
+- offer index is returned sorted by sort_flag
 
 ## 2020-11-10/dk
 ### Added
