@@ -23,8 +23,9 @@ class OfferUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        #dd(2);
         return [
-            'title' => 'required|unique:offers|max:255',
+            'title' => 'required|max:255', // unique:offers required the title to change to be valid
             'type' => '',
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
@@ -40,9 +41,14 @@ class OfferUpdateRequest extends FormRequest
             'author' => 'nullable|string',
             'sponsor' => 'nullable|string',
             'exam' => 'nullable|string',
-            'requirements' => 'nullable|text',
+            'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
-            'target_group' => 'nullable|string'
+            'target_group' => 'nullable|string',
+            'competence_tech' => 'nullable|boolean',
+            'competence_digital' => 'nullable|boolean',
+            'competence_classic' => 'nullable|boolean',
+            'sort_flag' => 'nullable|integer',
+            'url' => 'nullable|url',
         ];
     }
 }
