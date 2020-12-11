@@ -34,7 +34,7 @@ class OfferUpdateRequest extends FormRequest
             'language' => 'nullable|string',
             'hashtag' => 'nullable|string',
             'ects' => 'nullable|integer',
-            'time_reuirement' => 'nullable|string',
+            'time_requirement' => 'nullable|string',
             'executed_from' => 'date',
             'executed_until' => 'nullable|date',
             'listed_from' => 'date',
