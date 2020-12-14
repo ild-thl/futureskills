@@ -21,6 +21,9 @@ class OfferController extends Controller
     public function index()
     {
         $offers = Offer::all();
+        $offers->sortByDesc("sort_flag");
+        $offers->toArray();
+
         return response()->json($offers, 200);
     }
 
@@ -38,6 +41,10 @@ class OfferController extends Controller
 
         $offer = Offer::create($validatedData);
         $offer->save();
+        # The response would only contain the entered data. Create new complete object for response
+        $id = $offer->id;
+        $offer = new Offer;
+        $offer = $offer->find($id);
 
         return response()->json($offer, 201);
     }
