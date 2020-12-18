@@ -34,6 +34,7 @@ class OfferStoreRequest extends FormRequest
             'language' => 'nullable|string',
             'hashtag' => 'nullable|string',
             'ects' => 'nullable|integer',
+            'time_requirement' => 'nullable|string',
             'executed_from' => 'date',
             'executed_until' => 'nullable|date',
             'listed_from' => 'date',
@@ -41,14 +42,14 @@ class OfferStoreRequest extends FormRequest
             'author' => 'nullable|string',
             'sponsor' => 'nullable|string',
             'exam' => 'nullable|string',
-            'requirements' => 'nullable|text',
+            'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
             'target_group' => 'nullable|string',
             'url' => 'nullable|url',
             'sort_flag' => 'nullable|integer',
             'competence_tech' => 'nullable|boolean',
             'competence_digital' => 'nullable|boolean',
-            'competence_classic' => 'nullable|boolean'
+            'competence_classic' => 'nullable|boolean',
         ];
     }
 }
