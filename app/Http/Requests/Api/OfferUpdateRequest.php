@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OfferUpdateRequest extends FormRequest
 {
@@ -23,13 +24,12 @@ class OfferUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        #dd(2);
         return [
             'title' => 'required|max:255', // unique:offers required the title to change to be valid
-            'type' => '',
+            'type' => Rule::in(['online-course', 'webinar','presence-event','presence-series', 'self-study-course', 'course-package']),
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
-            'institution_id' => '',
+            'institution_id' => 'integer',
             'subtitle' => 'nullable|string',
             'language' => 'nullable|string',
             'hashtag' => 'nullable|string',
@@ -45,11 +45,11 @@ class OfferUpdateRequest extends FormRequest
             'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
             'target_group' => 'nullable|string',
+            'url' => 'nullable|url',
+            'sort_flag' => 'nullable|integer',
             'competence_tech' => 'nullable|boolean',
             'competence_digital' => 'nullable|boolean',
             'competence_classic' => 'nullable|boolean',
-            'sort_flag' => 'nullable|integer',
-            'url' => 'nullable|url',
         ];
     }
 }
