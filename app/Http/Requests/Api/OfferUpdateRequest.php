@@ -25,7 +25,7 @@ class OfferUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255', // unique:offers required the title to change to be valid
+            'title' => 'required|max:255',
             'type' => Rule::in(['online-course', 'webinar','presence-event','presence-series', 'self-study-course', 'course-package']),
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
@@ -50,6 +50,8 @@ class OfferUpdateRequest extends FormRequest
             'competence_tech' => 'nullable|boolean',
             'competence_digital' => 'nullable|boolean',
             'competence_classic' => 'nullable|boolean',
+            'ext_id' => 'nullable|unique:offers,institution_id,NULL,offers,ext_id,'.$this->get('ext_id').'|string',
+            'active' => 'nullable|boolean',
         ];
     }
 }

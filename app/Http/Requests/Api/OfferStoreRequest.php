@@ -25,7 +25,7 @@ class OfferStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:offers|max:255',
+            'title' => 'required|max:255',
             'type' => Rule::in(['online-course', 'webinar','presence-event','presence-series', 'self-study-course', 'course-package']),
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
@@ -50,6 +50,8 @@ class OfferStoreRequest extends FormRequest
             'competence_tech' => 'nullable|boolean',
             'competence_digital' => 'nullable|boolean',
             'competence_classic' => 'nullable|boolean',
+            'ext_id' => 'nullable|unique:offers,ext_id,NULL,offers,institution_id,'.$this->get('institution_id').'|string',
+            'active' => 'nullable|boolean',
         ];
     }
 }

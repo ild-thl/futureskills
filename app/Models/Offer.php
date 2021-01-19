@@ -37,7 +37,9 @@ class Offer extends Model
         'sort_flag',
         'competence_tech',
         'competence_digital',
-        'competence_classic'
+        'competence_classic',
+        'ext_id',
+        'active'
     ];
 
     /**
