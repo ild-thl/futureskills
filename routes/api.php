@@ -19,8 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::resource('offer', 'Api\OfferController');
-    Route::resource('institution', 'Api\InstitutionController');
+    Route::resource('offer', 'Api\OfferController')->except(['index', 'show']);
+    Route::resource('institution', 'Api\InstitutionController')->except(['index', 'show']);
     Route::get('subscription', 'Api\SubscriptionController@index'); # get all subscriptions
     Route::get('subscription/user/{user_id}', 'Api\SubscriptionController@indexOffersForUser'); # get all subscriptions of user
     Route::get('subscription/offer/{offer_id}', 'Api\SubscriptionController@indexUsersForOffer'); # get all subscriptions of offer
@@ -33,5 +33,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Additional routes that don't require authentication
 Route::get('offer', 'Api\OfferController@index');
 Route::get('offer/{offer}', 'Api\OfferController@show');
+Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateByExternalId');
 Route::get('institution', 'Api\InstitutionController@index');
 Route::get('institution/{institution}', 'Api\InstitutionController@show');
