@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+## 2021-01-21/dk
+### Added
+- New migration for adding external id and status to Offer
+- New route for editing offers by external ids
+- Special rules for external id OfferUpdateRequest
+
 ## [Released] v0.1.2
 
 ## 2020-12-03/dk

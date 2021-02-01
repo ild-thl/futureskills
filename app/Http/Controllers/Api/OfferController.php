@@ -7,6 +7,7 @@ use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Offer;
+use App\Models\Institution;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,8 +61,6 @@ class OfferController extends Controller
         return response()->json($offer, 200);
     }
 
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -72,7 +71,23 @@ class OfferController extends Controller
     public function update(OfferUpdateRequest $request, Offer $offer)
     {
         $validatedData = $request->validated();
+        $offer->fill($validatedData);
+        $offer->save();
 
+        return response()->json($offer, 201);
+    }
+
+    /**
+     * Update the specified resource by given external id in storage.
+     *
+     * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
+     * @param  \App\Models\Offer  $offer
+     * @return \Illuminate\Http\Response
+     */
+    public function updateByExternalId(OfferUpdateRequest $request, Institution $institution, String $ext_id)
+    {
+        $offer = Offer::where(["institution_id" => $institution->id, "ext_id" => $ext_id ])->firstOrFail();
+        $validatedData = $request->validated();
         $offer->fill($validatedData);
         $offer->save();
 

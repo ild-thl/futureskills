@@ -25,7 +25,8 @@ class InstitutionUpdateRequest extends FormRequest
     {
         return [
             'title' => 'max:255',
-            'url' => 'max:255'
+            'url' => 'max:255',
+            'json_url' => 'nullable|url'
         ];
     }
 }
