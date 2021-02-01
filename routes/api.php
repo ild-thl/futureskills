@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Api\BotConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,4 @@ Route::get('offer/{offer}', 'Api\OfferController@show');
 Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateByExternalId');
 Route::get('institution', 'Api\InstitutionController@index');
 Route::get('institution/{institution}', 'Api\InstitutionController@show');
+Route::get('botconfig', BotConfigController::class);
