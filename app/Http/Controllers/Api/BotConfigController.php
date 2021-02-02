@@ -18,12 +18,12 @@ class BotConfigController extends Controller
         $config ='';
         try {
             switch(env('APP_ENV')){
-                case 'locall':
+                case 'local':
                 case 'staging':      
-                    $config = \file_get_contents('https://devstatic.futureskills-sh.de/data/kjdsihadjcfkatbb/bot.json'); 
+                    $config = \file_get_contents(config('bot.static_stage_url')); 
                     break;
                 case 'production':
-                    $config = \file_get_contents('https://static.futureskills-sh.de/data/kjdsihadjcfkatbb/bot.json'); 
+                    $config = \file_get_contents(config('bot.static_production_url')); 
                     break;
                 default: 
                     $config = \json_encode(["maintenance" => false]);            
