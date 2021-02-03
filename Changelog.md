@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 2021-02-02/ml
+### Added
+- BotConfigController.php, reads static JSON File for Bot-Konfiguration (Urls in config/bot.php)
+
 ## 2021-01-21/dk
 ### Added
 - New migration for adding external id and status to Offer
