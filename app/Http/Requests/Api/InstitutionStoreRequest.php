@@ -25,7 +25,8 @@ class InstitutionStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'url' => 'required|max:255'
+            'url' => 'required|max:255',
+            'json_url' => 'nullable|url'
         ];
     }
 }
