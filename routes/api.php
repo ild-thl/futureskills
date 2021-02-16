@@ -37,4 +37,9 @@ Route::get('offer/{offer}', 'Api\OfferController@show');
 Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateByExternalId');
 Route::get('institution', 'Api\InstitutionController@index');
 Route::get('institution/{institution}', 'Api\InstitutionController@show');
-Route::get('botconfig', BotConfigController::class);
+
+// Bot-Routes
+Route::get('botconfig', BotConfigController::class); // deprecated, use bot/config
+Route::get('bot/config', BotConfigController::class);
+Route::get('bot/token', 'Api\BotConfigController@createToken');
+Route::get('bot/cookie/set', 'Api\CookieController@setCookie');
