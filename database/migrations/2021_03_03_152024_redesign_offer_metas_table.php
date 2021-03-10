@@ -23,7 +23,7 @@ class RedesignOfferMetasTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('offer_meta', function (Blueprint $table) {
+        Schema::create('meta_offer', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('meta_id');
             $table->foreign('meta_id')
@@ -61,7 +61,7 @@ class RedesignOfferMetasTable extends Migration
             );
             foreach ( $values as $description => $value ) {
                 if ( $value !== null ) {
-                    DB::table('offer_meta')->insert([
+                    DB::table('meta_offer')->insert([
                         'meta_id' => $metas[$description][0],
                         'offer_id' => $offer->id,
                         'value' => $value
@@ -79,7 +79,7 @@ class RedesignOfferMetasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offer_meta');
+        Schema::dropIfExists('meta_offer');
         Schema::dropIfExists('metas');
     }
 }

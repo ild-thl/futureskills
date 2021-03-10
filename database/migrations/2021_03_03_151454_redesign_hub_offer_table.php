@@ -16,7 +16,7 @@ class RedesignHubOfferTable extends Migration
     {
         $offers = Offer::all();
 
-        Schema::create('hub_offers', function (Blueprint $table) {
+        Schema::create('huboffers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')
@@ -29,7 +29,7 @@ class RedesignHubOfferTable extends Migration
 
         #Migration der Daten
         foreach ( $offers as $offer ) {
-            DB::table('hub_offers')->insert([
+            DB::table('huboffers')->insert([
                 'offer_id' => $offer->id,
                 'sort_flag' => $offer->sort_flag,
                 'visible' => $offer->active,
@@ -45,6 +45,6 @@ class RedesignHubOfferTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hub_offers');
+        Schema::dropIfExists('huboffers');
     }
 }
