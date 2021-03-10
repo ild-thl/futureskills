@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
+use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Institution;
@@ -58,6 +59,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
+        #dd($offer->toJson());
         return response()->json($offer, 200);
     }
 
@@ -68,12 +70,13 @@ class OfferController extends Controller
      * @param  \App\Models\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function update(OfferUpdateRequest $request, Offer $offer)
+    public function update(OfferUpdateRequest $request, int $id)
     {
+        $offer = Offer::find($id);
         $validatedData = $request->validated();
+
         $offer->fill($validatedData);
         $offer->save();
-
         return response()->json($offer, 201);
     }
 
@@ -81,12 +84,12 @@ class OfferController extends Controller
      * Update the specified resource by given external id in storage.
      *
      * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
-     * @param  \App\Models\Offer  $offer
+     * @param  String $externalId
      * @return \Illuminate\Http\Response
      */
-    public function updateByExternalId(OfferUpdateRequest $request, Institution $institution, String $ext_id)
+    public function updateByExternalId(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
     {
-        $offer = Offer::where(["institution_id" => $institution->id, "ext_id" => $ext_id ])->firstOrFail();
+        $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->firstOrFail();
         $validatedData = $request->validated();
         $offer->fill($validatedData);
         $offer->save();
