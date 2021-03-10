@@ -20,7 +20,7 @@ class RedesignHubOfferTable extends Migration
             $table->id();
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')
-                ->references('id')->on('offers');
+                ->references('id')->on('offers')->unique();
             $table->integer('sort_flag')->nullable();
             $table->text('keywords')->nullable();
             $table->boolean('visible')->default(true);

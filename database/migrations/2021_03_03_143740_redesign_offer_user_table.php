@@ -27,6 +27,7 @@ class RedesignOfferUserTable extends Migration
                 ->references('id')->on('users');
             $table->foreign('offer_id')
                 ->references('id')->on('offers');
+            $table->unique(['offer_id', 'user_id']);
         });
         # Keine Daten zum Migrieren vorhanden
     }

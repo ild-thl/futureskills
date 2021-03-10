@@ -30,7 +30,9 @@ class RedesignCompetencesTable extends Migration
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')
                 ->references('id')->on('offers');
+            $table->unique(['offer_id', 'competence_id']);
             $table->timestamps();
+
         });
 
         #Seeder lässt sich nicht über Migration aufrufen. Zur Vereinfachung der Migration werden Daten hier eingefügt.

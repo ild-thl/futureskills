@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Offer;
 
-class RedesignCleanupOfferTable extends Migration
+class RedesignOfferTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,18 @@ class RedesignCleanupOfferTable extends Migration
      */
     public function up()
     {
-        /*
+
         $offers = Offer::all();
 
         Schema::table('offers', function (Blueprint $table) {
-            $table->string('externalId');
+            $table->string('externalId')->nullable();
+            $table->unique(['institution_id', 'externalId']);
         });
 
         foreach ( $offers as $offer ) {
-            DB::update("update offers set externalId = " . $offer->ext_id . " where id = " . $offer->id );
+            if ( isset ( $offer->ext_id ) ) {
+                DB::update("update offers set externalId='" . $offer->ext_id . "' where id = " . $offer->id );
+            }
         }
 
         Schema::table('offers', function (Blueprint $table) {
@@ -45,7 +48,6 @@ class RedesignCleanupOfferTable extends Migration
             $table->dropColumn('language');
             $table->dropColumn('time_requirement');
         });
-        */
 
     }
 

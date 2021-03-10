@@ -18,7 +18,7 @@ class RedesignOfferMetasTable extends Migration
 
         Schema::create('metas', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->string('description')->unique();
             $table->enum('datatype', ['varchar(191)', 'tinyint(1)', 'int(11)', 'text']);
             $table->timestamps();
         });
@@ -32,6 +32,7 @@ class RedesignOfferMetasTable extends Migration
             $table->foreign('offer_id')
                 ->references('id')->on('offers');
             $table->string('value')->nullable();
+            $table->unique(['offer_id', 'meta_id']);
             $table->timestamps();
         });
 
@@ -56,7 +57,7 @@ class RedesignOfferMetasTable extends Migration
                 "requirements" => $offer->requirements,
                 "niveau" => $offer->niveau,
                 "ects" => $offer->ects,
-                "time_requirement" -> $offer->time_requirement
+                "time_requirement" => $offer->time_requirement
             );
             foreach ( $values as $description => $value ) {
                 if ( $value !== null ) {
@@ -67,7 +68,7 @@ class RedesignOfferMetasTable extends Migration
                     ]);
                 }
             }
-            DB::update("update offers set externalId = " . $offer->ext_id . " where id = " . $offer->id );
+
         }
     }
 
