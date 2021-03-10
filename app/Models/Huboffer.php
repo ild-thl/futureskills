@@ -4,26 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Institution extends Model
+class Huboffer extends Model
 {
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title',
-        'url',
-        'json_url'
+        'sort_flag',
+        'keywords',
+        'visible'
     ];
 
-
     /**
-     * Get the offers for the institution.
+     * Get the offer the model belongs to.
      */
-    public function offers()
+    public function offer()
     {
-        return $this->hasMany('App\Models\Offer');
+        return $this->belongsTo('App\Models\Offer');
     }
-
 }

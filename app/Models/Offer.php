@@ -13,32 +13,31 @@ class Offer extends Model
      */
     protected $fillable = [
         'title',
-        'type',
+        'offertype_id',
+        'institution_id',
+        'language_id',
         'description',
         'image_path',
-        'institution_id',
         'subtitle',
-        'language',
+        'externalId',
         'hashtag',
-        'ects',
-        'time_requirement',
-        'executed_from',
-        'executed_until',
-        'listed_from',
-        'listed_until',
-        'author',
-        'sponsor',
-        'exam',
-        'requirements',
-        'niveau',
         'target_group',
         'url',
-        'sort_flag',
-        'competence_tech',
-        'competence_digital',
-        'competence_classic',
-        'ext_id',
-        'active'
+
+        // TODO
+        #META
+        #'ects',
+        #'time_requirement',
+        #'author',
+        #'sponsor',
+        #'exam',
+        #'requirements',
+        #'niveau',
+
+        #COMPETENCES
+        #'competence_tech',
+        #'competence_digital',
+        #'competence_classic',
     ];
 
     /**
@@ -48,6 +47,13 @@ class Offer extends Model
      */
     protected $with = [
         'institution',
+        'competences',
+        'language',
+        'huboffer',
+        'metas',
+        'offertype',
+        'timestamps',
+        'relations',
     ];
 
     /**
@@ -58,4 +64,76 @@ class Offer extends Model
         return $this->belongsTo('App\Models\Institution');
     }
 
+    /**
+     * Get the assigned competences of the offer. (pivot)
+     */
+    public function competences()
+    {
+        return $this->belongsToMany('App\Models\Competence');
+    }
+
+    /**
+     * Get the language of the offer
+     */
+    public function language()
+    {
+        return $this->belongsTo('App\Models\Language');
+    }
+
+    /**
+     * Get the hub specific data of the offer
+     */
+    public function huboffer()
+    {
+        return $this->hasOne('App\Models\Huboffer');
+    }
+
+    /**
+     * Get the metas of the offer. (pivot)
+     */
+    public function metas()
+    {
+        return $this->belongsToMany('App\Models\Meta')->withPivot('value');
+    }
+
+    /**
+     * Get the type of the offer
+     */
+    public function offertype()
+    {
+        return $this->belongsTo('App\Models\Offertype');
+    }
+
+    /**
+     * Get the type of the offer
+     */
+    public function timestamps()
+    {
+        return $this->hasOne('App\Models\Timestamp');
+    }
+
+    /**
+     * Get the offers this offer is related to. (pivot)
+     */
+    public function relations()
+    {
+        return $this->belongsToMany('App\Models\Offer', 'offer_relations', 'offer_id', 'offerrelated_id');
+    }
+
+    /**
+     * Get the offers this offer is assigned in.
+     * Not output in offer as this causes loops.
+     */
+    public function assignedRelations()
+    {
+        return $this->belongsToMany('App\Models\Offer', 'offer_relations', 'offerrelated_id', 'offer_id');
+    }
+
+    /**
+     * Get the users that are subscribed to this offer. (pivot)
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

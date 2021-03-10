@@ -39,18 +39,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the offers for the user.
+     * The relationships that will be loaded with the model.
+     *
+     * @var array
+     */
+    protected $with = [
+        'offers',
+    ];
+
+    /**
+     * Get the offers for the user. (pivot)
      */
     public function offers()
     {
-        return $this->hasMany('App\Offer');
+        return $this->belongsToMany('App\Models\Offer');
     }
 
-    /**
-     * Get the subscriptions for the user.
-     */
-    public function subscriptions()
-    {
-        return $this->hasMany('App\Subscription');
-    }
 }
