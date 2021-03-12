@@ -26,6 +26,8 @@ class OfferController extends Controller
         $offers = $offers->sortByDesc("sort_flag");
         $offers = $offers->values()->all();
 
+        #todo
+
         return response()->json($offers, 200);
     }
 
@@ -59,8 +61,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        #dd($offer->toJson());
-        return response()->json($offer, 200);
+        return response()->json($this->restructureJsonOutput($offer), 200);
     }
 
     /**
@@ -107,5 +108,45 @@ class OfferController extends Controller
     {
         $offer->delete();
         return response(null, 204);
+    }
+
+    public function restructureJsonOutput( Offer $offer ) {
+        $arr = $offer->toArray();
+        $arr["language"] = $arr["language"]["identifier"];
+        $arr["sort_flag"] = $arr["huboffer"]["sort_flag"];
+        $arr["keywords"] = $arr["huboffer"]["keywords"];
+        $arr["visible"] = $arr["huboffer"]["visible"];
+        $arr["type"] = $arr["offertype"]["identifier"];
+        $arr["meta"] = [];
+        foreach ( $arr["metas"] as $meta ) {
+            $arr["meta"][$meta["description"]] = $meta["pivot"]["value"];
+        }
+        $arr["competence_tech"] = 0;
+        $arr["competence_digital"] = 0;
+        $arr["competence_classic"] = 0;
+        foreach ( $arr["competences"] as $competence ) {
+            $arr["competence_".$competence["title"]] = 1;
+        }
+        $arr["relations"] = [];
+        foreach ( $arr["original_relations"] as $relation ) {
+            $arr["relations"][] = $relation["id"];
+        }
+
+        unset(
+            $arr["competences"],
+            $arr["metas"],
+            $arr["huboffer"],
+            $arr["offertype"],
+            $arr["original_relations"],
+            $arr["timestamps"]["id"],
+            $arr["timestamps"]["id"],
+            $arr["timestamps"]["created_at"],
+            $arr["timestamps"]["updated_at"],
+            $arr["institution"]["created_at"],
+            $arr["institution"]["updated_at"],
+            $arr["institution"]["json_url"]
+        );
+
+        return $arr;
     }
 }

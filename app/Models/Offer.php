@@ -53,7 +53,7 @@ class Offer extends Model
         'metas',
         'offertype',
         'timestamps',
-        'relations',
+        'originalRelations',
     ];
 
     /**
@@ -115,7 +115,7 @@ class Offer extends Model
     /**
      * Get the offers this offer is related to. (pivot)
      */
-    public function relations()
+    public function originalRelations()
     {
         return $this->belongsToMany('App\Models\Offer', 'offer_relations', 'offer_id', 'offerrelated_id');
     }
