@@ -23,21 +23,6 @@ class Offer extends Model
         'hashtag',
         'target_group',
         'url',
-
-        // TODO
-        #META
-        #'ects',
-        #'time_requirement',
-        #'author',
-        #'sponsor',
-        #'exam',
-        #'requirements',
-        #'niveau',
-
-        #COMPETENCES
-        #'competence_tech',
-        #'competence_digital',
-        #'competence_classic',
     ];
 
     /**

@@ -12,6 +12,7 @@ class Timestamp extends Model
      * @var array
      */
     protected $fillable = [
+        'offer_id',
         'executed_from',
         'executed_until',
         'listed_from',

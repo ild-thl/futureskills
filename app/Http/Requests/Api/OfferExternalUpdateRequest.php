@@ -26,18 +26,47 @@ class OfferUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'offertype_id' => 'integer', #RENAMED
+            'title' => 'max:255',
+            'offertype_id' => 'integer',
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
-            'institution_id' => 'integer',
             'subtitle' => 'nullable|string',
-            'language_id' => 'nullable|integer', #RENAMED
+            'language_id' => 'integer',
             'hashtag' => 'nullable|string',
             'author' => 'nullable|string',
             'target_group' => 'nullable|string',
             'url' => 'nullable|url',
 
+            #COMPETENCES table
+            'competence_tech' => 'nullable|boolean',
+            'competence_digital' => 'nullable|boolean',
+            'competence_classic' => 'nullable|boolean',
+
+            #METAS table
+            'ects' => 'nullable|integer',
+            'time_requirement' => 'nullable|string',
+            'sponsor' => 'nullable|string',
+            'exam' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'niveau' => 'nullable|string',
+
+            #TIMESTAMPS table
+            'executed_from' => 'date',
+            'executed_until' => 'nullable|date',
+            'listed_from' => 'date',
+            'listed_until' => 'nullable|date',
+            'active' => 'nullable|boolean',
+
+            #Backwards compatibility
+            'type' => 'string',
+            'language' => 'string',
+
+            #Not allowed to change
+            #'externalId'
+            #'institution_id'
+            #'sort_flag'
+            #'keywords'
+            #'visible'
         ];
     }
 }

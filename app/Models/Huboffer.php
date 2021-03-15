@@ -12,6 +12,7 @@ class Huboffer extends Model
      * @var array
      */
     protected $fillable = [
+        'offer_id',
         'sort_flag',
         'keywords',
         'visible'
