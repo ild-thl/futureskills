@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
-use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Institution;
@@ -92,15 +91,15 @@ class OfferController extends Controller
     /**
      * Update the specified resource by given external id in storage.
      *
-     * @param  \App\Http\Requests\Api\OfferExternalUpdateRequest  $request
+     * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
      * @param  String $externalId
      * @return \Illuminate\Http\Response
      */
-    public function updateByExternalId(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
+    public function updateByExternalId(OfferUpdateRequest $request, Institution $institution, String $externalId)
     {
         $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->firstOrFail();
         $validatedData = $this->validateRedundantInput( $request->validated() );
-        unset( $validatedData["institution_id"], $validatedData["externalId"], $validatedData["sort_flag"], $validatedData["keywords"], $validatedData["visible"] );
+
         $offer->fill($validatedData);
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
