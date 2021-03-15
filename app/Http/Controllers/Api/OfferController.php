@@ -33,7 +33,10 @@ class OfferController extends Controller
         $output = array();
         foreach ( $offers as $offer ) {
             $output[] = $this->restructureJsonOutput($offer);
-            $sort[$offer->id] = $offer->huboffer->sort_flag;
+            $sort[$offer->id] = null;
+            if ( is_object( $offer->huboffer ) ) {
+                $sort[$offer->id] = $offer->huboffer->sort_flag;
+            }
         }
         array_multisort($sort, SORT_DESC, $output);
 

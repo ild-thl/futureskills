@@ -8,6 +8,14 @@
 - Migrations for DB redesign
 ### Changed
 - OfferController and -Requests regarding redesign
+## 2021-02-15/ml
+### Added
+- CookieController, Cookie for the Bot-UserID
+- New Package in Composer (php-jwt)
+
+### Changed
+- BotConfigController, generates Token fpr Secure Bot
+- New Routes
 
 ## 2021-02-02/ml
 ### Added
