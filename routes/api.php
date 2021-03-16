@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('subscription', 'Api\SubscriptionController@index'); # get all subscriptions
     Route::get('subscription/user/{user_id}', 'Api\UserController@offers'); # get all subscriptions of user
     Route::get('subscription/offer/{offer_id}', 'Api\OfferController@users'); # get all subscriptions of offer
+    Route::get('subscription/{user_id}/{offer_id}', 'Api\OfferController@subscription'); # get a specific subscription
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
 });

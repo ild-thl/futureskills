@@ -134,6 +134,17 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a specific user/offer subscription.
+     *
+     * @param  String $offer_id
+     * @return \Illuminate\Http\Response
+     */
+    public function subscription( String $user_id, String $offer_id ) {
+        $subscription = DB::table('offer_user')->where(['offer_id' => $offer_id, 'user_id' => $user_id ])->get();
+        return response()->json($subscription, 200);
+    }
+
+    /**
      * Remodel the output of an offer
      *
      * @param  \App\Models\Offer $offer
