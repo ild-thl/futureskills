@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 2021-03-15/dk
+### Added
+- Offer_relations table
+- Migrations for DB redesign
+### Changed
+- OfferController and -Requests regarding redesign
 ## 2021-02-15/ml
 ### Added
 - CookieController, Cookie for the Bot-UserID

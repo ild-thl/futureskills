@@ -13,8 +13,9 @@ class Institution extends Model
      */
     protected $fillable = [
         'title',
-        'url'
-    ];    
+        'url',
+        'json_url'
+    ];
 
 
     /**
@@ -22,7 +23,7 @@ class Institution extends Model
      */
     public function offers()
     {
-        return $this->hasMany('App\Offer');
+        return $this->hasMany('App\Models\Offer');
     }
 
 }

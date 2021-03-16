@@ -90,4 +90,16 @@ class UserController extends Controller
         $user->delete();
         return response(null, 204);
     }
+
+    /**
+     * Display offers the user is subscribed to.
+     *
+     * @param  String $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function offers( String $user_id ) {
+        $user = User::find($user_id);
+        return response()->json($user->offers()->get(), 200);
+    }
+
 }

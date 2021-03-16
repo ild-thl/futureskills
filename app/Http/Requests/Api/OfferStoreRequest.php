@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class OfferStoreRequest extends FormRequest
 {
@@ -26,32 +25,46 @@ class OfferStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'type' => Rule::in(['online-course', 'webinar','presence-event','presence-series', 'self-study-course', 'course-package']),
+            'offertype_id' => 'integer',
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
             'institution_id' => 'integer',
             'subtitle' => 'nullable|string',
-            'language' => 'nullable|string',
+            'language_id' => 'integer',
             'hashtag' => 'nullable|string',
+            'author' => 'nullable|string',
+            'target_group' => 'nullable|string',
+            'url' => 'nullable|url',
+            'externalId' => 'nullable|unique:offers,externalId,NULL,offers,institution_id,'.$this->get('institution_id').'|string',
+
+            #COMPETENCES table
+            'competence_tech' => 'nullable|boolean',
+            'competence_digital' => 'nullable|boolean',
+            'competence_classic' => 'nullable|boolean',
+
+            #METAS table
             'ects' => 'nullable|integer',
             'time_requirement' => 'nullable|string',
-            'executed_from' => 'date',
-            'executed_until' => 'nullable|date',
-            'listed_from' => 'date',
-            'listed_until' => 'nullable|date',
-            'author' => 'nullable|string',
             'sponsor' => 'nullable|string',
             'exam' => 'nullable|string',
             'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
-            'target_group' => 'nullable|string',
-            'url' => 'nullable|url',
+
+            #HUBOFFERS table
             'sort_flag' => 'nullable|integer',
-            'competence_tech' => 'nullable|boolean',
-            'competence_digital' => 'nullable|boolean',
-            'competence_classic' => 'nullable|boolean',
-            'ext_id' => 'nullable|unique:offers,ext_id,NULL,offers,institution_id,'.$this->get('institution_id').'|string',
+            'keywords' => 'nullable|string',
+            'visible' => 'nullable|boolean',
+
+            #TIMESTAMPS table
+            'executed_from' => 'date',
+            'executed_until' => 'nullable|date',
+            'listed_from' => 'date',
+            'listed_until' => 'nullable|date',
             'active' => 'nullable|boolean',
+
+            #Backwards compatibility
+            'type' => 'string',
+            'language' => 'string',
         ];
     }
 }
