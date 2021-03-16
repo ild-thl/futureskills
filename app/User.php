@@ -44,7 +44,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
-        'offers',
     ];
 
     /**
@@ -52,7 +51,7 @@ class User extends Authenticatable
      */
     public function offers()
     {
-        return $this->belongsToMany('App\Models\Offer');
+        return $this->belongsToMany('App\Models\Offer')->withPivot('active');
     }
 
 }

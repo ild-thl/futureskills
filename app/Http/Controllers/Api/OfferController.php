@@ -123,6 +123,17 @@ class OfferController extends Controller
     }
 
     /**
+     * Display users subscribed to an offer.
+     *
+     * @param  String $offer_id
+     * @return \Illuminate\Http\Response
+     */
+    public function users( String $offer_id ) {
+        $offer = Offer::find($offer_id);
+        return response()->json($offer->users()->get(), 200);
+    }
+
+    /**
      * Remodel the output of an offer
      *
      * @param  \App\Models\Offer $offer
