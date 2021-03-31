@@ -42,3 +42,6 @@ Route::get('botconfig', BotConfigController::class); // deprecated, use bot/conf
 Route::get('bot/config', BotConfigController::class);
 Route::get('bot/token', 'Api\BotConfigController@createToken');
 Route::get('bot/cookie/set', 'Api\CookieController@setCookie');
+
+// Filter-Tags
+Route::get('filter/tags', 'Api\FilterController@getTags');
