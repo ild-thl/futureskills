@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 2021-03-31/dk
+### Changed
+- Added identifiers and descriptions via migration
+### Added
+- new route for filter tags: /filter/tags
+
 ## 2021-03-15/dk
 ### Added
 - Offer_relations table

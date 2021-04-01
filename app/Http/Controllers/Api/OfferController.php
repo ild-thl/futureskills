@@ -172,8 +172,11 @@ class OfferController extends Controller
         $ret["competence_tech"] = 0;
         $ret["competence_digital"] = 0;
         $ret["competence_classic"] = 0;
-        foreach ( $ret["competences"] as $competence ) {
-            $ret["competence_".$competence["title"]] = 1;
+        $tmp_competences = $ret["competences"];
+        $ret["competences"] = array();
+        foreach ( $tmp_competences as $competence ) {
+            $ret["competence_".$competence["identifier"]] = 1;
+            $ret["competences"][] = $competence["id"];
         }
 
         $ret["relations"] = [];
@@ -182,7 +185,6 @@ class OfferController extends Controller
         }
 
         unset(
-            $ret["competences"],
             $ret["metas"],
             $ret["huboffer"],
             $ret["offertype"],
