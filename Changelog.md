@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 2021-04-03/dk
+### Changed
+- Offers cascade on delete
+- fixed competence saving process
+- moved external update route
+
 ## 2021-03-31/dk
 ### Changed
 - Added identifiers and descriptions via migration

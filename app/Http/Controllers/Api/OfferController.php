@@ -214,7 +214,7 @@ class OfferController extends Controller
         $competences = Competence::all();
         $competence_sync = array();
         foreach ( $competences as $c ) {
-            if ( \key_exists( "competence_".$c->title, $validatedData ) && $validatedData["competence_".$c->title] == true ) {
+            if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier] == true ) {
                 $competence_sync[] = $c->id;
             }
         }
