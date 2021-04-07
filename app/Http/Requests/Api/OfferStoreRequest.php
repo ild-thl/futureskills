@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\RelatedOfferRule;
 
 class OfferStoreRequest extends FormRequest
 {
@@ -61,6 +62,9 @@ class OfferStoreRequest extends FormRequest
             'listed_from' => 'date',
             'listed_until' => 'nullable|date',
             'active' => 'nullable|boolean',
+
+            #Offer Relations
+            'relatedOffers' => new RelatedOfferRule( $this ),
 
             #Backwards compatibility
             'type' => 'string',

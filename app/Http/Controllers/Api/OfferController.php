@@ -179,9 +179,9 @@ class OfferController extends Controller
             $ret["competences"][] = $competence["id"];
         }
 
-        $ret["relations"] = [];
+        $ret["relatedOffers"] = [];
         foreach ( $ret["original_relations"] as $relation ) {
-            $ret["relations"][] = $relation["id"];
+            $ret["relatedOffers"][] = $relation["id"];
         }
 
         unset(
@@ -247,6 +247,15 @@ class OfferController extends Controller
             $validatedData["offer_id"] = $offer->id;
             $timestamp = Timestamp::create($validatedData);
         }
+        
+        $relations_str = substr($validatedData["relatedOffers"], 1, strlen($validatedData["relatedOffers"]) -2 );
+        $relations = explode (",", $relations_str);
+        $relations_sync = array();
+        foreach ( $relations as $relation ) {
+            $relations_sync[] = intval($relation);
+        }
+
+        $offer->originalRelations()->sync($relations_sync);
 
     }
 
