@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Rules\RelatedOfferRule;
 
 class OfferUpdateRequest extends FormRequest
 {
@@ -70,6 +71,9 @@ class OfferUpdateRequest extends FormRequest
             'listed_from' => 'date',
             'listed_until' => 'nullable|date',
             'active' => 'nullable|boolean',
+
+            #Offer Relations
+            'relatedOffers' => new RelatedOfferRule( $this ),
 
             #Backwards compatibility
             'type' => 'string',

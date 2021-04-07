@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 2021-04-07/dk
+### Added
+- offer relations can be saved via offer editing
+### Changed
+- Author saving fixed
+
 ## 2021-04-03/dk
 ### Changed
 - Offers cascade on delete
