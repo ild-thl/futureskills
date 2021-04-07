@@ -21,12 +21,13 @@ class RedesignOfferTable extends Migration
             $table->string('externalId')->nullable();
             $table->unique(['institution_id', 'externalId']);
         });
-
+        /*
         foreach ( $offers as $offer ) {
             if ( isset ( $offer->ext_id ) ) {
                 DB::update("update offers set externalId='" . $offer->ext_id . "' where id = " . $offer->id );
             }
         }
+        */
 
         Schema::table('offers', function (Blueprint $table) {
             $table->dropColumn('executed_from');

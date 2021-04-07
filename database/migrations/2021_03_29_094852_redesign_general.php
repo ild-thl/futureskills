@@ -28,6 +28,7 @@ class RedesignGeneral extends Migration
             $table->string('description');
         });
 
+        /*
         # IDs sind fest
         DB::update('update competences set identifier = ? where id = 1', ['tech']);
         DB::update('update competences set identifier = ? where id = 2', ['digital']);
@@ -47,7 +48,7 @@ class RedesignGeneral extends Migration
         DB::update('update offertypes set description = ? where id = 5', ['Selbstlernkurs']);
         DB::update('update offertypes set description = ? where id = 6', ['Kurspaket']);
         DB::update('update offertypes set description = ? where id = 7', ['Blended Learning']);
-
+        */
     }
 
     /**

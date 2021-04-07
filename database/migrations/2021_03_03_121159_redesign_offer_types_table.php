@@ -21,7 +21,7 @@ class RedesignOfferTypesTable extends Migration
             $table->string('identifier')->unique();
             $table->timestamps();
         });
-
+        /*
         $types = array (
             "online-course" => 1,
             "webinar" => 2,
@@ -36,15 +36,17 @@ class RedesignOfferTypesTable extends Migration
         foreach ( $types as $identifier => $id ) {
            DB::table('offertypes')->insert(['identifier' => $identifier]);
         }
+        */
         #Anlegen der Spalte ohne FK
         Schema::table('offers', function (Blueprint $table) {
             $table->unsignedBigInteger('offertype_id');
         });
-
+        /*
         #Migration der Daten
         foreach ( $offers as $offer ) {
             DB::update("update offers set offertype_id = " . $types[$offer->type] . " where id = " . $offer->id );
         }
+        */
         #Änderung zum FK
         Schema::table('offers', function (Blueprint $table) {
             $table->foreign('offertype_id')->references('id')->on('offertypes');

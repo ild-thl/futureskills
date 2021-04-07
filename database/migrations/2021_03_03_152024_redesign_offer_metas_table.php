@@ -35,7 +35,7 @@ class RedesignOfferMetasTable extends Migration
             $table->unique(['offer_id', 'meta_id']);
             $table->timestamps();
         });
-
+        /*
         $metas = array (
             "sponsor" => [1, 'varchar(191)'],
             "exam" => [2, 'varchar(191)'],
@@ -68,8 +68,8 @@ class RedesignOfferMetasTable extends Migration
                     ]);
                 }
             }
-
         }
+        */
     }
 
     /**

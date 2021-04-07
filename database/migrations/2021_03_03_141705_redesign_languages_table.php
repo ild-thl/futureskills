@@ -22,21 +22,22 @@ class RedesignLanguagesTable extends Migration
             $table->string('identifier')->unique();
             $table->timestamps();
         });
-
+        /*
         $languages = array (
             "de" => 1,
             "en" => 2,
         );
-
+        
         foreach ( $languages as $identifier => $id ) {
             DB::table('languages')->insert(['identifier' => $identifier]);
          }
-
+        */
         #Anlegen der Spalte ohne FK
         Schema::table('offers', function (Blueprint $table) {
             $table->unsignedBigInteger('language_id');
         });
 
+        /*
         #Migration der Daten
         foreach ( $offers as $offer ) {
             $lang = '';
@@ -57,7 +58,7 @@ class RedesignLanguagesTable extends Migration
 
             DB::update("update offers set language_id = " . $lang . " where id = " . $offer->id );
         }
-
+        */
         #Änderung zum FK
         Schema::table('offers', function (Blueprint $table) {
             $table->foreign('language_id')->references('id')->on('languages');

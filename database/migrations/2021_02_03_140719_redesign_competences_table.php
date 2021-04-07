@@ -34,12 +34,12 @@ class RedesignCompetencesTable extends Migration
             $table->timestamps();
 
         });
-
+        /*
         #Seeder lässt sich nicht über Migration aufrufen. Zur Vereinfachung der Migration werden Daten hier eingefügt.
         DB::table('competences')->insert(['title' => 'tech']);
         DB::table('competences')->insert(['title' => 'digital']);
         DB::table('competences')->insert(['title' => 'classic']);
-
+        */
         foreach ( $offers as $offer ) {
             if ( $offer->competence_tech === 1 ) {
                 DB::table('competence_offer')->insert(['competence_id' => 1, 'offer_id' => $offer->id]);

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Database\Seeds\CompetenceTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         $this->call(InstitutionTableSeeder::class);
+        $this->call(CompetenceTableSeeder::class);
     }
 }
