@@ -43,7 +43,7 @@ class RelatedOfferRule implements Rule
             # Create offer: $id is "offer"
             $pathInfo = explode( "/", $this->request->getPathInfo() );
             $id = end($pathInfo);
-            dd($id);
+            
             $relations_sync = array();
             foreach ( $relations as $relation ) {
                 $tmpRelated = Offer::find($relation);
