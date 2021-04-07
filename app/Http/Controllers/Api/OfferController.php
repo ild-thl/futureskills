@@ -249,19 +249,18 @@ class OfferController extends Controller
         }
         
         if ( array_key_exists( "relatedOffers", $validatedData ) ) {
-            $relations_str = substr($validatedData["relatedOffers"], 1, strlen($validatedData["relatedOffers"]) -2 );
+            $relations = $validatedData["relatedOffers"];
             $relations_sync = array();
-            if ( !empty( $relations_str ) ) {
-                $relations = explode (",", $relations_str);
-                foreach ( $relations as $relation ) {
+            foreach ( $relations as $relation ) {
+                # empty array [ 0 => null ]
+                if ( $relation === null && count( $relations ) == 1 ) {
+                    $offer->originalRelations()->detach();
+                } else {
                     $relations_sync[] = intval($relation);
                 }
-                $offer->originalRelations()->sync($relations_sync);
-            } else {
-                $offer->originalRelations()->detach();
             }
+            $offer->originalRelations()->sync($relations_sync);
         }
-
     }
 
     /**
