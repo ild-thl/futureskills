@@ -248,14 +248,19 @@ class OfferController extends Controller
             $timestamp = Timestamp::create($validatedData);
         }
         
-        $relations_str = substr($validatedData["relatedOffers"], 1, strlen($validatedData["relatedOffers"]) -2 );
-        $relations = explode (",", $relations_str);
-        $relations_sync = array();
-        foreach ( $relations as $relation ) {
-            $relations_sync[] = intval($relation);
+        if ( array_key_exists( "relatedOffers", $validatedData ) ) {
+            $relations_str = substr($validatedData["relatedOffers"], 1, strlen($validatedData["relatedOffers"]) -2 );
+            $relations_sync = array();
+            if ( !empty( $relations_str ) ) {
+                $relations = explode (",", $relations_str);
+                foreach ( $relations as $relation ) {
+                    $relations_sync[] = intval($relation);
+                }
+                $offer->originalRelations()->sync($relations_sync);
+            } else {
+                $offer->originalRelations()->detach();
+            }
         }
-
-        $offer->originalRelations()->sync($relations_sync);
 
     }
 
