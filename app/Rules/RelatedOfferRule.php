@@ -32,13 +32,16 @@ class RelatedOfferRule implements Rule
         # check for brackets
         if ( substr( $value, 0, 1 ) == "[" && substr( $value, -1, 1 ) == "]" ) {
             $value = substr($value, 1, strlen($value) -2 );
+            if ( empty( $value ) ) {
+                return true;
+            }
             $relations = explode(",", $value);
 
             # max length 6
-            if ( count( $relations )  > 6 ) {
+            if ( count( $relations ) > 6 ) {
                 return false;
             }
-
+            
             # Update offer: $id is edited offer ID
             # Create offer: $id is "offer"
             $pathInfo = explode( "/", $this->request->getPathInfo() );
