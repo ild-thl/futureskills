@@ -14,7 +14,7 @@ class OfferTypeTableSeeder extends Seeder
         $offertypes = DB::table('offertypes')->get();
         if ( $offertypes->count() == 0 ) {
             DB::table('offertypes')->insert([
-                'identifier' => 'offertypes',
+                'identifier' => 'online-course',
                 'description' => 'Online-Kurs',
                 'created_at' => now()
                 ]);
