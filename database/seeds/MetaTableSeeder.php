@@ -15,31 +15,38 @@ class MetaTableSeeder extends Seeder
         if ( $metas->count() == 0 ) {
             DB::table('metas')->insert([
                 'datatype' => 'varchar(191)',
-                'description' => 'sponsor'
+                'description' => 'sponsor',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'varchar(191)',
-                'description' => 'exam'
+                'description' => 'exam',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'text',
-                'description' => 'requirements'
+                'description' => 'requirements',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'varchar(191)',
-                'description' => 'niveau'
+                'description' => 'niveau',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'varchar(191)',
-                'description' => 'location'
+                'description' => 'location',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'int(11)',
-                'description' => 'ects'
+                'description' => 'ects',
+                'created_at' => now()
                 ]);
             DB::table('metas')->insert([
                 'datatype' => 'varchar(191)',
-                'description' => 'time_requirement'
+                'description' => 'time_requirement',
+                'created_at' => now()
                 ]);
         } else {
             echo "Metas table not empty. Skipping...\n";        

@@ -15,31 +15,38 @@ class OfferTypeTableSeeder extends Seeder
         if ( $offertypes->count() == 0 ) {
             DB::table('offertypes')->insert([
                 'identifier' => 'offertypes',
-                'description' => 'Online-Kurs'
+                'description' => 'Online-Kurs',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'webinar',
-                'description' => 'Webinar'
+                'description' => 'Webinar',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'presence-event',
-                'description' => 'Präsenzveranstaltung'
+                'description' => 'Präsenzveranstaltung',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'presence-series',
-                'description' => 'Präsenzveranstaltungsreihe'
+                'description' => 'Präsenzveranstaltungsreihe',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'self-study-course',
-                'description' => 'Selbstlernkurs'
+                'description' => 'Selbstlernkurs',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'course-package',
-                'description' => 'Kurspaket'
+                'description' => 'Kurspaket',
+                'created_at' => now()
                 ]);
             DB::table('offertypes')->insert([
                 'identifier' => 'blended-learning',
-                'description' => 'Blended Learning'
+                'description' => 'Blended Learning',
+                'created_at' => now()
                 ]);
         } else {
             echo "Offertypes table not empty. Skipping...\n";        

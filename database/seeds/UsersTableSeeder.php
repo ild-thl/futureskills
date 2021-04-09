@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@futureskills-sh.de',
                 'password' => bcrypt('secret'),
+                'created_at' => now()
             ]);
         }
 
@@ -26,6 +27,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Katy',
                 'email' => 'katy@futureskills-sh.de',
                 'password' => bcrypt('secret'),
+                'created_at' => now()
             ]);
         }
     }

@@ -15,15 +15,18 @@ class CompetenceTableSeeder extends Seeder
         if ( $competences->count() == 0 ) {
             DB::table('competences')->insert([
                 'identifier' => 'tech',
-                'description' => 'Tech-Kurse'
+                'description' => 'Tech-Kurse',
+                'created_at' => now()
                 ]);
             DB::table('competences')->insert([
                 'identifier' => 'digital',
-                'description' => 'Digital Basic-Kurse'
+                'description' => 'Digital Basic-Kurse',
+                'created_at' => now()
                 ]);
             DB::table('competences')->insert([
                 'identifier' => 'classic',
-                'description' => 'Classic-Kurse'
+                'description' => 'Classic-Kurse',
+                'created_at' => now()
                 ]);
         } else {
             echo "Competences table not empty. Skipping...\n";        
