@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Offer;
 
 class RedesignHubOfferTable extends Migration
 {
@@ -14,8 +13,6 @@ class RedesignHubOfferTable extends Migration
      */
     public function up()
     {
-        $offers = Offer::all();
-
         Schema::create('huboffers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('offer_id');
@@ -26,15 +23,6 @@ class RedesignHubOfferTable extends Migration
             $table->boolean('visible')->default(true);
             $table->timestamps();
         });
-
-        #Migration der Daten
-        foreach ( $offers as $offer ) {
-            DB::table('huboffers')->insert([
-                'offer_id' => $offer->id,
-                'sort_flag' => $offer->sort_flag,
-                'visible' => $offer->active,
-                ]);
-        }
 
     }
 
