@@ -13,7 +13,6 @@ class RedesignOfferUserTable extends Migration
      */
     public function up()
     {
-
         Schema::dropIfExists('offer_user'); # just in case
         Schema::dropIfExists('subscriptions');
 
@@ -29,7 +28,6 @@ class RedesignOfferUserTable extends Migration
                 ->references('id')->on('offers');
             $table->unique(['offer_id', 'user_id']);
         });
-        # Keine Daten zum Migrieren vorhanden
     }
 
     /**
