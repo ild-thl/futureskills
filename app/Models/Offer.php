@@ -23,6 +23,7 @@ class Offer extends Model
         'hashtag',
         'target_group',
         'url',
+        'author'
     ];
 
     /**
