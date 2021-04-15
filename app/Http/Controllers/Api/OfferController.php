@@ -96,10 +96,11 @@ class OfferController extends Controller
      * Update the specified resource by given external id in storage.
      *
      * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
+     * @param  Institution $institution
      * @param  String $externalId
      * @return \Illuminate\Http\Response
      */
-    public function external(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
+    public function updateExternal(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
     {
         $validatedData = $this->validateRedundantInput( $request->validated() );
 
@@ -120,6 +121,23 @@ class OfferController extends Controller
         $offer = Offer::find($offer->id);
 
         return response()->json($this->restructureJsonOutput($offer), 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Institution $institution
+     * @param  String $externalId
+     * @return \Illuminate\Http\Response
+     */
+    public function showExternal( Institution $institution, String $externalId )
+    {
+        $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();
+        if ( \is_object( $offer ) ) {
+            return response()->json($this->restructureJsonOutput($offer), 200);
+        }
+        
+        return response()->json(null, 404);
     }
 
     /**
