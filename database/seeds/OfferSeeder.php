@@ -15,7 +15,7 @@ class OfferTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {      
+    {
         $offers = DB::table('offers')->get();
         if ( $offers->count() == 0 ) {
 
@@ -35,7 +35,7 @@ class OfferTableSeeder extends Seeder
             DB::table('offers')->insert([
                 'title' => 'Testkurs '.$i,
                 'description' => 'Beschreibung zu Testkurs '.$i,
-                'image_path' => 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Analytics_2016-02-26_at_10.19.24_AM.png',
+                'image_path' => '/assets/images/FutureSkills_Example_Image.png',
                 'institution_id' => 1,
                 'subtitle' => 'Kurzbeschreibung zu Testkurs '.$i,
                 'hashtag' => '#TESTKURS'.$i,
@@ -70,7 +70,7 @@ class OfferTableSeeder extends Seeder
                     $comp_sync[] = $competence_ids[$val];
                 }
                 $offer->competences()->sync( $comp_sync );
-                
+
                 $meta_sync = array();
                 $meta_keys = array_rand( $meta_ids, random_int ( 1, count( $meta_ids ) ) );
                 $meta_keys = is_array($meta_keys) ? $meta_keys : [ $meta_keys ];
@@ -85,7 +85,7 @@ class OfferTableSeeder extends Seeder
                     'visible' => 1,
                     'created_at' => now()
                     ]);
-                        
+
                 DB::table('timestamps')->insert([
                     'offer_id' => $offer->id,
                     'executed_from' => now(),
@@ -95,7 +95,7 @@ class OfferTableSeeder extends Seeder
                     ]);
             }
         } else {
-            echo "Offers table not empty. Skipping...\n";        
+            echo "Offers table not empty. Skipping...\n";
         }
     }
 }

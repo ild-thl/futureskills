@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 2021-05-05/dk
+### Added
+- Changed OfferSeeder image link
+
 ## 2021-04-07/dk
 ### Added
 - offer relations can be saved via offer editing
