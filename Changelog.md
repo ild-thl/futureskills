@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 2021-05-05/dk
+### Added
+- new UpdateRequest for adding/editing offers from external 
+- new Get route for external offers
+
 ## 2021-04-07/dk
 ### Added
 - offer relations can be saved via offer editing
