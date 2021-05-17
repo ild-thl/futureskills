@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
+use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Institution;
@@ -95,19 +96,48 @@ class OfferController extends Controller
      * Update the specified resource by given external id in storage.
      *
      * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
+     * @param  Institution $institution
      * @param  String $externalId
      * @return \Illuminate\Http\Response
      */
-    public function updateByExternalId(OfferUpdateRequest $request, Institution $institution, String $externalId)
+    public function updateExternal(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
     {
-        $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->firstOrFail();
         $validatedData = $this->validateRedundantInput( $request->validated() );
 
-        $offer->fill($validatedData);
+        $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();
+
+        # If the offer is not found, create. ID and Institution are set.
+        if ( ! \is_object( $offer ) ) {
+            $validatedData["externalId"] = $externalId;
+            $validatedData["institution_id"] = $institution->id;
+            $offer = Offer::create($validatedData);
+        } else {
+            # Update offer
+            $offer->fill($validatedData);
+        }
+
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
+        $offer = Offer::find($offer->id);
 
         return response()->json($this->restructureJsonOutput($offer), 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Institution $institution
+     * @param  String $externalId
+     * @return \Illuminate\Http\Response
+     */
+    public function showExternal( Institution $institution, String $externalId )
+    {
+        $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();
+        if ( \is_object( $offer ) ) {
+            return response()->json($this->restructureJsonOutput($offer), 200);
+        }
+        
+        return response()->json(null, 404);
     }
 
     /**
@@ -154,34 +184,46 @@ class OfferController extends Controller
 
         $ret = $offer->toArray();
 
-        $ret["language"] = $ret["language"]["identifier"];
+        if ( array_key_exists( "language", $ret ) ) {
+            $ret["language"] = $ret["language"]["identifier"];
+        }
 
-        if ( is_array( $ret["huboffer"] ) ) {
+        if (  array_key_exists( "huboffer", $ret ) && is_array( $ret["huboffer"] ) ) {
             $ret["sort_flag"] = $ret["huboffer"]["sort_flag"];
             $ret["keywords"] = $ret["huboffer"]["keywords"];
             $ret["visible"] = $ret["huboffer"]["visible"];
         }
 
-        $ret["type"] = $ret["offertype"]["identifier"];
+        if ( array_key_exists( "offertype", $ret ) ) {
+            $ret["type"] = $ret["offertype"]["identifier"];
+        }
 
         $ret["meta"] = [];
-        foreach ( $ret["metas"] as $meta ) {
-            $ret["meta"][$meta["description"]] = $meta["pivot"]["value"];
+
+        if ( array_key_exists( "metas", $ret ) ) {
+            foreach ( $ret["metas"] as $meta ) {
+                $ret["meta"][$meta["description"]] = $meta["pivot"]["value"];
+            }
         }
 
         $ret["competence_tech"] = 0;
         $ret["competence_digital"] = 0;
         $ret["competence_classic"] = 0;
-        $tmp_competences = $ret["competences"];
-        $ret["competences"] = array();
-        foreach ( $tmp_competences as $competence ) {
-            $ret["competence_".$competence["identifier"]] = 1;
-            $ret["competences"][] = $competence["id"];
+        if ( array_key_exists( "competences", $ret ) ) {
+            $tmp_competences = $ret["competences"];
+            $ret["competences"] = array();
+            
+            foreach ( $tmp_competences as $competence ) {
+                $ret["competence_".$competence["identifier"]] = 1;
+                $ret["competences"][] = $competence["id"];
+            }
         }
 
         $ret["relatedOffers"] = [];
-        foreach ( $ret["original_relations"] as $relation ) {
-            $ret["relatedOffers"][] = $relation["id"];
+        if ( array_key_exists( "original_relations", $ret ) ) {
+            foreach ( $ret["original_relations"] as $relation ) {
+                $ret["relatedOffers"][] = $relation["id"];
+            }
         }
 
         unset(

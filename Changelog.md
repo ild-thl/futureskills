@@ -4,6 +4,9 @@
 
 ## 2021-05-05/dk
 ### Added
+- new UpdateRequest for adding/editing offers from external 
+- new Get route for external offers
+### Changed
 - Changed OfferSeeder image link
 
 ## 2021-04-07/dk
