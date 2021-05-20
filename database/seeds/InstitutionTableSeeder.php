@@ -11,12 +11,15 @@ class InstitutionTableSeeder extends Seeder
      */
     public function run()
     {
-        $institution = DB::table('institutions')->where('Title', 'FutureSkills')->first();
-        if(!$institution) {
+        $institutions = DB::table('institutions')->get();
+        if ( $institutions->count() == 0 ) {
             DB::table('institutions')->insert([
                 'title' => 'FutureSkills',
-                'url' => 'https://www.futureskills-sh.de'
+                'url' => 'https://www.futureskills-sh.de',
+                'created_at' => now()
             ]);
+        } else {
+            echo "Institutions table not empty. Skipping...\n";
         }
     }
 }

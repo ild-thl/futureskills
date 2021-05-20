@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\RelatedOfferRule;
+use Illuminate\Validation\Rule;
+use App\Models\Offer;
 
-class OfferStoreRequest extends FormRequest
+class OfferExternalUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +26,18 @@ class OfferStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
+            'title' => 'max:255',
             'offertype_id' => 'integer',
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
-            'institution_id' => 'integer',
+            #'institution_id' disabled
             'subtitle' => 'nullable|string',
             'language_id' => 'integer',
             'hashtag' => 'nullable|string',
             'author' => 'nullable|string',
             'target_group' => 'nullable|string',
             'url' => 'nullable|url',
-            'externalId' => 'nullable|unique:offers,externalId,NULL,offers,institution_id,'.$this->get('institution_id').'|string',
+            #'externalId' disabled
 
             #COMPETENCES table
             'competence_tech' => 'nullable|boolean',
@@ -51,10 +52,7 @@ class OfferStoreRequest extends FormRequest
             'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
 
-            #HUBOFFERS table
-            'sort_flag' => 'nullable|integer',
-            'keywords' => 'nullable|string',
-            'visible' => 'nullable|boolean',
+            #HUBOFFERS table disabled
 
             #TIMESTAMPS table
             'executed_from' => 'date',
@@ -63,12 +61,10 @@ class OfferStoreRequest extends FormRequest
             'listed_until' => 'nullable|date',
             'active' => 'nullable|boolean',
 
-            #Offer Relations
-            'relatedOffers' => new RelatedOfferRule( $this ),
-
             #Backwards compatibility
             'type' => 'string',
             'language' => 'string',
+
         ];
     }
 }

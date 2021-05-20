@@ -1,5 +1,57 @@
 # Changelog
 
+## [Unreleased]
+
+## 2021-05-05/dk
+### Added
+- new UpdateRequest for adding/editing offers from external 
+- new Get route for external offers
+### Changed
+- Changed OfferSeeder image link
+
+## 2021-04-07/dk
+### Added
+- offer relations can be saved via offer editing
+### Changed
+- Author saving fixed
+
+## 2021-04-03/dk
+### Changed
+- Offers cascade on delete
+- fixed competence saving process
+- moved external update route
+
+## 2021-03-31/dk
+### Changed
+- Added identifiers and descriptions via migration
+### Added
+- new route for filter tags: /filter/tags
+
+## 2021-03-15/dk
+### Added
+- Offer_relations table
+- Migrations for DB redesign
+### Changed
+- OfferController and -Requests regarding redesign
+## 2021-02-15/ml
+### Added
+- CookieController, Cookie for the Bot-UserID
+- New Package in Composer (php-jwt)
+
+### Changed
+- BotConfigController, generates Token fpr Secure Bot
+- New Routes
+
+## 2021-02-02/ml
+### Added
+- BotConfigController.php, reads static JSON File for Bot-Konfiguration (Urls in config/bot.php)
+
+## 2021-01-21/dk
+### Added
+- New migration for adding external id and status to Offer
+- New route for editing offers by external ids
+- Special rules for external id OfferUpdateRequest
+
 ## [Released] v0.1.2
 
 ## 2020-12-03/dk

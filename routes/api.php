@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Api\BotConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +20,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::resource('offer', 'Api\OfferController');
-    Route::resource('institution', 'Api\InstitutionController');
+    Route::resource('offer', 'Api\OfferController')->except(['index', 'show']);
+    Route::resource('institution', 'Api\InstitutionController')->except(['index', 'show']);
     Route::get('subscription', 'Api\SubscriptionController@index'); # get all subscriptions
-    Route::get('subscription/user/{user_id}', 'Api\SubscriptionController@indexOffersForUser'); # get all subscriptions of user
-    Route::get('subscription/offer/{offer_id}', 'Api\SubscriptionController@indexUsersForOffer'); # get all subscriptions of offer
-    Route::get('subscription/{offer_id}/{user_id}', 'Api\SubscriptionController@showFromIds'); # get specific subscription from user/offer ids
-    Route::resource('subscription', 'Api\SubscriptionController');
+    Route::get('subscription/user/{user_id}', 'Api\UserController@offers'); # get all subscriptions of user
+    Route::get('subscription/offer/{offer_id}', 'Api\OfferController@users'); # get all subscriptions of offer
+    Route::get('subscription/{user_id}/{offer_id}', 'Api\OfferController@subscription'); # get a specific subscription
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
+    Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateExternal');
 });
 
 // Additional routes that don't require authentication
 Route::get('offer', 'Api\OfferController@index');
 Route::get('offer/{offer}', 'Api\OfferController@show');
+Route::get('offer/ext/{institution}/{offer}', 'Api\OfferController@showExternal');
 Route::get('institution', 'Api\InstitutionController@index');
 Route::get('institution/{institution}', 'Api\InstitutionController@show');
+
+// Bot-Routes
+Route::get('botconfig', BotConfigController::class); // deprecated, use bot/config
+Route::get('bot/config', BotConfigController::class);
+Route::get('bot/token', 'Api\BotConfigController@createToken');
+Route::get('bot/cookie/set', 'Api\CookieController@setCookie');
+
+// Filter-Tags
+Route::get('filter/tags', 'Api\FilterController@getTags');
