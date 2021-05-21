@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### 2021-05-21/kw
+### Added
+- new values (user_name and user_id) to bearerTokenResponse 
+
 ## 2021-05-05/dk
 ### Added
 - new UpdateRequest for adding/editing offers from external 
