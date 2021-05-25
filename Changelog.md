@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### 2021-05-25/kw
+### Added
+- BearerTokenResponse.php in app/http/responsetypes overwrites default BearerTokenResponse.php
+- new values (user_name and user_id) to bearerTokenResponse 
+- PassportServiceProvider in app/http/providers overwrites default PassportServiceProviders
+
 ## 2021-05-05/dk
 ### Added
 - new UpdateRequest for adding/editing offers from external 
