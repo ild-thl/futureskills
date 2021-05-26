@@ -45,6 +45,29 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a reduced listing for tiles.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexForTiles()
+    {
+        $offers = Offer::all();
+        $offers = $offers->values()->all();
+        $sort = array();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $output[] = $this->getReducedOfferJson($offer);
+            $sort[$offer->id] = null;
+            if ( is_object( $offer->huboffer ) ) {
+                $sort[$offer->id] = $offer->huboffer->sort_flag;
+            }
+        }
+        array_multisort($sort, SORT_DESC, $output);
+
+        return response()->json($output, 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Api\OfferStoreRequest  $request
@@ -136,7 +159,7 @@ class OfferController extends Controller
         if ( \is_object( $offer ) ) {
             return response()->json($this->restructureJsonOutput($offer), 200);
         }
-        
+
         return response()->json(null, 404);
     }
 
@@ -212,7 +235,7 @@ class OfferController extends Controller
         if ( array_key_exists( "competences", $ret ) ) {
             $tmp_competences = $ret["competences"];
             $ret["competences"] = array();
-            
+
             foreach ( $tmp_competences as $competence ) {
                 $ret["competence_".$competence["identifier"]] = 1;
                 $ret["competences"][] = $competence["id"];
@@ -239,6 +262,31 @@ class OfferController extends Controller
             $ret["institution"]["created_at"],
             $ret["institution"]["updated_at"],
             $ret["institution"]["json_url"]
+        );
+
+        return $ret;
+    }
+
+    /**
+     * Remodel the output of an offer for short data list
+     *
+     * @param  \App\Models\Offer $offer
+     * @return Array $ret
+     */
+    private function getReducedOfferJson( Offer $offer ) {
+
+        $compeptences = array();
+        foreach ( $offer->competences as $competence ) {
+            $compeptences[] =$competence->id;
+        }
+        $ret = array(
+            "id" => $offer->id,
+            "title" => $offer->title,
+            "image_path" => $offer->image_path,
+            "institution_id" => $offer->institution_id,
+            "offertype_id" => $offer->offertype_id,
+            "language_id" => $offer->language_id,
+            "competences" => $compeptences
         );
 
         return $ret;
@@ -289,7 +337,7 @@ class OfferController extends Controller
             $validatedData["offer_id"] = $offer->id;
             $timestamp = Timestamp::create($validatedData);
         }
-        
+
         if ( array_key_exists( "relatedOffers", $validatedData ) ) {
             $relations = $validatedData["relatedOffers"];
             $relations_sync = array();
