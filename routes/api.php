@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Additional routes that don't require authentication
 Route::get('offer', 'Api\OfferController@index');
 Route::get('offer/{offer}', 'Api\OfferController@show');
+Route::get('offer/short', 'Api\OfferController@indexForTiles');
 Route::get('offer/ext/{institution}/{offer}', 'Api\OfferController@showExternal');
 Route::get('institution', 'Api\InstitutionController@index');
 Route::get('institution/{institution}', 'Api\InstitutionController@show');
