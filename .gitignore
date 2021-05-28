@@ -13,3 +13,5 @@ yarn-error.log
 .rnd
 .idea
 .vscode
+.htaccess
+storage/*
