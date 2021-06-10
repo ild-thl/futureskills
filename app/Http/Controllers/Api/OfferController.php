@@ -18,6 +18,7 @@ use App\Models\Timestamp;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Environment\Console;
 
 class OfferController extends Controller
 {
@@ -76,7 +77,6 @@ class OfferController extends Controller
     public function store(OfferStoreRequest $request)
     {
         $validatedData = $this->validateRedundantInput( $request->validated() );
-
         $offer = Offer::create($validatedData);
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
@@ -125,6 +125,7 @@ class OfferController extends Controller
      */
     public function updateExternal(OfferExternalUpdateRequest $request, Institution $institution, String $externalId)
     {
+
         $validatedData = $this->validateRedundantInput( $request->validated() );
 
         $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();

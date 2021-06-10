@@ -65,6 +65,7 @@ class OfferExternalUpdateRequest extends FormRequest
             'type' => 'string',
             'language' => 'string',
 
+
         ];
     }
 }
