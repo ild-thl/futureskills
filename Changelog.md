@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### 2021-06-10/kw
+### Added
+- added package ejarnutowski/laravel-api-key in composer.json (https://github.com/ejarnutowski/laravel-api-key)
+- AuthorizeApiKey.php in app/http/middleware overwrites laravel-api-key's default  AuthorizeApiKey.php  
+- ApiKeyServiceProvider in app/http/providers overwrites laravel-api-key's default PassportServiceProviders
+- moved route offer/ext/{institution}/{offer} out of middlewaregroup "auth:api"
+
+
 ## 2021-05-26/dk
 ### Added
 - added new route with short offer list output at /api/offer/short

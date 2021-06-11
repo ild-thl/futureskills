@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('subscription/{user_id}/{offer_id}', 'Api\OfferController@subscription'); # get a specific subscription
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
-    Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateExternal');
+
 });
 
 // Additional routes that don't require authentication
@@ -47,3 +47,7 @@ Route::get('bot/cookie/set', 'Api\CookieController@setCookie');
 
 // Filter-Tags
 Route::get('filter/tags', 'Api\FilterController@getTags');
+
+// Routes that require API Key Authentification
+Route::put('offer/ext/{institution}/{offer}', 'Api\OfferController@updateExternal')->middleware('auth.apikey');
+
