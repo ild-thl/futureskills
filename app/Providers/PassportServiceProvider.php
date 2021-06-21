@@ -2,6 +2,7 @@
 namespace App\Providers;
 
 use App\Http\ResponseTypes\BearerTokenResponse;
+use App\Laravel\Passport\Bridgeapp;
 use Laravel\Passport\Bridge;
 use League\OAuth2\Server\AuthorizationServer;
 
@@ -16,7 +17,8 @@ class PassportServiceProvider extends \Laravel\Passport\PassportServiceProvider
     {
         return new AuthorizationServer(
             $this->app->make(Bridge\ClientRepository::class),
-            $this->app->make(Bridge\AccessTokenRepository::class),
+            $this->app->make(Bridgeapp\AccessTokenRepository::class),
+           // $this->app->make(Bridge\AccessTokenRepository::class),
             $this->app->make(Bridge\ScopeRepository::class),
             $this->makeCryptKey('private'),
             app('encrypter')->getKey(),
