@@ -1,16 +1,10 @@
 <?php
 
-namespace App\Laravel\Passport\Bridgeapp;
+namespace App\Http\Laravel\Passport\Bridge;
 
-use DateTime;
-use Illuminate\Contracts\Events\Dispatcher;
-use Laravel\Passport\Events\AccessTokenCreated;
-use Laravel\Passport\TokenRepository;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use App\Laravel\Passport\Bridgeapp\AccessToken;
-//use Laravel\Passport\Bridge\AccessToken;
+use App\Http\Laravel\Passport\Bridge\AccessToken;
 
 class AccessTokenRepository extends \Laravel\Passport\Bridge\AccessTokenRepository implements AccessTokenRepositoryInterface
 {

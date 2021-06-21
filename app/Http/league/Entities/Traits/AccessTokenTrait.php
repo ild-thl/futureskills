@@ -7,16 +7,13 @@
  * @link        https://github.com/thephpleague/oauth2-server
  */
 
-namespace App\League\Entities\Traits;
+namespace App\Http\League\Entities\Traits;
 
-use DateTimeImmutable;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\CryptKey;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use App\User;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait as Access_Token_Trait;
 
@@ -44,7 +41,6 @@ trait AccessTokenTrait
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
             ->withClaim('user_id',$this->getUserIdentifier())
-            ->withClaim('test',"test")
             ->withClaim('user_name', User::find( $this->getUserIdentifier())->value('name'))
 
             ->getToken(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()));
