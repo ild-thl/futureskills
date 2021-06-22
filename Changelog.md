@@ -1,6 +1,14 @@
 # Changelog
 
 ## [Unreleased]
+### 2021-06-21/kw
+### Added
+- AccessToken.php in app/http/laravel/passport/bridge overwrites default AccessToken.php
+- AccessTokenRepository.php in app/http/laravel/passport/bridge overwrites default AccessTokenRepository.php
+- AccessTokenTrait.php in app/http/league/Entities/Traits overwrites default AccessTokenTrait.php
+- username & userid added to AccessTokenTrait
+### Removed
+- removed new BearerTokenResponse.php, default BearerTokenResponse is now being used again
 
 ### 2021-06-10/kw
 ### Added
