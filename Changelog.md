@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+
+### 2021-06-21/dk
+### Added
+- New Listener to remove old access_tokens
+
 ### 2021-06-21/kw
 ### Added
 - AccessToken.php in app/http/laravel/passport/bridge overwrites default AccessToken.php
