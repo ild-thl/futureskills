@@ -35,12 +35,12 @@ class RelatedOfferRule implements Rule
         if ( count( $relations ) > 6 ) {
             return false;
         }
-        
+
         # Update offer: $id is edited offer ID
         # Create offer: $id is "offer"
         $pathInfo = explode( "/", $this->request->getPathInfo() );
         $id = end($pathInfo);
-        
+
         $relations_sync = array();
         foreach ( $relations as $relation ) {
             # empty array [ 0 => null ]
@@ -48,7 +48,7 @@ class RelatedOfferRule implements Rule
                 return true;
             }
             $tmpRelated = Offer::find($relation);
-            
+
             # ID must exist; ID must not be same as edited offer; ID must be unique in array
             if ( $tmpRelated != null && $tmpRelated->id != intval($id) && !in_array( $tmpRelated->id, $relations_sync ) ) {
                 $relations_sync[] = $tmpRelated->id;
@@ -57,7 +57,7 @@ class RelatedOfferRule implements Rule
             }
         }
         return true;
-        
+
     }
 
     /**

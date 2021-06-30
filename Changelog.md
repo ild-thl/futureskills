@@ -1,6 +1,39 @@
 # Changelog
 
-## [Unreleased]
+## [Released] v0.3
+
+### 2021-06-21/dk
+### Added
+- New Listener to remove old access_tokens
+
+### 2021-06-21/kw
+### Added
+- AccessToken.php in app/http/laravel/passport/bridge overwrites default AccessToken.php
+- AccessTokenRepository.php in app/http/laravel/passport/bridge overwrites default AccessTokenRepository.php
+- AccessTokenTrait.php in app/http/league/Entities/Traits overwrites default AccessTokenTrait.php
+- username & userid added to AccessTokenTrait
+### Removed
+- removed new BearerTokenResponse.php, default BearerTokenResponse is now being used again
+
+### 2021-06-10/kw
+### Added
+- added package ejarnutowski/laravel-api-key in composer.json (https://github.com/ejarnutowski/laravel-api-key)
+- AuthorizeApiKey.php in app/http/middleware overwrites laravel-api-key's default  AuthorizeApiKey.php  
+- ApiKeyServiceProvider in app/http/providers overwrites laravel-api-key's default PassportServiceProviders
+- moved route offer/ext/{institution}/{offer} out of middlewaregroup "auth:api"
+
+
+## 2021-05-26/dk
+### Added
+- added new route with short offer list output at /api/offer/short
+
+### 2021-05-25/kw
+### Added
+- BearerTokenResponse.php in app/http/responsetypes overwrites default BearerTokenResponse.php
+- new values (user_name and user_id) to bearerTokenResponse 
+- PassportServiceProvider in app/http/providers overwrites default PassportServiceProviders
+
+## [Released] v0.2
 
 ## 2021-05-05/dk
 ### Added
