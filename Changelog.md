@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [Released] v0.3
 
 ### 2021-06-21/dk
 ### Added
