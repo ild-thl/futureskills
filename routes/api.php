@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('subscription/{user_id}/{offer_id}', 'Api\OfferController@subscription'); # get a specific subscription
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
-
+    Route::put('apikey/{institution}', 'Api\ApiKeyController@generateApiKey'); #generate apikey for external offers
 });
 
 // Additional routes that don't require authentication
