@@ -1,5 +1,13 @@
 # Changelog
 
+### 2021-07-02/kw
+### Added
+- New Pivot Table api_key_institution added . ManyToMany between api_key and institution
+- Middleware AuthorizeApiKey.php to authorize request to add/update external offers added
+- Models Institution & Apikey changed to have manyToMany relationship via pivot table
+- route added for generating Apikeys
+- ApiKeyController added to handle request for new apikey
+
 ## [Released] v0.3
 
 ### 2021-06-21/dk

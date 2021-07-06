@@ -26,4 +26,22 @@ class Institution extends Model
         return $this->hasMany('App\Models\Offer');
     }
 
+    /**
+     * Get the apikeys for the institution.
+     */
+    public function api_keys(){
+        return $this->belongsToMany(ApiKey::class);
+    }
+
+    /**
+     * Get the institution by id.
+     */
+    public static function getById($id)
+    {
+        return self::where([
+            'id'    => $id
+        ])->first();
+    }
+
+
 }
