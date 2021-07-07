@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ApiKey;
 use App\Models\Institution;
-
+use Illuminate\Http\Request;
 use App\Models\Language;
-
+use Facade\FlareClient\Http\Response;
 
 class ApiKeyController extends Controller
 {
@@ -40,6 +40,77 @@ class ApiKeyController extends Controller
         return response()->json($apiKey, 201);
     }
 
+    /**
+     * Deactivate apikey
+     *
+     * @param  String $institutionId
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivateApikey(String $institutionId, Request $request){
 
+        $request_apikey = $request->get('key');
+        $key = ApiKey::where('key', $request_apikey)->first();
+
+             #check if apikey exists and if it belongs to institution
+             if ($key instanceof ApiKey) {
+                if($key->institutions->contains('id',$institutionId)){
+                   if($key->institutions()->count()==1){
+                        if (!$key->active) {
+                            return response()->json($key->key." is already deactivated", 200);
+                            }
+                            $key->active = 0;
+                            $key->save();
+                            return response()->json($key->key." deactivated", 200);
+                        }
+                        return $this->return_error_message('Not authorized to deactivate apikey');
+                   }
+              }
+              return $this->return_error_message('Apikey does not exists');
+    }
+
+    /**
+     * Activate apikey
+     *
+     * @param  String $institutionId
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function activateApikey(String $institutionId, Request $request){
+
+        $request_apikey = $request->get('key');
+        $key = ApiKey::where('key', $request_apikey)->first();
+
+         #check if apikey exists and if it belongs to institution
+         if ($key instanceof ApiKey) {
+            if($key->institutions->contains('id',$institutionId)){
+               if($key->institutions()->count()==1){
+                    if ($key->active) {
+                        return response()->json($key->key." is already active", 200);
+                        }
+                        $key->active = 1;
+                        $key->save();
+                        return response()->json($key->key." activated", 200);
+                    }
+                    return $this-> return_error_message('Not authorized to activate apikey');
+               }
+          }
+         return $this->return_error_message('Apikey does not exists');
+    }
+
+
+    /**
+     * Return error when not authorized
+     *
+     * @param  String $message
+     * @return \Illuminate\Http\Response
+     */
+    private function return_error_message(String $message){
+        return response([
+            'errors' => [[
+                'message' => $message
+            ]]
+        ], 401);
+    }
 
 }
