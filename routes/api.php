@@ -28,9 +28,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('subscription/{user_id}/{offer_id}', 'Api\OfferController@subscription'); # get a specific subscription
     Route::get('user/email', 'Api\UserController@showFromEmail'); # get user by email
     Route::resource('user', 'Api\UserController');
-    Route::put('apikey/{institution}', 'Api\ApiKeyController@generateApiKey'); #generate apikey for external offers
-    Route::post('deactivatekey/{institution}', 'Api\ApiKeyController@deactivateApiKey'); #deactivate apikey for external offers
-    Route::post('activatekey/{institution}', 'Api\ApiKeyController@activateApiKey'); #activate apikey for external offers
+    Route::put('apikey/generate/{institution}', 'Api\ApiKeyController@generateApiKey'); #generate apikey for external offers
+    Route::post('apikey/deactivatekey/{institution}', 'Api\ApiKeyController@deactivateApiKey'); #deactivate apikey for external offers
+    Route::post('apikey/activatekey/{institution}', 'Api\ApiKeyController@activateApiKey'); #activate apikey for external offers
 });
 
 // Additional routes that don't require authentication
