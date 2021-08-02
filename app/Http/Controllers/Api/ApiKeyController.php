@@ -8,6 +8,8 @@ use App\Models\Institution;
 use Illuminate\Http\Request;
 use App\Models\Language;
 use Facade\FlareClient\Http\Response;
+use App\Http\Requests\Api\ApiKeyStoreRequest;
+use App\Http\Requests\Api\ApiKeyUpdateRequest;
 
 class ApiKeyController extends Controller
 {
@@ -18,8 +20,10 @@ class ApiKeyController extends Controller
      * @param  String $institutionId
      * @return \Illuminate\Http\Response
      */
-    public function generateApiKey(String $institutionId)
+    public function generateApiKey(ApiKeyStoreRequest $request, String $institutionId)
     {
+
+        $request->validated();
 
         $apiKey       = new ApiKey;
 
@@ -47,7 +51,9 @@ class ApiKeyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function deactivateApikey(String $institutionId, Request $request){
+    public function deactivateApikey(ApiKeyUpdateRequest $request, String $institutionId){
+
+        $request->validated();
 
         $request_apikey = $request->get('key');
         $key = ApiKey::where('key', $request_apikey)->first();
@@ -76,7 +82,9 @@ class ApiKeyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function activateApikey(String $institutionId, Request $request){
+    public function activateApikey(String $institutionId, ApiKeyUpdateRequest $request){
+
+        $request->validated();
 
         $request_apikey = $request->get('key');
         $key = ApiKey::where('key', $request_apikey)->first();
