@@ -30,6 +30,10 @@ class PermissionTableSeeder extends Seeder
                 'name' => 'store_update_subscription',
                 'created_at' => now()
                 ]);
+            DB::table('permissions')->insert([
+                'name' => 'store_update_user',
+                'created_at' => now()
+                ]);
         } else {
             echo "Permissions table not empty. Skipping...\n";
         }

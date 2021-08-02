@@ -15,11 +15,7 @@ class PermissionRoleTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    //Institution::getById($institutionId)->api_keys->count()
-    #store_update_apikey
-    #store_update_subscription
-    #store_update_offer
-    #store_update_institution
+
     {
         $roles = DB::table('permission_role')->get();
         if ( $roles->count() == 0 ) {
@@ -40,6 +36,11 @@ class PermissionRoleTableSeeder extends Seeder
                 ]);
             DB::table('permission_role')->insert([
                 'permission_id' => Permission::getByName("store_update_institution")->id,
+                'role_id' => Role::getByName("admin")->id,
+                'created_at' => now()
+                ]);
+            DB::table('permission_role')->insert([
+                'permission_id' => Permission::getByName("store_update_user")->id,
                 'role_id' => Role::getByName("admin")->id,
                 'created_at' => now()
                 ]);

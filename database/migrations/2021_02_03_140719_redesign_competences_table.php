@@ -16,6 +16,8 @@ class RedesignCompetencesTable extends Migration
         Schema::create('competences', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('identifier');
+            $table->string('description');
             $table->timestamps();
         });
 

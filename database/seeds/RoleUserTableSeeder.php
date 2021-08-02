@@ -16,11 +16,7 @@ class RoleUserTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    //Institution::getById($institutionId)->api_keys->count()
-    #store_update_apikey
-    #store_update_subscription
-    #store_update_offer
-    #store_update_institution
+
     {
         $roles = DB::table('role_user')->get();
         if ( $roles->count() == 0 ) {

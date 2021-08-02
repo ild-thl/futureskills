@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CompetenceTableSeeder extends Seeder
 {
@@ -10,7 +11,7 @@ class CompetenceTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
+    {
         $competences = DB::table('competences')->get();
         if ( $competences->count() == 0 ) {
             DB::table('competences')->insert([
@@ -29,7 +30,7 @@ class CompetenceTableSeeder extends Seeder
                 'created_at' => now()
                 ]);
         } else {
-            echo "Competences table not empty. Skipping...\n";        
+            echo "Competences table not empty. Skipping...\n";
         }
     }
 }

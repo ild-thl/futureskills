@@ -44,6 +44,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->roles->first()->permissions->contains('name', "store_update_subscription");
         });
 
+        Gate::define('store_update_user', function ($user) {
+            return $user->roles->first()->permissions->contains('name', "store_update_user");
+        });
+
         Passport::routes();
     }
 }
