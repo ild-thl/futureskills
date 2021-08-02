@@ -16,15 +16,13 @@ class RedesignCompetencesTable extends Migration
         Schema::create('competences', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('identifier');
-            $table->string('description');
             $table->timestamps();
         });
 
         Schema::create('competence_offer', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('competence_id');
-            $table->foreign('php artisan make:migration create_flights_table')
+            $table->foreign('competence_id')
                 ->references('id')->on('competences');
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')
@@ -33,7 +31,7 @@ class RedesignCompetencesTable extends Migration
             $table->timestamps();
 
         });
-
+        
     }
 
     /**
