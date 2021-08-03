@@ -1,5 +1,11 @@
 # Changelog
 
+### 2021-08-03/kw
+### Added
+- Userroles and Permissions added
+- Roles : Admin , Institution, Subscriber default
+- Permission : store_update_apikey, store_update_institution, store_update_subscription, store_update_offer, store_update_user
+
 ### 2021-07-02/kw
 ### Added
 - new routes added to manage apikeys (activate/deactivate apikeys)
