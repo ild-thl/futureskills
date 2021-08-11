@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-08-10/kw
+### Added
+-userrole in Access Token (temporary solution)
+
 ## [Released] v0.3
 
 ### 2021-06-21/dk
