@@ -33,15 +33,11 @@ trait AccessTokenTrait
     private function convertToJWT(CryptKey $privateKey)
     {
 
-
-        if(User::find( $this->getUserIdentifier())->value('name')=='admin'){
+        if(User::select('name')->where(['id'=> $this->getUserIdentifier()])->first()['name']=='admin'){
             $User_Role='admin';
         }else{
             $User_Role='default';
         }
-
-
-
 
         return (new Builder())
             ->permittedFor($this->getClient()->getIdentifier())
@@ -52,7 +48,7 @@ trait AccessTokenTrait
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
             ->withClaim('user_id',$this->getUserIdentifier())
-            ->withClaim('user_name', User::find( $this->getUserIdentifier())->value('name'))
+            ->withClaim('user_name', User::select('name')->where(['id'=> $this->getUserIdentifier()])->first()['name'])
             ->withClaim('user_role', $User_Role)
 
             ->getToken(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()));

@@ -54,4 +54,14 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Offer')->withPivot('active');
     }
 
+    /**
+     * Get the user by id.
+     */
+    public static function getById($id)
+    {
+        return self::where([
+            'id'    => $id
+        ])->first();
+    }
+
 }
