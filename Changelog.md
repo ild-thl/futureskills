@@ -1,16 +1,20 @@
 # Changelog
 
-### 2021-08-03/kw
+## 2021-08-10/kw
+### Added
+-userrole in Access Token (temporary solution)
+
+## 2021-08-03/kw
 ### Added
 - Userroles and Permissions added
 - Roles : Admin , Institution, Subscriber default
 - Permission : store_update_apikey, store_update_institution, store_update_subscription, store_update_offer, store_update_user
 
-### 2021-07-02/kw
+## 2021-07-02/kw
 ### Added
 - new routes added to manage apikeys (activate/deactivate apikeys)
 
-### 2021-07-02/kw
+## 2021-07-02/kw
 ### Added
 - New Pivot Table api_key_institution added . ManyToMany between api_key and institution
 - Middleware AuthorizeApiKey.php to authorize request to add/update external offers added
@@ -20,11 +24,11 @@
 
 ## [Released] v0.3
 
-### 2021-06-21/dk
+## 2021-06-21/dk
 ### Added
 - New Listener to remove old access_tokens
 
-### 2021-06-21/kw
+## 2021-06-21/kw
 ### Added
 - AccessToken.php in app/http/laravel/passport/bridge overwrites default AccessToken.php
 - AccessTokenRepository.php in app/http/laravel/passport/bridge overwrites default AccessTokenRepository.php
@@ -33,7 +37,7 @@
 ### Removed
 - removed new BearerTokenResponse.php, default BearerTokenResponse is now being used again
 
-### 2021-06-10/kw
+## 2021-06-10/kw
 ### Added
 - added package ejarnutowski/laravel-api-key in composer.json (https://github.com/ejarnutowski/laravel-api-key)
 - AuthorizeApiKey.php in app/http/middleware overwrites laravel-api-key's default  AuthorizeApiKey.php  
@@ -45,7 +49,7 @@
 ### Added
 - added new route with short offer list output at /api/offer/short
 
-### 2021-05-25/kw
+## 2021-05-25/kw
 ### Added
 - BearerTokenResponse.php in app/http/responsetypes overwrites default BearerTokenResponse.php
 - new values (user_name and user_id) to bearerTokenResponse 
