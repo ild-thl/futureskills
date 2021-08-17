@@ -1,12 +1,8 @@
 <?php
-namespace database\seeds;
 use Illuminate\Database\Seeder;
-use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\User;
-
-
 
 class RoleUserTableSeeder extends Seeder
 {
