@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -80,7 +81,6 @@ class OfferController extends Controller
         $offer = Offer::create($validatedData);
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
-        $offer = Offer::find($offer->id);
 
         return response()->json($this->restructureJsonOutput($offer), 201);
     }
@@ -170,8 +170,9 @@ class OfferController extends Controller
      * @param  \App\Models\Offer $offer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Offer $offer)
+    public function destroy(OfferUpdateRequest $request, Offer $offer)
     {
+        $request->validated();
         $offer->delete();
         return response(null, 204);
     }
