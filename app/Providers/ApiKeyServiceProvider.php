@@ -3,7 +3,7 @@ namespace App\Providers;
 
 
 use App\Http\Middleware\AuthorizeApiKey;
-use Ejarnutowski\LaravelApiKey\Models\ApiKey;
+use App\Models\ApiKey;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Ejarnutowski\LaravelApiKey\Providers\ApiKeyServiceProvider as ApiKeySP;
