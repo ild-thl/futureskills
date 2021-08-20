@@ -14,11 +14,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if (Gate::allows('store_update_user')) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gate::allows('store_update_user');
     }
 
     /**
