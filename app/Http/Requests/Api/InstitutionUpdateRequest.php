@@ -14,11 +14,7 @@ class InstitutionUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if (Gate::allows('store_update_institution')) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gate::allows('store_update_institution');
     }
 
     /**
