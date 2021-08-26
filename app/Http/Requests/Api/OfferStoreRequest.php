@@ -4,6 +4,8 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\RelatedOfferRule;
+use Illuminate\Support\Facades\Gate;
+
 
 class OfferStoreRequest extends FormRequest
 {
@@ -14,7 +16,7 @@ class OfferStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('store_update_offer');
     }
 
     /**

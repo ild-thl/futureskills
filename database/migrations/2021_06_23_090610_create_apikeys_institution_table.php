@@ -35,6 +35,6 @@ class CreateApikeysInstitutionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('apikeys_institution');
+        Schema::dropIfExists('api_key_institution');
     }
 }

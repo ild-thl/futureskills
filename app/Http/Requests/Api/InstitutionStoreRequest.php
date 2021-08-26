@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class InstitutionStoreRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class InstitutionStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('store_update_institution');
     }
 
     /**

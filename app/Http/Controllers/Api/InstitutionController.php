@@ -92,8 +92,9 @@ class InstitutionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Institution $institution)
+    public function destroy(InstitutionUpdateRequest $request, Institution $institution)
     {
+        $request->validated();
         $institution->delete();
         return response(null, 204);
     }

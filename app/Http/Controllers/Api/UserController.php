@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UserStoreRequest;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -26,7 +27,7 @@ class UserController extends Controller
      * @param  \App\Http\Requests\Api\UserStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
 
         $validatedData = $request->validated();
@@ -69,7 +70,7 @@ class UserController extends Controller
      * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserStoreRequest $request, User $user)
     {
         $validatedData = $request->validated();
 
@@ -85,8 +86,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(UserStoreRequest $request, User $user)
     {
+        $request->validated();
         $user->delete();
         return response(null, 204);
     }

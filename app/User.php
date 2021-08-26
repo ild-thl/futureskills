@@ -6,6 +6,8 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
+
 
 class User extends Authenticatable
 {
@@ -44,6 +46,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
+        'roles'
     ];
 
     /**
@@ -52,6 +55,34 @@ class User extends Authenticatable
     public function offers()
     {
         return $this->belongsToMany('App\Models\Offer')->withPivot('active');
+    }
+
+    /**
+     * Get the user by id.
+     */
+    public static function getById($id)
+    {
+        return self::where([
+            'id'    => $id
+        ]);
+    }
+
+     /**
+     * Get the roles for the user. (pivot)
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Get the User by name.
+     */
+    public static function getByName($name)
+    {
+        return self::where([
+            'name'    => $name
+        ])->first();
     }
 
 }

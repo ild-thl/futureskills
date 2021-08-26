@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Offer;
+use Illuminate\Support\Facades\Gate;
 
 class OfferExternalUpdateRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class OfferExternalUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+       return true;
     }
 
     /**
