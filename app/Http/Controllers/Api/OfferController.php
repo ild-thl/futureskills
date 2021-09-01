@@ -288,7 +288,8 @@ class OfferController extends Controller
             "institution_id" => $offer->institution_id,
             "offertype_id" => $offer->offertype_id,
             "language_id" => $offer->language_id,
-            "competences" => $compeptences
+            "competences" => $compeptences,
+            "keywords" => $offer->hubOffer->keywords
         );
 
         return $ret;
