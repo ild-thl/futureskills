@@ -14,7 +14,7 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\CryptKey;
-use App\User;
+use App\Models\User;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait as Access_Token_Trait;
 
 

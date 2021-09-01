@@ -2,7 +2,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
-use App\User;
+use App\Models\User;
 
 class RoleUserTableSeeder extends Seeder
 {

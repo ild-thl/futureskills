@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
 use App\Http\Requests\Api\OfferExternalUpdateRequest;
-use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Institution;
 use App\Models\Competence;
@@ -16,8 +15,6 @@ use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 

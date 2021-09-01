@@ -120,6 +120,6 @@ class Offer extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot('active');
+        return $this->belongsToMany('App\Mpdels\User')->withPivot('active');
     }
 }
