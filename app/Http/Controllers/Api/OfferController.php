@@ -289,7 +289,7 @@ class OfferController extends Controller
             "offertype_id" => $offer->offertype_id,
             "language_id" => $offer->language_id,
             "competences" => $compeptences,
-            "keywords" => $offer->hubOffer->keywords
+            "keywords" =>  isset( $offer->hubOffer) ? $offer->hubOffer->keywords : null
         );
 
         return $ret;
