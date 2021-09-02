@@ -9,6 +9,7 @@
 
 namespace App\Http\League\Entities\Traits;
 
+use DateTimeImmutable;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -30,28 +31,30 @@ trait AccessTokenTrait
      *
      * @return Token
      */
-    private function convertToJWT(CryptKey $privateKey)
+    private function convertToJWT() #CryptKey $privateKey
     {
 
-        if(User::select('name')->where(['id'=> $this->getUserIdentifier()])->first()['name']=='admin'){
-            $User_Role='admin';
-        }else{
-            $User_Role='default';
+        if ( User::select('name')->where( ['id'=> $this->getUserIdentifier()])->first()['name'] == 'admin' ) {
+            $user_Role='admin';
+        } else {
+            $user_Role='default';
         }
 
-        return (new Builder())
+        $this->initJwtConfiguration();
+
+        return $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
-            ->issuedAt(\time())
-            ->canOnlyBeUsedAfter(\time())
-            ->expiresAt($this->getExpiryDateTime()->getTimestamp())
+            ->issuedAt(new DateTimeImmutable())
+            ->canOnlyBeUsedAfter(new DateTimeImmutable())
+            ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes())
             ->withClaim('user_id',$this->getUserIdentifier())
             ->withClaim('user_name', User::select('name')->where(['id'=> $this->getUserIdentifier()])->first()['name'])
-            ->withClaim('user_role', $User_Role)
+            ->withClaim('user_role', $user_Role)
 
-            ->getToken(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()));
+            ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
     }
 
 }
