@@ -1,11 +1,14 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Models\Competence;
 use App\Models\Meta;
 use App\Models\Offer;
 use App\Models\Language;
 use App\Models\Offertype;
+use Illuminate\Support\Facades\DB;
 
 class OfferTableSeeder extends Seeder
 {

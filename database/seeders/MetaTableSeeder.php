@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MetaTableSeeder extends Seeder
 {
@@ -10,7 +13,7 @@ class MetaTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
+    {
         $metas = DB::table('metas')->get();
         if ( $metas->count() == 0 ) {
             DB::table('metas')->insert([
@@ -49,7 +52,7 @@ class MetaTableSeeder extends Seeder
                 'created_at' => now()
                 ]);
         } else {
-            echo "Metas table not empty. Skipping...\n";        
+            echo "Metas table not empty. Skipping...\n";
         }
     }
 }
