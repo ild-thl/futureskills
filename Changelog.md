@@ -1,6 +1,14 @@
 # Changelog
 
-## [Unreleased] v0.3.2
+## [Unreleased] v0.4
+
+## 2021-09-03/dk
+### Changed
+- Upgraded Laravel to 8
+- Upgraded Passport to 10.1
+- JWT-Handling changed to support newer required lcobucci/jwt package
+### Removed 
+- Bot-related functions
 
 ## 2021-09-01/ml
 ### Changed
