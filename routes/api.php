@@ -38,7 +38,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('apikey/activatekey/{institution}', [ ApiKeyController::class, 'activateApiKey']); #activate apikey for external offers
 });
 
-
+#test route für pagination
+Route::get('pagination', [OfferController::class, 'paginate']);
 
 // Additional routes that don't require authentication
 Route::get('offer', [ OfferController::class, 'index']);

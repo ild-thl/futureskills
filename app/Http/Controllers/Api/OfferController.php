@@ -20,6 +20,32 @@ use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
 {
+
+
+    public function paginate(){
+     #   $offers = Offer::Paginate(3);
+        $offers = Offer::orderBy('id')->cursorPaginate(10);
+     #   $offers = DB::table('offers')->orderBy('id')->cursorPaginate(15);
+     #   $offers = Offer::where('id', '>', 1)->cursorPaginate(3);
+      #  $offers = Offer::all();
+        error_log($offers."test");
+       # $offers = $offers->values()->all();
+       # $sort = array();
+       # $output = array();
+       # foreach ( $offers as $offer ) {
+       #     $output[] = $this->restructureJsonOutput($offer);
+       #     $sort[$offer->id] = null;
+       #     if ( is_object( $offer->huboffer ) ) {
+       #         $sort[$offer->id] = $offer->huboffer->sort_flag;
+       #     }
+       # }
+       # array_multisort($sort, SORT_DESC, $output);
+
+       # return response()->json($output, 200);
+       return response($offers);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
