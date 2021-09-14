@@ -197,6 +197,20 @@ class OfferController extends Controller
     }
 
     /**
+     * Returns a Sublist of offer-short List (filter on keyword)
+     *
+     * @param String $type
+     * @return \Illuminate\Http\Response
+     */
+    public function getOfferSubListWithKeyword( String $keyword ) {
+        $sql = 'SELECT offers.id, offers.title, offers.image_path, offers.institution_id, offertype_id, language_id, huboffers.keywords
+        FROM offers LEFT JOIN huboffers ON offers.id = huboffers.offer_id
+        WHERE FIND_IN_SET(?, huboffers.keywords) > 0';
+        $result = DB::select($sql, [$keyword]);
+        return response()->json($result, 200);
+    }
+
+    /**
      * Remodel the output of an offer
      *
      * @param  \App\Models\Offer $offer

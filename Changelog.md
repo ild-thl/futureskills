@@ -2,6 +2,10 @@
 
 ## [Unreleased] v0.4
 
+## 2021-09-14/ml
+### added
+- added function to get Offers by Keyword
+
 ## 2021-09-03/dk
 ### Changed
 - Upgraded Laravel to 8
