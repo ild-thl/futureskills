@@ -203,13 +203,16 @@ class OfferController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getOfferSubListWithKeyword( String $keyword ) {
+
         $keyword= preg_replace('/\s+/', '', $keyword);
-        $result = DB::table('offers')
-            ->select('offers.id', 'offers.title', 'offers.image_path', 'offers.institution_id', 'offertype_id', 'language_id', 'huboffers.keywords')
+        $offers = Offer::select('offers.*')
             ->leftJoin('huboffers','offers.id', '=', 'huboffers.offer_id')
-            ->whereRaw("FIND_IN_SET(?, huboffers.keywords) > 0", $keyword)
-            ->get();
-        return response()->json($result, 200);
+            ->whereRaw("FIND_IN_SET(?, huboffers.keywords) > 0", $keyword)->get();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $output[] = $this->getReducedOfferJson($offer);
+        }
+        return response()->json($output, 200);
     }
 
     /**
