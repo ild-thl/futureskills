@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 //test routes for pagination
-Route::get('offer/paginated/{offerCount}', [OfferController::class, 'paginated_offers']);
-Route::get('list/offer/short/paginated/{offerCount}', [ OfferController::class, 'paginated_reduced_offers']);
+Route::get('offer/paginated/{offerCount}', [OfferController::class, 'paginatedOffers']);
+Route::get('list/offer/short/paginated/{offerCount}', [ OfferController::class, 'paginatedReducedOffers']);
 
 // Additional routes that don't require authentication
 Route::get('offer', [ OfferController::class, 'index']);

@@ -28,10 +28,10 @@ class OfferController extends Controller
      * @param int $offerCount
      * @return \Illuminate\Http\Response
      */
-    public function paginated_offers(int $offerCount)
+    public function paginatedOffers(int $offerCount)
     {
-        $paginated_offers = Offer::orderBy('id')->Paginate($offerCount);
-        $pageWithOffers = $this->restructure_paginated_response([$this,'restructureJsonOutput'], $paginated_offers);
+        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'], $paginatedOffers);
 
         return response()->json($pageWithOffers, 200);
     }
@@ -42,10 +42,10 @@ class OfferController extends Controller
      * @param int $offerCount
      * @return \Illuminate\Http\Response
      */
-    public function paginated_reduced_offers(int $offerCount)
+    public function paginatedReducedOffers(int $offerCount)
     {
-        $paginated_offers = Offer::orderBy('id')->Paginate($offerCount);
-        $pageWithOffers = $this->restructure_paginated_response([$this,'getReducedOfferJson'], $paginated_offers);
+        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'], $paginatedOffers);
 
         return response()->json($pageWithOffers, 200);
     }
@@ -232,7 +232,7 @@ class OfferController extends Controller
      * @param  \Illuminate\Pagination\LengthAwarePaginator $offer
      * @return Array $page
      */
-     private function restructure_page_metadata( LengthAwarePaginator $offer ) {
+     private function restructurePageMetadata( LengthAwarePaginator $offer ) {
         $page = $offer->toArray();
         unset(
             $page["data"],
@@ -247,16 +247,16 @@ class OfferController extends Controller
      * @param  \Illuminate\Pagination\LengthAwarePaginator $paginated_offers
      * @return Array array_merge($data,$page)
      */
-    private function restructure_paginated_response($resturctureOffer,LengthAwarePaginator $paginated_offers)
+    private function restructurePaginateResponse($resturctureOffer,LengthAwarePaginator $paginatedOffers)
     {
-        $transformed_offers = $paginated_offers
+        $transformedOffers = $paginatedOffers
         ->getCollection()
         ->transform(function($offer) use($resturctureOffer) {
             return $resturctureOffer($offer);
         });
 
-        $data = array("data" => $transformed_offers );
-        $page = $this->restructure_page_metadata($paginated_offers);
+        $data = array("data" => $transformedOffers );
+        $page = $this->restructurePageMetadata($paginatedOffers);
         return array_merge($data,$page);
     }
 
