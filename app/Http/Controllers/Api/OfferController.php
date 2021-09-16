@@ -14,37 +14,41 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
-
+use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
+
 
 
 class OfferController extends Controller
 {
 
+    /**
+     * Display a paginated listing of the resource.
+     *
+     * @param int $offerCount
+     * @return \Illuminate\Http\Response
+     */
+    public function paginated_offers(int $offerCount)
+    {
+        $paginated_offers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructure_paginated_response([$this,'restructureJsonOutput'], $paginated_offers);
 
-    public function paginate(){
-     #   $offers = Offer::Paginate(3);
-        $offers = Offer::orderBy('id')->cursorPaginate(10);
-     #   $offers = DB::table('offers')->orderBy('id')->cursorPaginate(15);
-     #   $offers = Offer::where('id', '>', 1)->cursorPaginate(3);
-      #  $offers = Offer::all();
-        error_log($offers."test");
-       # $offers = $offers->values()->all();
-       # $sort = array();
-       # $output = array();
-       # foreach ( $offers as $offer ) {
-       #     $output[] = $this->restructureJsonOutput($offer);
-       #     $sort[$offer->id] = null;
-       #     if ( is_object( $offer->huboffer ) ) {
-       #         $sort[$offer->id] = $offer->huboffer->sort_flag;
-       #     }
-       # }
-       # array_multisort($sort, SORT_DESC, $output);
-
-       # return response()->json($output, 200);
-       return response($offers);
+        return response()->json($pageWithOffers, 200);
     }
 
+    /**
+     * Display a reduced paginated listing for tiles.
+     *
+     * @param int $offerCount
+     * @return \Illuminate\Http\Response
+     */
+    public function paginated_reduced_offers(int $offerCount)
+    {
+        $paginated_offers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructure_paginated_response([$this,'getReducedOfferJson'], $paginated_offers);
+
+        return response()->json($pageWithOffers, 200);
+    }
 
     /**
      * Display a listing of the resource.
@@ -221,6 +225,43 @@ class OfferController extends Controller
         $subscription = DB::table('offer_user')->where(['offer_id' => $offer_id, 'user_id' => $user_id ])->get();
         return response()->json($subscription, 200);
     }
+
+    /**
+     * Remove "data" and "links" from page
+     *
+     * @param  \Illuminate\Pagination\LengthAwarePaginator $offer
+     * @return Array $page
+     */
+     private function restructure_page_metadata( LengthAwarePaginator $offer ) {
+        $page = $offer->toArray();
+        unset(
+            $page["data"],
+            $page["links"],
+        );
+        return $page;
+    }
+
+    /**
+     * Restructure paginated response
+     *
+     * @param  \Illuminate\Pagination\LengthAwarePaginator $paginated_offers
+     * @return Array array_merge($data,$page)
+     */
+    private function restructure_paginated_response($resturctureOffer,LengthAwarePaginator $paginated_offers)
+    {
+        $transformed_offers = $paginated_offers
+        ->getCollection()
+        ->transform(function($offer) use($resturctureOffer) {
+            return $resturctureOffer($offer);
+        });
+
+        $data = array("data" => $transformed_offers );
+        $page = $this->restructure_page_metadata($paginated_offers);
+        return array_merge($data,$page);
+    }
+
+
+
 
     /**
      * Remodel the output of an offer
