@@ -50,6 +50,9 @@ Route::get('offer/ext/{institution}/{offer}', [ OfferController::class, 'showExt
 Route::get('institution', [ InstitutionController::class, 'index']);
 Route::get('institution/{institution}', [ InstitutionController::class, 'show']);
 
+// Searchroutes
+Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
+
 // Filter-Tags
 Route::get('filter/tags', [ FilterController::class, 'getTags']);
 
