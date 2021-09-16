@@ -71,6 +71,8 @@ class OfferStoreRequest extends FormRequest
             #Backwards compatibility
             'type' => 'string',
             'language' => 'string',
+
+
         ];
     }
 }

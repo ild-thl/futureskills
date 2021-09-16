@@ -2,6 +2,13 @@
 
 ## [Unreleased] v0.4
 
+## 2021-09-16
+## Added
+- added paginated_offers function in Offercontroller (pagination kursliste)
+- added paginated_reduced_offers function in Offercontroller
+- added testroute {api}/offer/paginated/{offerCount}
+- added testroute{api}/list/offer/short/paginated/{offerCount}
+
 ## 2021-09-14/ml
 ### added
 - added function to get Offers by Keyword
