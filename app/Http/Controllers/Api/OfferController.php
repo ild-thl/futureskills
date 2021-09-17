@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
 use App\Http\Requests\Api\OfferExternalUpdateRequest;
-use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Institution;
 use App\Models\Competence;
@@ -15,14 +14,42 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
-
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
+
 
 
 class OfferController extends Controller
 {
+
+    /**
+     * Display a paginated listing of the resource.
+     *
+     * @param int $offerCount
+     * @return \Illuminate\Http\Response
+     */
+    public function paginatedOffers(int $offerCount)
+    {
+        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'], $paginatedOffers);
+
+        return response()->json($pageWithOffers, 200);
+    }
+
+    /**
+     * Display a reduced paginated listing for tiles.
+     *
+     * @param int $offerCount
+     * @return \Illuminate\Http\Response
+     */
+    public function paginatedReducedOffers(int $offerCount)
+    {
+        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'], $paginatedOffers);
+
+        return response()->json($pageWithOffers, 200);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -197,6 +224,59 @@ class OfferController extends Controller
     public function subscription( String $user_id, String $offer_id ) {
         $subscription = DB::table('offer_user')->where(['offer_id' => $offer_id, 'user_id' => $user_id ])->get();
         return response()->json($subscription, 200);
+    }
+
+    /**
+     * Remove "data" and "links" from page
+     *
+     * @param  \Illuminate\Pagination\LengthAwarePaginator $offer
+     * @return Array $page
+     */
+     private function restructurePageMetadata( LengthAwarePaginator $offer ) {
+        $page = $offer->toArray();
+        unset(
+            $page["data"],
+            $page["links"],
+        );
+        return $page;
+    }
+
+    /**
+     * Restructure paginated response
+     *
+     * @param  \Illuminate\Pagination\LengthAwarePaginator $paginated_offers
+     * @return Array array_merge($data,$page)
+     */
+    private function restructurePaginateResponse($resturctureOffer,LengthAwarePaginator $paginatedOffers)
+    {
+        $transformedOffers = $paginatedOffers
+        ->getCollection()
+        ->transform(function($offer) use($resturctureOffer) {
+            return $resturctureOffer($offer);
+        });
+
+        $data = array("data" => $transformedOffers );
+        $page = $this->restructurePageMetadata($paginatedOffers);
+        return array_merge($data,$page);
+    }
+
+    /**
+     * Returns a Sublist of offer-short List (filter on keyword)
+     *
+     * @param String $type
+     * @return \Illuminate\Http\Response
+     */
+    public function getOfferSubListWithKeyword( String $keyword ) {
+
+        $keyword= preg_replace('/\s+/', '', $keyword);
+        $offers = Offer::select('offers.*')
+            ->leftJoin('huboffers','offers.id', '=', 'huboffers.offer_id')
+            ->whereRaw("FIND_IN_SET(?, huboffers.keywords) > 0", $keyword)->get();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $output[] = $this->getReducedOfferJson($offer);
+        }
+        return response()->json($output, 200);
     }
 
     /**

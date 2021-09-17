@@ -1,6 +1,25 @@
 # Changelog
 
-## [Unreleased] v0.3.2
+## [Unreleased] v0.4
+
+## 2021-09-16
+## Added
+- added paginated_offers function in Offercontroller (pagination kursliste)
+- added paginated_reduced_offers function in Offercontroller
+- added testroute {api}/offer/paginated/{offerCount}
+- added testroute{api}/list/offer/short/paginated/{offerCount}
+
+## 2021-09-14/ml
+### added
+- added function to get Offers by Keyword
+
+## 2021-09-03/dk
+### Changed
+- Upgraded Laravel to 8
+- Upgraded Passport to 10.1
+- JWT-Handling changed to support newer required lcobucci/jwt package
+### Removed 
+- Bot-related functions
 
 ## 2021-09-01/ml
 ### Changed

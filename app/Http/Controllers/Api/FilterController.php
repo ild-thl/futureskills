@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Institution;
 use App\Models\Competence;
 use App\Models\Language;
@@ -21,7 +20,7 @@ class FilterController extends Controller
 
         if ( Cache::has('filter_tags') ) {
             return response()->json( json_decode( Cache::get('filter_tags') ), 200 );
-        } 
+        }
 
         $institutions = array();
         foreach( Institution::all() as $institution ) {
@@ -88,7 +87,7 @@ class FilterController extends Controller
         );
 
         Cache::put('filter_tags', json_encode($output));
-        
+
         return response()->json($output, 200);
     }
 }
