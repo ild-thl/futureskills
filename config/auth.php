@@ -71,8 +71,9 @@ return [
         #],
 		#'users' => [
 			'driver' => 'shibboleth',
-			'model'  => App\User::class,
+			'model'  => App\Models\User::class,
 		],
+        #todo: multiple
 
         // 'users' => [
         //     'driver' => 'database',
