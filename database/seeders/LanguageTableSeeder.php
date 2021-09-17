@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class LanguageTableSeeder extends Seeder
 {
@@ -10,7 +13,7 @@ class LanguageTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
+    {
         $languages = DB::table('languages')->get();
         if ( $languages->count() == 0 ) {
             DB::table('languages')->insert([
@@ -24,7 +27,7 @@ class LanguageTableSeeder extends Seeder
                 'created_at' => now()
                 ]);
         } else {
-            echo "Languages table not empty. Skipping...\n";        
+            echo "Languages table not empty. Skipping...\n";
         }
     }
 }

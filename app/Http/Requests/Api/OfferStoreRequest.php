@@ -16,11 +16,7 @@ class OfferStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        if (Gate::allows('store_update_offer')) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gate::allows('store_update_offer');
     }
 
     /**
@@ -75,6 +71,8 @@ class OfferStoreRequest extends FormRequest
             #Backwards compatibility
             'type' => 'string',
             'language' => 'string',
+
+
         ];
     }
 }

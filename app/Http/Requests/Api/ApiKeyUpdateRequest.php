@@ -14,11 +14,7 @@ class ApiKeyUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if (Gate::allows('store_update_apikey')) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gate::allows('store_update_apikey');
     }
 
     /**

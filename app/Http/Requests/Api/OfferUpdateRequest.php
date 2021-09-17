@@ -16,11 +16,7 @@ class OfferUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if (Gate::allows('store_update_offer')) {
-            return true;
-        } else {
-            return false;
-        }
+        return Gate::allows('store_update_offer');
     }
 
     /**
