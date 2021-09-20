@@ -120,7 +120,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        return response()->json($this->restructureJsonOutput($offer), 200);
+        return response()->json($this->restructureJsonOutput($offer, true), 200);
     }
 
     /**
@@ -285,7 +285,7 @@ class OfferController extends Controller
      * @param  \App\Models\Offer $offer
      * @return Array $ret
      */
-    private function restructureJsonOutput( Offer $offer ) {
+    private function restructureJsonOutput( Offer $offer, Bool $showRelatedOffersDetail = false ) {
 
         $ret = $offer->toArray();
 
@@ -324,10 +324,18 @@ class OfferController extends Controller
             }
         }
 
+
         $ret["relatedOffers"] = [];
         if ( array_key_exists( "original_relations", $ret ) ) {
             foreach ( $ret["original_relations"] as $relation ) {
                 $ret["relatedOffers"][] = $relation["id"];
+                if ( $showRelatedOffersDetail ) {
+                    $ret["detailOfferData"][] = array (
+                        "id" => $relation["id"],
+                        "title" => $relation["title"],
+                        "image" => $relation["image_path"]
+                    );
+                }
             }
         }
 

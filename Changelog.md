@@ -2,7 +2,11 @@
 
 ## [Unreleased] v0.4
 
-## 2021-09-16
+## 2021-09-20/dk
+## Changed
+- Route offer/{id} outputs some additional information about related offers
+
+## 2021-09-16/kw
 ## Added
 - added paginated_offers function in Offercontroller (pagination kursliste)
 - added paginated_reduced_offers function in Offercontroller
