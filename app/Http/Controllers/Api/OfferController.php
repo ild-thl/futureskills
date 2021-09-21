@@ -330,7 +330,7 @@ class OfferController extends Controller
             foreach ( $ret["original_relations"] as $relation ) {
                 $ret["relatedOffers"][] = $relation["id"];
                 if ( $showRelatedOffersDetail ) {
-                    $ret["detailOfferData"][] = array (
+                    $ret["relatedOfferData"][] = array (
                         "id" => $relation["id"],
                         "title" => $relation["title"],
                         "image" => $relation["image_path"]
