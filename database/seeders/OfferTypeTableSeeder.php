@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class OfferTypeTableSeeder extends Seeder
 {
@@ -10,7 +13,7 @@ class OfferTypeTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
+    {
         $offertypes = DB::table('offertypes')->get();
         if ( $offertypes->count() == 0 ) {
             DB::table('offertypes')->insert([
@@ -49,7 +52,7 @@ class OfferTypeTableSeeder extends Seeder
                 'created_at' => now()
                 ]);
         } else {
-            echo "Offertypes table not empty. Skipping...\n";        
+            echo "Offertypes table not empty. Skipping...\n";
         }
     }
 }

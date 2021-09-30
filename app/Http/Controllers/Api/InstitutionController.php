@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\InstitutionStoreRequest;
 use App\Http\Requests\Api\InstitutionUpdateRequest;
-use Illuminate\Http\Request;
 use App\Models\Institution;
 
 class InstitutionController extends Controller
