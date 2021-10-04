@@ -97,6 +97,24 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a reduced listing for tiles.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function latestForTiles()
+    {
+        $offers = DB::table('offers')->latest()->limit(20)->get();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $offer = Offer::find($offer->id);
+            $output[] = $this->getReducedOfferJson($offer);
+        }
+        shuffle($output);
+
+        return response()->json($output, 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Api\OfferStoreRequest  $request

@@ -52,6 +52,7 @@ Route::get('institution/{institution}', [ InstitutionController::class, 'show'])
 
 // Searchroutes
 Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
+Route::get('search/offer/latest', [ OfferController::class, 'latestForTiles']);
 
 // Filter-Tags
 Route::get('filter/tags', [ FilterController::class, 'getTags']);

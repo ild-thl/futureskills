@@ -1,5 +1,11 @@
 # Changelog
 
+## [UnReleased] 
+
+## 2021-10-04/dk
+## Added
+- New Route search/offer/latest for recently added offers
+
 ## [Released] v0.4.1
 
 ## 2021-10-04/dk
