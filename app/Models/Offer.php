@@ -39,7 +39,7 @@ class Offer extends Model
         'metas',
         'offertype',
         'timestamps',
-        'originalRelations',
+        'originalRelations'
     ];
 
     /**
@@ -103,16 +103,15 @@ class Offer extends Model
      */
     public function originalRelations()
     {
-        return $this->belongsToMany('App\Models\Offer', 'offer_relations', 'offer_id', 'offerrelated_id');
+        return $this->belongsToMany('App\Models\RelatedOffer', 'offer_relations', 'offer_id', 'offerrelated_id');
     }
 
     /**
      * Get the offers this offer is assigned in.
-     * Not output in offer as this causes loops.
      */
     public function assignedRelations()
     {
-        return $this->belongsToMany('App\Models\Offer', 'offer_relations', 'offerrelated_id', 'offer_id');
+        return $this->belongsToMany('App\Models\RelatedOffer', 'offer_relations', 'offerrelated_id', 'offer_id');
     }
 
     /**
