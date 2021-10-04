@@ -1,5 +1,11 @@
 # Changelog
 
+## [Released] v0.4.1
+
+## 2021-10-04/dk
+## Changed
+- Eloquent related Offers got their own model to prevent loops/memory leaks
+
 ## [Released] v0.4
 
 ## 2021-09-20/dk
