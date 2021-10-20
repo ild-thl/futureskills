@@ -133,6 +133,7 @@ class OfferController extends Controller
     public function update(OfferUpdateRequest $request, Offer $offer)
     {
         $validatedData = $this->validateRedundantInput( $request->validated() );
+        #print_r($validatedData);
 
         $offer->fill($validatedData);
         $offer->save();
@@ -369,22 +370,21 @@ class OfferController extends Controller
 
         # Sync pivot tables
         $competences = Competence::all();
-        $competence_sync = array();
         foreach ( $competences as $c ) {
             if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier] == true ) {
-                $competence_sync[] = $c->id;
+                $offer->competences()->sync($c->id);
             }
         }
-        $offer->competences()->sync($competence_sync);
 
         $metas = Meta::all();
         $meta_sync = array();
         foreach ( $metas as $m ) {
             if ( \key_exists( $m->description, $validatedData ) && !empty ( $validatedData[$m->description] ) ) {
                 $meta_sync[ $m->id ] = [ "value" => $validatedData[$m->description] ];
+                $offer->metas()->sync($meta_sync);
             }
         }
-        $offer->metas()->sync($meta_sync);
+        
 
         # Fill other related tables
         $hubOffer = Huboffer::where([ "offer_id" => $offer->id ])->first();
@@ -414,9 +414,10 @@ class OfferController extends Controller
                     $offer->originalRelations()->detach();
                 } else {
                     $relations_sync[] = intval($relation);
+                    $offer->originalRelations()->sync($relations_sync);
                 }
             }
-            $offer->originalRelations()->sync($relations_sync);
+            
         }
     }
 

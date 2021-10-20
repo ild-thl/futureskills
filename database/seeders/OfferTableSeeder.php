@@ -44,7 +44,7 @@ class OfferTableSeeder extends Seeder
                 'hashtag' => '#TESTKURS'.$i,
                 'author' => 'Autor:in von Testkurs '.$i,
                 'target_group' => 'Zielgruppe von Testkurs '.$i,
-                'url' => 'www.futureskills-sh.de/offer/'.$i,
+                'url' => 'https://www.futureskills-sh.de/offer/'.$i,
                 'offertype_id' => $offertype_ids[array_rand($offertype_ids, 1)],
                 'language_id' => $language_ids[array_rand($language_ids, 1)],
                 'externalId' => null,

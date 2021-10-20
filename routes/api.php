@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('offer', OfferController::class )->except(['index', 'show']);
+    Route::put('offer/{offer}', [ OfferController::class, 'update']);
     Route::resource('institution', InstitutionController::class )->except(['index', 'show']);
     Route::get('subscription', [ SubscriptionController::class, 'index']); # get all subscriptions
     Route::get('subscription/user/{user_id}', [ UserController::class, 'offers']); # get all subscriptions of user
@@ -55,4 +56,6 @@ Route::get('filter/tags', [ FilterController::class, 'getTags']);
 
 // Routes that require API Key Authentification
 Route::put('offer/ext/{institution}/{offer}', [ OfferController::class, 'updateExternal'])->middleware('auth.apikey');
+
+
 

@@ -4,6 +4,13 @@
 
 ## 2021-10-14/kw
 ## Added
+- added "https://" to url in OfferTableSeeder
+## Changed
+- changed saveRelatedData function in OfferController so Offer can be updated with single or partial data without deleting values
+  in tables related to Offertable.
+
+## 2021-10-14/kw
+## Added
 - added filter function to paginated responses (paginatedOffers, paginatedReducedOffers)
 - added Request Class FilterRequest
 ## Changed
