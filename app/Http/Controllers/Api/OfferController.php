@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OfferStoreRequest;
+use App\Http\Requests\Api\FilterRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
 use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use App\Models\Offer;
@@ -14,6 +15,7 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
 
@@ -28,11 +30,10 @@ class OfferController extends Controller
      * @param int $offerCount
      * @return \Illuminate\Http\Response
      */
-    public function paginatedOffers(int $offerCount)
+    public function paginatedOffers(int $offerCount, FilterRequest $request)
     {
-        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
-        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'], $paginatedOffers);
-
+        $request->validated();
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'], $this->buildFilterQuery($offerCount, $request));
         return response()->json($pageWithOffers, 200);
     }
 
@@ -42,11 +43,10 @@ class OfferController extends Controller
      * @param int $offerCount
      * @return \Illuminate\Http\Response
      */
-    public function paginatedReducedOffers(int $offerCount)
+    public function paginatedReducedOffers(int $offerCount, FilterRequest $request)
     {
-        $paginatedOffers = Offer::orderBy('id')->Paginate($offerCount);
-        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'], $paginatedOffers);
-
+        $request->validated();
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'], $this->buildFilterQuery($offerCount, $request));
         return response()->json($pageWithOffers, 200);
     }
 
@@ -97,24 +97,6 @@ class OfferController extends Controller
     }
 
     /**
-     * Display a reduced listing for tiles.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function latestForTiles()
-    {
-        $offers = DB::table('offers')->latest()->limit(20)->get();
-        $output = array();
-        foreach ( $offers as $offer ) {
-            $offer = Offer::find($offer->id);
-            $output[] = $this->getReducedOfferJson($offer);
-        }
-        shuffle($output);
-
-        return response()->json($output, 200);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Api\OfferStoreRequest  $request
@@ -138,7 +120,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        return response()->json($this->restructureJsonOutput($offer, true), 200);
+        return response()->json($this->restructureJsonOutput($offer), 200);
     }
 
     /**
@@ -278,24 +260,8 @@ class OfferController extends Controller
         return array_merge($data,$page);
     }
 
-    /**
-     * Returns a Sublist of offer-short List (filter on keyword)
-     *
-     * @param String $type
-     * @return \Illuminate\Http\Response
-     */
-    public function getOfferSubListWithKeyword( String $keyword ) {
 
-        $keyword= preg_replace('/\s+/', '', $keyword);
-        $offers = Offer::select('offers.*')
-            ->leftJoin('huboffers','offers.id', '=', 'huboffers.offer_id')
-            ->whereRaw("FIND_IN_SET(?, huboffers.keywords) > 0", $keyword)->get();
-        $output = array();
-        foreach ( $offers as $offer ) {
-            $output[] = $this->getReducedOfferJson($offer);
-        }
-        return response()->json($output, 200);
-    }
+
 
     /**
      * Remodel the output of an offer
@@ -303,7 +269,7 @@ class OfferController extends Controller
      * @param  \App\Models\Offer $offer
      * @return Array $ret
      */
-    private function restructureJsonOutput( Offer $offer, Bool $showRelatedOffersDetail = false ) {
+    private function restructureJsonOutput( Offer $offer ) {
 
         $ret = $offer->toArray();
 
@@ -342,18 +308,10 @@ class OfferController extends Controller
             }
         }
 
-
         $ret["relatedOffers"] = [];
         if ( array_key_exists( "original_relations", $ret ) ) {
             foreach ( $ret["original_relations"] as $relation ) {
                 $ret["relatedOffers"][] = $relation["id"];
-                if ( $showRelatedOffersDetail ) {
-                    $ret["relatedOfferData"][] = array (
-                        "id" => $relation["id"],
-                        "title" => $relation["title"],
-                        "image" => $relation["image_path"]
-                    );
-                }
             }
         }
 
@@ -487,6 +445,32 @@ class OfferController extends Controller
         }
         return $validatedData;
 
+    }
+
+    /**
+     * Remodel the output of an offer for short data list
+     *
+     * @param  int $offerCount
+     * @param  \App\Http\Requests\Api\FilterRequest  $request
+     * @return  Offer $offerQuery
+     */
+    private function buildFilterQuery(int $offerCount, FilterRequest $request){
+        $offerQuery = Offer::query();
+        $data = $request->except('_token');
+        unset($data['page']);
+    
+        foreach($data as $key => $array){
+                if(Schema::hasColumn('offers', $key)){
+                        $offerQuery = $offerQuery->whereIn($key,$data[$key]);
+                    }
+                 elseif(Offer::first()->$key()->exists()){
+                    $offerQuery = $offerQuery->whereHas($key, function($q) use ($key , $data){
+                        $q->whereIn($key.'.id', $data[$key]);
+                            });
+                    } 
+            }
+            $offerQuery = $offerQuery->Paginate($offerCount);
+            return $offerQuery;
     }
 
 }
