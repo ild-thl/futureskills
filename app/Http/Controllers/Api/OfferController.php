@@ -133,7 +133,6 @@ class OfferController extends Controller
     public function update(OfferUpdateRequest $request, Offer $offer)
     {
         $validatedData = $this->validateRedundantInput( $request->validated() );
-        #print_r($validatedData);
 
         $offer->fill($validatedData);
         $offer->save();
