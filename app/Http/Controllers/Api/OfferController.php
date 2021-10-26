@@ -97,6 +97,24 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a reduced listing for tiles.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function latestForTiles()
+    {
+        $offers = DB::table('offers')->latest()->limit(20)->get();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $offer = Offer::find($offer->id);
+            $output[] = $this->getReducedOfferJson($offer);
+        }
+        shuffle($output);
+
+        return response()->json($output, 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Api\OfferStoreRequest  $request
@@ -120,7 +138,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        return response()->json($this->restructureJsonOutput($offer), 200);
+        return response()->json($this->restructureJsonOutput($offer, true), 200);
     }
 
     /**
@@ -280,16 +298,13 @@ class OfferController extends Controller
         return array_merge($data,$page);
     }
 
-
-
-
     /**
      * Remodel the output of an offer
      *
      * @param  \App\Models\Offer $offer
      * @return Array $ret
      */
-    private function restructureJsonOutput( Offer $offer ) {
+    private function restructureJsonOutput( Offer $offer, Bool $showRelatedOffersDetail = false ) {
 
         $ret = $offer->toArray();
 
@@ -332,6 +347,13 @@ class OfferController extends Controller
         if ( array_key_exists( "original_relations", $ret ) ) {
             foreach ( $ret["original_relations"] as $relation ) {
                 $ret["relatedOffers"][] = $relation["id"];
+                if ( $showRelatedOffersDetail ) {
+                    $ret["relatedOfferData"][] = array (
+                        "id" => $relation["id"],
+                        "title" => $relation["title"],
+                        "image" => $relation["image_path"]
+                    );
+                }
             }
         }
 
