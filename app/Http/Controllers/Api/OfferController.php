@@ -124,6 +124,26 @@ class OfferController extends Controller
     }
 
     /**
+     * Returns a Sublist of offer-short List (filter on keyword)
+     *
+     * @param String $type
+     * @return \Illuminate\Http\Response
+     */
+    public function getOfferSubListWithKeyword( String $keyword ) {
+
+        $keyword= preg_replace('/\s+/', '', $keyword);
+        $offers = Offer::select('offers.*')
+            ->leftJoin('huboffers','offers.id', '=', 'huboffers.offer_id')
+            ->whereRaw("FIND_IN_SET(?, huboffers.keywords) > 0", $keyword)->get();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $output[] = $this->getReducedOfferJson($offer);
+        }
+        return response()->json($output, 200);
+    }
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\Api\OfferUpdateRequest  $request
@@ -458,7 +478,7 @@ class OfferController extends Controller
         $offerQuery = Offer::query();
         $data = $request->except('_token');
         unset($data['page']);
-    
+
         foreach($data as $key => $array){
                 if(Schema::hasColumn('offers', $key)){
                         $offerQuery = $offerQuery->whereIn($key,$data[$key]);
@@ -467,7 +487,7 @@ class OfferController extends Controller
                     $offerQuery = $offerQuery->whereHas($key, function($q) use ($key , $data){
                         $q->whereIn($key.'.id', $data[$key]);
                             });
-                    } 
+                    }
             }
             $offerQuery = $offerQuery->Paginate($offerCount);
             return $offerQuery;
