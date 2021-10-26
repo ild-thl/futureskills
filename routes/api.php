@@ -53,6 +53,9 @@ Route::get('institution/{institution}', [ InstitutionController::class, 'show'])
 // Filter-Tags
 Route::get('filter/tags', [ FilterController::class, 'getTags']);
 
+// Searchroutes
+Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
+
 // Routes that require API Key Authentification
 Route::put('offer/ext/{institution}/{offer}', [ OfferController::class, 'updateExternal'])->middleware('auth.apikey');
 
