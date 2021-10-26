@@ -55,6 +55,7 @@ Route::get('filter/tags', [ FilterController::class, 'getTags']);
 
 // Searchroutes
 Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
+Route::get('search/offer/latest', [ OfferController::class, 'latestForTiles']);
 
 // Routes that require API Key Authentification
 Route::put('offer/ext/{institution}/{offer}', [ OfferController::class, 'updateExternal'])->middleware('auth.apikey');
