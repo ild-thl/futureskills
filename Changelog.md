@@ -1,6 +1,6 @@
 # Changelog
 
-## [Released]  v0.4.2
+## [Released v0.4.2]
 
 ## 2021-10-14/kw
 ## Added
