@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 //test routes for pagination
-Route::get('offer/paginated/{offerCount}', [OfferController::class, 'paginatedOffers']);
-Route::get('list/offer/short/paginated/{offerCount}', [ OfferController::class, 'paginatedReducedOffers']);
+Route::post('offer/paginated/{offerCount}', [OfferController::class, 'paginatedOffers']);
+Route::post('list/offer/short/paginated/{offerCount}', [ OfferController::class, 'paginatedReducedOffers']);
 
 // Additional routes that don't require authentication
 Route::get('offer', [ OfferController::class, 'index']);
@@ -50,11 +50,12 @@ Route::get('offer/ext/{institution}/{offer}', [ OfferController::class, 'showExt
 Route::get('institution', [ InstitutionController::class, 'index']);
 Route::get('institution/{institution}', [ InstitutionController::class, 'show']);
 
-// Searchroutes
-Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
-
 // Filter-Tags
 Route::get('filter/tags', [ FilterController::class, 'getTags']);
+
+// Searchroutes
+Route::get('search/offer/sublist/{keyword}',[OfferController::class, 'getOfferSubListWithKeyword']);
+Route::get('search/offer/latest', [ OfferController::class, 'latestForTiles']);
 
 // Routes that require API Key Authentification
 Route::put('offer/ext/{institution}/{offer}', [ OfferController::class, 'updateExternal'])->middleware('auth.apikey');

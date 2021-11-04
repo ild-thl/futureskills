@@ -1,5 +1,19 @@
 # Changelog
 
+## [Released v0.4.2]
+
+## 2021-10-14/kw
+## Added
+- added filter function to paginated responses (paginatedOffers, paginatedReducedOffers)
+- added Request Class FilterRequest
+## Changed
+- changed request method of 'list/offer/short/paginated/{offerCount}' from GET to POST 
+- changed request method of 'offer/paginated/{offerCount}' from GET to POST 
+
+## 2021-10-04/dk
+## Added
+- New Route search/offer/latest for recently added offers
+
 ## [Released] v0.4.1
 
 ## 2021-10-04/dk
