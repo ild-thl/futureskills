@@ -452,48 +452,23 @@ class OfferController extends Controller
 
         $timestamp = Timestamp::where([ "offer_id" => $offer->id ])->first();
         if ( is_object( $timestamp ) ) {
-            print_r("timestamp updated");
             $timestamp->fill($validatedData);
             $timestamp->save();
         }  else {
-
             $validatedData["offer_id"] = $offer->id;
-            print_r("timestamp created \n\r");
-            print_r($validatedData);
             $timestamp = Timestamp::create($validatedData);
         }
 
         if ( array_key_exists( "relatedOffers", $validatedData ) ) {
             $relations = $validatedData["relatedOffers"];
-            print_r("validated data \r\n");
-            print_r($relations);
             $relations_sync = array();
             foreach ( $relations as $relation => $relation_value ) {
                 # empty array [ 0 => null ]
-                print_r("relations as relation \r\n");
-                print_r($relation);
-                print_r("\r\n");
-                #if ( $relation === null && count( $relations ) == 1 ) {
                 if ( $relation_value === null ) {
                     $offer->originalRelations()->detach($relation);
-
-                    print_r("relationtype \r\n");
-                    print_r(gettype($relation));
-                    print_r("\r\n");
-                    print_r("relation key when value=null \r\n");
-                    print_r($relation);
-                    print_r("\r\n");
                 } else {
-                    #here key in sync
+                    #value becomes key of relations_sync
                     $relations_sync[intval($relation_value)] = intval($relation_value);
-                    #error_log()
-                    print_r("added to relation sync \r\n");
-                    print_r($relations_sync);
-                    print_r("\r\n");
-
-                    print_r("relation sync b4 update \r\n");
-                    print_r($relations_sync);
-                    print_r("\r\n");
                     $offer->originalRelations()->sync($relations_sync, false);
                 }
             }
