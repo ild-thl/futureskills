@@ -44,7 +44,7 @@ class RelatedOfferRule implements Rule
         $relations_sync = array();
         foreach ( $relations as $relation ) {
             # empty array [ 0 => null ]
-            if ( $relation === null && count( $relations ) == 1 ) {
+            if ( $relation === null ) {
                 return true;
             }
             $tmpRelated = Offer::find($relation);
@@ -57,7 +57,6 @@ class RelatedOfferRule implements Rule
             }
         }
         return true;
-
     }
 
     /**
