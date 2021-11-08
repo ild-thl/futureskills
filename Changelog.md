@@ -2,7 +2,7 @@
 
 ## [Released v0.4.2]
 
-## 2021-10-14/kw
+## 2021-11-08/kw
 ## Added
 - "location" to Offer(update/store)request rules 
 - "location" to ExternalOfferUpdaterequest rules 
