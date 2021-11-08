@@ -4,6 +4,15 @@
 
 ## 2021-10-14/kw
 ## Added
+- "location" to Offer(update/store)request rules 
+- "location" to ExternalOfferUpdaterequest rules 
+## Changed
+- saveRelatedData function to delete rows in pivot tables related to Offer
+- Offer related pivot tables no longer delete data unless explicitly sending delete request with §key =(no value) ;  
+- relatedOfferRule 
+
+## 2021-10-14/kw
+## Added
 - added filter function to paginated responses (paginatedOffers, paginatedReducedOffers)
 - added Request Class FilterRequest
 ## Changed
