@@ -462,16 +462,15 @@ class OfferController extends Controller
         if ( array_key_exists( "relatedOffers", $validatedData ) ) {
             $relations = $validatedData["relatedOffers"];
             $relations_sync = array();
-            foreach ( $relations as $relation => $relation_value ) {
+            foreach ( $relations as $relation ) {
                 # empty array [ 0 => null ]
-                if ( $relation_value === null ) {
-                    $offer->originalRelations()->detach($relation);
+                if ( $relation === null && count( $relations ) == 1 ) {
+                    $offer->originalRelations()->detach();
                 } else {
-                    #value becomes key of relations_sync
-                    $relations_sync[intval($relation_value)] = intval($relation_value);
-                    $offer->originalRelations()->sync($relations_sync, false);
+                    $relations_sync[] = intval($relation);
                 }
             }
+            $offer->originalRelations()->sync($relations_sync);
         }
     }
 

@@ -2,6 +2,11 @@
 
 ## [Released v0.4.2]
 
+## 2021-11-10/kw
+## Changed
+- changed relatedOffers synchronization in "saveRelatedData" function in OfferController back to previous functionality 
+- changed relatedOfferRule back to previous state
+
 ## 2021-11-08/kw
 ## Added
 - "location" to Offer(update/store)request rules 
