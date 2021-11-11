@@ -57,7 +57,6 @@ class RelatedOfferRule implements Rule
             }
         }
         return true;
-
     }
 
     /**

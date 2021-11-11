@@ -411,22 +411,34 @@ class OfferController extends Controller
 
         # Sync pivot tables
         $competences = Competence::all();
-        $competence_sync = array();
+        $competences_sync = array();
+
         foreach ( $competences as $c ) {
-            if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier] == true ) {
-                $competence_sync[] = $c->id;
+
+            if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier]){
+                    $competences_sync[] = $c->id;
+                    $offer->competences()->sync($competences_sync, false);
+
+            }elseif(\key_exists( "competence_".$c->identifier, $validatedData ) && !$validatedData["competence_".$c->identifier]){
+                $offer->competences()->detach($c->id);
+                $offer->competences()->sync($competences_sync, false);
             }
         }
-        $offer->competences()->sync($competence_sync);
 
         $metas = Meta::all();
         $meta_sync = array();
+
         foreach ( $metas as $m ) {
-            if ( \key_exists( $m->description, $validatedData ) && !empty ( $validatedData[$m->description] ) ) {
-                $meta_sync[ $m->id ] = [ "value" => $validatedData[$m->description] ];
+            if ( \key_exists( $m->description, $validatedData )  ) {
+
+                if(empty ( $validatedData[$m->description] )){
+                    $offer->metas()->detach($m->id);
+                }else{
+                    $meta_sync[ $m->id ] = [ "value" => $validatedData[$m->description] ];
+                }
             }
         }
-        $offer->metas()->sync($meta_sync);
+        $offer->metas()->sync($meta_sync,false);
 
         # Fill other related tables
         $hubOffer = Huboffer::where([ "offer_id" => $offer->id ])->first();
