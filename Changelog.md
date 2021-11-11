@@ -1,6 +1,6 @@
 # Changelog
 
-## [Released v0.4.2]
+## [UnReleased v0.5]
 
 ## 2021-11-10/kw
 ## Changed
@@ -15,6 +15,8 @@
 - saveRelatedData function to delete rows in pivot tables related to Offer
 - Offer related pivot tables no longer delete data unless explicitly sending delete request with §key =(no value) ;  
 - relatedOfferRule 
+
+## [Released v0.4.2]
 
 ## 2021-10-14/kw
 ## Added
