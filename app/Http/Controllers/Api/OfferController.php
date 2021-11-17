@@ -517,7 +517,7 @@ class OfferController extends Controller
                 if(Schema::hasColumn('offers', $key)){
                         $offerQuery = $offerQuery->whereIn($key,$data[$key]);
                     }
-                 elseif(Offer::first()->$key()->exists()){
+                 elseif( method_exists( Offer::class, $key) ){
                     $offerQuery = $offerQuery->whereHas($key, function($q) use ($key , $data){
                         $q->whereIn($key.'.id', $data[$key]);
                             });

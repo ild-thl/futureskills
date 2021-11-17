@@ -2,6 +2,10 @@
 
 ## [UnReleased v0.5]
 
+## 2021-11-17/dk
+## Changed
+- fixed filters ignoring competences when the first offer had none assigned
+
 ## 2021-11-10/kw
 ## Changed
 - changed relatedOffers synchronization in "saveRelatedData" function in OfferController back to previous functionality 
