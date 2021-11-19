@@ -66,9 +66,14 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        #    'driver' => 'eloquent',
+        #    'model' => App\User::class,
+        #],
+		#'users' => [
+			'driver' => 'shibboleth',
+			'model'  => App\Models\User::class,
+		],
+        #todo: multiple
 
         // 'users' => [
         //     'driver' => 'database',

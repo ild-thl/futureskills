@@ -13,7 +13,7 @@
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "lcobucci/jwt": "^4.0"
+        "uabookstores/laravel-shibboleth": "^3.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
