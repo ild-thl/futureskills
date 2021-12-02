@@ -523,7 +523,14 @@ class OfferController extends Controller
                             });
                     }
             }
-            $offerQuery = $offerQuery->Paginate($offerCount);
+
+            //Get sort_flag from huboffers table into offer for ordered results
+            $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
+            $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
+                $join->on('offers.id', '=', 'huboffers.offer_id');
+            });
+
+            $offerQuery = $offerQuery->orderBy('sort_flag', 'desc')->paginate($offerCount);
             return $offerQuery;
     }
 
