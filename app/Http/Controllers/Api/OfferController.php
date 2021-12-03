@@ -509,21 +509,78 @@ class OfferController extends Controller
      * @return  Offer $offerQuery
      */
     private function buildFilterQuery(int $offerCount, FilterRequest $request){
+        $offerQueryTextsearch = Offer::query();
+        $offerQueryFilter = Offer::query();
         $offerQuery = Offer::query();
+
         $data = $request->except('_token');
+
+        #if key textsearch isnt given, textsearch = null, or only special characters are given
+        # only apply filter, if no filters are -> response should be all offers
+        if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
+            $requestString = strval($data["textsearch"]);
+            $substrings = explode(" ", $requestString);
+            $searchString ="";
+
+            foreach($substrings as $substr){
+
+                if(preg_match('/^[^A-Za-z0-9]+$/',$substr)) {
+                    $substr = preg_replace('/^[^A-Za-z0-9]+$/', "", $substr);
+                }
+
+                #replaces one or more special characters with "* "
+                $substr = preg_replace('/[^A-Za-z0-9]+/', "* ", $substr);
+                #removes spaces and special characters at the beginning of substring
+                $substr = preg_replace('/^[^A-Za-z0-9]+/', "", $substr);
+
+                error_log("substring: ".$substr);
+
+
+                #adds "* " at end of substring if not already there
+                if( preg_match('/[\*]$/',$substr));
+                else{
+                    $substr = $substr."* ";
+                }
+                $searchString .= $substr;
+            }
+            #replaces one or more "*" with "* "
+            $searchString = preg_replace('/[\*\s]+/', "* ", $searchString);
+            #remove single "*"
+            error_log($searchString." searchstring");
+            $searchString = preg_replace('/^\*/', "", $searchString);
+            error_log($searchString." searchstring");
+            $offerQueryTextsearch = $offerQueryTextsearch->whereRaw(
+                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString,)
+                ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
+                ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)",$searchString);
+        }
+
         unset($data['page']);
+        unset($data['textsearch']);
 
         foreach($data as $key => $array){
                 if(Schema::hasColumn('offers', $key)){
-                        $offerQuery = $offerQuery->whereIn($key,$data[$key]);
+                        $offerQueryFilter = $offerQueryFilter->whereIn($key,$data[$key]);
                     }
-                 elseif( method_exists( Offer::class, $key) ){
-                    $offerQuery = $offerQuery->whereHas($key, function($q) use ($key , $data){
+                    elseif( method_exists(Offer::class, $key) ){
+                    $offerQueryFilter = $offerQueryFilter->whereHas($key, function($q) use ($key , $data){
                         $q->whereIn($key.'.id', $data[$key]);
                             });
                     }
+
             }
-            $offerQuery = $offerQuery->Paginate($offerCount);
+            $offerQueryTextsearchIds = $offerQueryTextsearch->pluck("id");
+            $offerQueryFilterIds = $offerQueryFilter->pluck("id");
+            $offerQueryFilteredTextsearch = array_intersect($offerQueryTextsearchIds->toArray(),$offerQueryFilterIds->toArray()) ;
+            $offerQuery = Offer::whereIn('id',$offerQueryFilteredTextsearch);
+
+            //Get sort_flag from huboffers table into offer for ordered results
+            $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
+            $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
+                $join->on('offers.id', '=', 'huboffers.offer_id');
+            });
+
+            $offerQuery = $offerQuery->orderBy('sort_flag', 'desc')->Paginate($offerCount);
             return $offerQuery;
     }
 
