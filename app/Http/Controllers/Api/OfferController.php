@@ -33,7 +33,8 @@ class OfferController extends Controller
     public function paginatedOffers(int $offerCount, FilterRequest $request)
     {
         $request->validated();
-        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'], $this->buildFilterQuery($offerCount, $request));
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'restructureJsonOutput'],
+        $this->buildFilterTextsearchQuery($offerCount, $request));
         return response()->json($pageWithOffers, 200);
     }
 
@@ -46,7 +47,8 @@ class OfferController extends Controller
     public function paginatedReducedOffers(int $offerCount, FilterRequest $request)
     {
         $request->validated();
-        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'], $this->buildFilterQuery($offerCount, $request));
+        $pageWithOffers = $this->restructurePaginateResponse([$this,'getReducedOfferJson'],
+        $this->buildFilterTextsearchQuery($offerCount, $request));
         return response()->json($pageWithOffers, 200);
     }
 
@@ -508,7 +510,7 @@ class OfferController extends Controller
      * @param  \App\Http\Requests\Api\FilterRequest  $request
      * @return  Offer $offerQuery
      */
-    private function buildFilterQuery(int $offerCount, FilterRequest $request){
+    private function buildFilterTextsearchQuery(int $offerCount, FilterRequest $request){
         $offerQueryTextsearch = Offer::query();
         $offerQueryFilter = Offer::query();
         $offerQuery = Offer::query();
