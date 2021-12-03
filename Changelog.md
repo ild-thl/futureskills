@@ -2,6 +2,10 @@
 
 ## [UnReleased v0.5]
 
+## 2021-12-02/dk
+## Changed
+- Pagination results are sorted by sort_flag
+
 ## 2021-11-17/dk
 ## Changed
 - fixed filters ignoring competences when the first offer had none assigned
