@@ -2,6 +2,13 @@
 
 ## [UnReleased v0.5]
 
+## 2021-12-06/kw
+## Added
+- Textsearch function that works with filters
+- new migration for adding fulltext search indexes to columns "title,author,description" of "offers" table
+## Changed
+- renamed buildFilterQuery to buildFilterTextsearchQuery to reflect new functionality
+
 ## 2021-12-02/dk
 ## Changed
 - Pagination results are sorted by sort_flag

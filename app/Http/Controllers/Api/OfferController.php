@@ -517,8 +517,8 @@ class OfferController extends Controller
 
         $data = $request->except('_token');
 
-        #if key textsearch isnt given, textsearch = null, or only special characters are given
-        # only apply filter, if no filters are -> response should be all offers
+        #if key "textsearch" isnt given, textsearch = null, or only special characters are given as value
+        # only apply filter, if no filters -> response should be all offers
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
             $requestString = strval($data["textsearch"]);
             $substrings = explode(" ", $requestString);
@@ -529,14 +529,10 @@ class OfferController extends Controller
                 if(preg_match('/^[^A-Za-z0-9]+$/',$substr)) {
                     $substr = preg_replace('/^[^A-Za-z0-9]+$/', "", $substr);
                 }
-
                 #replaces one or more special characters with "* "
                 $substr = preg_replace('/[^A-Za-z0-9]+/', "* ", $substr);
                 #removes spaces and special characters at the beginning of substring
                 $substr = preg_replace('/^[^A-Za-z0-9]+/', "", $substr);
-
-                error_log("substring: ".$substr);
-
 
                 #adds "* " at end of substring if not already there
                 if( preg_match('/[\*]$/',$substr));
@@ -548,9 +544,8 @@ class OfferController extends Controller
             #replaces one or more "*" with "* "
             $searchString = preg_replace('/[\*\s]+/', "* ", $searchString);
             #remove single "*"
-            error_log($searchString." searchstring");
             $searchString = preg_replace('/^\*/', "", $searchString);
-            error_log($searchString." searchstring");
+
             $offerQueryTextsearch = $offerQueryTextsearch->whereRaw(
                 "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString,)
                 ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
