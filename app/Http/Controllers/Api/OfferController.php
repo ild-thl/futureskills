@@ -547,7 +547,7 @@ class OfferController extends Controller
             $searchString = preg_replace('/^\*/', "", $searchString);
 
             $offerQueryTextsearch = $offerQueryTextsearch->whereRaw(
-                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString,)
+                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString)
                 ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
                 ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)",$searchString);
         }
