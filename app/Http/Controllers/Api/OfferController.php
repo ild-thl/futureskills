@@ -547,9 +547,9 @@ class OfferController extends Controller
             $searchString = preg_replace('/^\*/', "", $searchString);
 
             $offerQueryTextsearch = $offerQueryTextsearch->whereRaw(
-                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString,)
-                ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
-                ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)",$searchString);
+                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString);
+              #  ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
+              #  ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)",$searchString);
         }
 
         unset($data['page']);
@@ -567,18 +567,19 @@ class OfferController extends Controller
 
             }
             $offerQueryTextsearchIds = $offerQueryTextsearch->pluck("id");
+            print_r($offerQueryTextsearchIds);
             $offerQueryFilterIds = $offerQueryFilter->pluck("id");
             $offerQueryFilteredTextsearch = array_intersect($offerQueryTextsearchIds->toArray(),$offerQueryFilterIds->toArray()) ;
             $offerQuery = Offer::whereIn('id',$offerQueryFilteredTextsearch);
 
             //Get sort_flag from huboffers table into offer for ordered results
             $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
-            $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
-                $join->on('offers.id', '=', 'huboffers.offer_id');
-            });
+          #  $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
+          #      $join->on('offers.id', '=', 'huboffers.offer_id');
+          #  });
 
-            $offerQuery = $offerQuery->orderBy('sort_flag', 'desc')->Paginate($offerCount);
-            return $offerQuery;
+          #  $offerQuery = $offerQuery->orderBy('sort_flag', 'desc')->Paginate($offerCount);
+            return $offerQuery->Paginate($offerCount);
     }
 
 }
