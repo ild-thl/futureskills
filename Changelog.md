@@ -1,6 +1,6 @@
 # Changelog
 
-## [UnReleased v0.5]
+## [Released v0.5]
 
 ## 2021-12-06/kw
 ## Added
