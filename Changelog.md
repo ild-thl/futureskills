@@ -1,5 +1,36 @@
 # Changelog
 
+## [Released v0.5]
+
+## 2021-12-06/kw
+## Added
+- Textsearch function that works with filters
+- new migration for adding fulltext search indexes to columns "title,author,description" of "offers" table
+## Changed
+- renamed buildFilterQuery to buildFilterTextsearchQuery to reflect new functionality
+
+## 2021-12-02/dk
+## Changed
+- Pagination results are sorted by sort_flag
+
+## 2021-11-17/dk
+## Changed
+- fixed filters ignoring competences when the first offer had none assigned
+
+## 2021-11-10/kw
+## Changed
+- changed relatedOffers synchronization in "saveRelatedData" function in OfferController back to previous functionality 
+- changed relatedOfferRule back to previous state
+
+## 2021-11-08/kw
+## Added
+- "location" to Offer(update/store)request rules 
+- "location" to ExternalOfferUpdaterequest rules 
+## Changed
+- saveRelatedData function to delete rows in pivot tables related to Offer
+- Offer related pivot tables no longer delete data unless explicitly sending delete request with §key =(no value) ;  
+- relatedOfferRule 
+
 ## [Released v0.4.2]
 
 ## 2021-10-14/kw

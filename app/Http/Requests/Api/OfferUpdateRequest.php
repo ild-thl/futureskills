@@ -60,6 +60,7 @@ class OfferUpdateRequest extends FormRequest
             'exam' => 'nullable|string',
             'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
+            'location' => 'nullable|string',
 
             #HUBOFFERS table
             'sort_flag' => 'nullable|integer',
