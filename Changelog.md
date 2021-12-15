@@ -1,5 +1,11 @@
 # Changelog
 
+## [Not Released v0.6]
+### 2021-12-15/ml
+## Added
+- Passport config
+- token expire variables in AuthServiceProvider
+
 ## [Released v0.5]
 
 ## 2021-12-06/kw
