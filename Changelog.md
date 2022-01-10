@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Not Released v0.6]
+
+## 2022-01-10/kw
+## Changed
+- Textsearch response now sorted by score
+
 ### 2021-12-15/ml
 ## Added
 - Passport config

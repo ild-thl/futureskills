@@ -518,8 +518,8 @@ class OfferController extends Controller
         $data = $request->except('_token');
 
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
-            $substrings = explode(" ", strval($data["textsearch"]));
             $searchString ="";
+            $substrings = explode(" ", strval($data["textsearch"]));
 
             foreach($substrings as $substr){
                 if(preg_match('/^[^A-Za-z0-9]+$/',$substr)) {
@@ -565,7 +565,7 @@ class OfferController extends Controller
         unset($data['page']);
         unset($data['textsearch']);
 
-        #get query with filtervalues
+        #get filtervalues
         foreach($data as $key => $array){
                 if(Schema::hasColumn('offers', $key)){
                         $offerQueryFilter = $offerQueryFilter->whereIn($key,$data[$key]);
@@ -578,8 +578,7 @@ class OfferController extends Controller
             }
 
         $offerQueryFilterIds = $offerQueryFilter->pluck("id");
-        #sync filter with textsearch if no textsearch , no unset
-        #get keys as string with , sort by score
+        #sync filter with textsearch
         $filterIdsWithTextsearch=[];
         if(array_key_exists("textsearch", $request->except('_token'))){
             foreach($offerQueryFilterIds as $filter_ids => $id){
@@ -588,20 +587,23 @@ class OfferController extends Controller
                 }
             }
         }
+
+        #sort by score
         arsort($filterIdsWithTextsearch);
         $sortedIdsString = implode(',', array_keys($filterIdsWithTextsearch));
 
-            if(array_key_exists("textsearch", $request->except('_token'))){
-                $offerQuery = Offer::whereIn('id',array_keys($filterIdsWithTextsearch))->orderByRaw("FIELD(id,$sortedIdsString)");
-            }else{
-                $offerQuery = Offer::whereIn('id',$offerQueryFilterIds);
-                //Get sort_flag from huboffers table into offer for ordered textsearchParameterss
-                $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
-                $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
-                    $join->on('offers.id', '=', 'huboffers.offer_id');
-                });
-               $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
-            }
-            return $offerQuery->Paginate($offerCount);
+        if(array_key_exists("textsearch", $request->except('_token'))){
+            $offerQuery = Offer::whereIn('id',array_keys($filterIdsWithTextsearch))->orderByRaw("FIELD(id,$sortedIdsString)");
+        }else{
+            $offerQuery = Offer::whereIn('id',$offerQueryFilterIds);
+            //Get sort_flag from huboffers table
+            $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
+            $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
+                $join->on('offers.id', '=', 'huboffers.offer_id');
+            });
+            $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
+        }
+
+        return $offerQuery->Paginate($offerCount);
     }
 }
