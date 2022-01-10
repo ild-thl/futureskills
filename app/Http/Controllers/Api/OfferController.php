@@ -511,21 +511,17 @@ class OfferController extends Controller
      * @return  Offer $offerQuery
      */
     private function buildFilterTextsearchQuery(int $offerCount, FilterRequest $request){
-        $offerQueryTextsearch = Offer::query();
         $offerQueryFilter = Offer::query();
         $offerQuery = Offer::query();
 
+        $textsearchScores=[];
         $data = $request->except('_token');
 
-        #if key "textsearch" isnt given, textsearch = null, or only special characters are given as value
-        # only apply filter, if no filters -> response should be all offers
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
-            $requestString = strval($data["textsearch"]);
-            $substrings = explode(" ", $requestString);
+            $substrings = explode(" ", strval($data["textsearch"]));
             $searchString ="";
 
             foreach($substrings as $substr){
-
                 if(preg_match('/^[^A-Za-z0-9]+$/',$substr)) {
                     $substr = preg_replace('/^[^A-Za-z0-9]+$/', "", $substr);
                 }
@@ -533,12 +529,9 @@ class OfferController extends Controller
                 $substr = preg_replace('/[^A-Za-z0-9]+/', "* ", $substr);
                 #removes spaces and special characters at the beginning of substring
                 $substr = preg_replace('/^[^A-Za-z0-9]+/', "", $substr);
-
                 #adds "* " at end of substring if not already there
-                if( preg_match('/[\*]$/',$substr));
-                else{
-                    $substr = $substr."* ";
-                }
+                if(! preg_match('/[\*]$/',$substr))
+                    $substr = $substr."* ";;
                 $searchString .= $substr;
             }
             #replaces one or more "*" with "* "
@@ -546,15 +539,33 @@ class OfferController extends Controller
             #remove single "*"
             $searchString = preg_replace('/^\*/', "", $searchString);
 
-            $offerQueryTextsearch = $offerQueryTextsearch->whereRaw(
-                "MATCH(title) AGAINST(? IN BOOLEAN MODE) ",$searchString)
-                ->orWhereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE)",$searchString)
-                ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)",$searchString);
+            $textsearchTitle = DB::table('offers')->selectRaw("id, MATCH(title) AGAINST (? IN BOOLEAN MODE) AS 'score'", [$searchString])
+               ->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE) > 0 ", $searchString)->get();
+            $textsearchAuthor = DB::table('offers')->selectRaw("id, MATCH(author) AGAINST (? IN BOOLEAN MODE) AS 'score'", [$searchString])
+               ->whereRaw("MATCH(author) AGAINST(? IN BOOLEAN MODE) > 0 ", $searchString)->get();
+            $textsearchDescription = DB::table('offers')->selectRaw("id, MATCH(description) AGAINST (? IN BOOLEAN MODE) AS 'score'", [$searchString])
+               ->whereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE) > 0 ", $searchString)->get();
+
+             $textsearchParameters = [];
+             $textsearchParameters[] = json_decode($textsearchTitle, true);
+             $textsearchParameters[] = json_decode($textsearchAuthor, true);
+             $textsearchParameters[] = json_decode($textsearchDescription, true);
+
+             foreach($textsearchParameters as $key => $val){
+                 foreach($textsearchParameters[$key] as $offerColumn ){
+                    if(!array_key_exists($offerColumn['id'],$textsearchScores)){
+                        $textsearchScores[$offerColumn['id']] = $offerColumn['score'];
+                      }else{
+                        $textsearchScores[$offerColumn['id']] += $offerColumn['score'];
+                      }
+                 }
+             }
         }
 
         unset($data['page']);
         unset($data['textsearch']);
 
+        #get query with filtervalues
         foreach($data as $key => $array){
                 if(Schema::hasColumn('offers', $key)){
                         $offerQueryFilter = $offerQueryFilter->whereIn($key,$data[$key]);
@@ -564,21 +575,33 @@ class OfferController extends Controller
                         $q->whereIn($key.'.id', $data[$key]);
                             });
                     }
-
             }
-            $offerQueryTextsearchIds = $offerQueryTextsearch->pluck("id");
-            $offerQueryFilterIds = $offerQueryFilter->pluck("id");
-            $offerQueryFilteredTextsearch = array_intersect($offerQueryTextsearchIds->toArray(),$offerQueryFilterIds->toArray()) ;
-            $offerQuery = Offer::whereIn('id',$offerQueryFilteredTextsearch);
 
-            //Get sort_flag from huboffers table into offer for ordered results
-            $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
-            $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
-                $join->on('offers.id', '=', 'huboffers.offer_id');
-            });
+        $offerQueryFilterIds = $offerQueryFilter->pluck("id");
+        #sync filter with textsearch if no textsearch , no unset
+        #get keys as string with , sort by score
+        $filterIdsWithTextsearch=[];
+        if(array_key_exists("textsearch", $request->except('_token'))){
+            foreach($offerQueryFilterIds as $filter_ids => $id){
+                if(array_key_exists($id, $textsearchScores)){
+                    $filterIdsWithTextsearch[$id]= $textsearchScores[$id];
+                }
+            }
+        }
+        arsort($filterIdsWithTextsearch);
+        $sortedIdsString = implode(',', array_keys($filterIdsWithTextsearch));
 
-            $offerQuery = $offerQuery->orderBy('sort_flag', 'desc')->Paginate($offerCount);
-            return $offerQuery;
+            if(array_key_exists("textsearch", $request->except('_token'))){
+                $offerQuery = Offer::whereIn('id',array_keys($filterIdsWithTextsearch))->orderByRaw("FIELD(id,$sortedIdsString)");
+            }else{
+                $offerQuery = Offer::whereIn('id',$offerQueryFilterIds);
+                //Get sort_flag from huboffers table into offer for ordered textsearchParameterss
+                $sortFlags = HubOffer::query()->select('offer_id', 'sort_flag');
+                $offerQuery->joinSub($sortFlags, 'huboffers', function($join) {
+                    $join->on('offers.id', '=', 'huboffers.offer_id');
+                });
+               $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
+            }
+            return $offerQuery->Paginate($offerCount);
     }
-
 }
