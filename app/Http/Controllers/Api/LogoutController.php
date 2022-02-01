@@ -16,12 +16,9 @@ class LogoutController extends Controller
             $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($token->id);
             $token->delete();
         }
-
-        $date  = Carbon::now();
-        RefreshToken::where( 'expires_at', '<=', $date )->delete();
         RefreshToken::where('revoked',true)->delete();
-        $response = ['message' => 'You have been successfully logged out!'];
+        RefreshToken::where( 'expires_at', '<=', Carbon::now())->delete();
+        $response = ['message' => 'You have been successfully logged out'];
         return response($response, 200);
-
     }
 }

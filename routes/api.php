@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('apikey/generate/{institution}', [ ApiKeyController::class, 'generateApiKey']); #generate apikey for external offers
     Route::post('apikey/deactivatekey/{institution}', [ ApiKeyController::class, 'deactivateApiKey']); #deactivate apikey for external offers
     Route::post('apikey/activatekey/{institution}', [ ApiKeyController::class, 'activateApiKey']); #activate apikey for external offers
-    Route::get('logout',[LogoutController::class,'logout']); # manual client logout
+    Route::get('logout',[LogoutController::class,'logout']); # deletes accesstokens and refreshtokens when logging out
 });
 
 //test routes for pagination

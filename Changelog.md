@@ -2,6 +2,11 @@
 
 ## [Not Released v0.6]
 
+## 2022-02-01/kw
+## Added
+-new route GET::{{url}}/api/logout      added
+-route deletes accesstokens and refreshtokens of user
+
 ## 2022-01-10/kw
 ## Changed
 - Textsearch response now sorted by score
