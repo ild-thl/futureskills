@@ -1,6 +1,6 @@
 # Changelog
 
-## [Not Released v0.6]
+## [Released v0.6]
 
 ## 2022-01-10/kw
 ## Changed
