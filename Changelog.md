@@ -1,5 +1,16 @@
 # Changelog
 
+## [Released v0.6]
+
+## 2022-01-10/kw
+## Changed
+- Textsearch response now sorted by score
+
+### 2021-12-15/ml
+## Added
+- Passport config
+- token expire variables in AuthServiceProvider
+
 ## [Released v0.5]
 
 ## 2021-12-06/kw
