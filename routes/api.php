@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('logout',[LogoutController::class,'logout']); # deletes accesstokens and refreshtokens when logging out
 });
 
+
+
 //test routes for pagination
 Route::post('offer/paginated/{offerCount}', [OfferController::class, 'paginatedOffers']);
 Route::post('list/offer/short/paginated/{offerCount}', [ OfferController::class, 'paginatedReducedOffers']);

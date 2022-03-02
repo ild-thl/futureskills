@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-03-01/kw
+## Changed
+-logout function changed to only delete token passed in request and its corresponding refreshtoken
+
 ## [Released v0.6]
 
 ## 2022-02-01/kw
