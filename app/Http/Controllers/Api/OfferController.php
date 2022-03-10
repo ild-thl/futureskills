@@ -606,4 +606,24 @@ class OfferController extends Controller
 
         return $offerQuery->Paginate($offerCount);
     }
+
+    /**
+     * Store textsearch in database
+     * @param  String $textsearch
+     */
+
+    private function storeTextsearch(String $textsearch){
+
+        $reworkedstring = preg_replace("/\*/", "", $textsearch);
+        $ts = Textsearch::getByTextsearch($reworkedstring);
+        if(! \is_object( $ts)){
+            $inputs = ['textsearch' => $reworkedstring, 'count' => 1];
+            Textsearch::create($inputs);
+        }
+        else{
+            $ts = Textsearch::getByTextsearch($reworkedstring);
+            $ts->count += 1;
+            $ts->save();
+        }
+    }
 }
