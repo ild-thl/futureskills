@@ -517,9 +517,10 @@ class OfferController extends Controller
 
         $textsearchScores=[];
         $data = $request->except('_token');
+        $searchString ="";
 
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
-            $searchString ="";
+
             $substrings = explode(" ", strval($data["textsearch"]));
 
             foreach($substrings as $substr){
@@ -604,7 +605,9 @@ class OfferController extends Controller
             });
             $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
         }
-
+        #store searchstring in database
+        if($searchString!="")
+        $this->storeTextsearch($searchString);
         return $offerQuery->Paginate($offerCount);
     }
 
@@ -613,18 +616,20 @@ class OfferController extends Controller
      * @param  String $textsearch
      */
 
-    private function storeTextsearch(String $textsearch){
+    private function storeTextsearch(String $searchString){
 
-        $reworkedstring = preg_replace("/\*/", "", $textsearch);
-        $ts = Textsearch::getByTextsearch($reworkedstring);
-        if(! \is_object( $ts)){
-            $inputs = ['textsearch' => $reworkedstring, 'count' => 1];
+        $editedSearchString = preg_replace("/\*/", "", $searchString);
+        $editedSearchString = preg_replace("/^\s/","",$editedSearchString);
+
+        $textsearch = Textsearch::getByTextsearch($editedSearchString);
+        if(! \is_object( $textsearch)){
+            $inputs = ['textsearch' => $editedSearchString, 'count' => 1];
             Textsearch::create($inputs);
         }
         else{
-            $ts = Textsearch::getByTextsearch($reworkedstring);
-            $ts->count += 1;
-            $ts->save();
+            $textsearch = Textsearch::getByTextsearch($editedSearchString);
+            $textsearch->count += 1;
+            $textsearch->save();
         }
     }
 }
