@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
+use App\Models\Textsearch;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
