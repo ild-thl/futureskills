@@ -608,6 +608,7 @@ class OfferController extends Controller
         #store searchstring in database
         if($searchString!="")
         $this->storeTextsearch($searchString);
+        #return paginated offers
         return $offerQuery->Paginate($offerCount);
     }
 
