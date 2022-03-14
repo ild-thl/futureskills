@@ -1,5 +1,9 @@
 # Changelog
 
+## 2202-03-14/kw
+## Added
+-funktion: saving textsearches for filtering offers 
+
 ## 2022-03-01/kw
 ## Changed
 -logout function changed to only delete token passed in request and its corresponding refreshtoken
