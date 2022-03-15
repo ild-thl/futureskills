@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-03-15/ml
+# added
+- MiniDataSet (id, title, image, visible) for the management sites, that is controlled by middleware
+
 ## 2022-03-01/kw
 ## Changed
 -logout function changed to only delete token passed in request and its corresponding refreshtoken
