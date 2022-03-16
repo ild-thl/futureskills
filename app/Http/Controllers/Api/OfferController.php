@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
+use App\Models\Textsearch;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
@@ -537,9 +538,10 @@ class OfferController extends Controller
 
         $textsearchScores=[];
         $data = $request->except('_token');
+        $searchString ="";
 
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
-            $searchString ="";
+
             $substrings = explode(" ", strval($data["textsearch"]));
 
             foreach($substrings as $substr){
@@ -624,7 +626,32 @@ class OfferController extends Controller
             });
             $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
         }
-
+        #store searchstring in database
+        if($searchString!="")
+        $this->storeTextsearch($searchString);
+        #return paginated offers
         return $offerQuery->Paginate($offerCount);
+    }
+
+    /**
+     * Store textsearch in database
+     * @param  String $textsearch
+     */
+
+    private function storeTextsearch(String $searchString){
+
+        $editedSearchString = preg_replace("/\*/", "", $searchString);
+        $editedSearchString = preg_replace("/^\s/","",$editedSearchString);
+
+        $textsearch = Textsearch::getByTextsearch($editedSearchString);
+        if(! \is_object( $textsearch)){
+            $inputs = ['textsearch' => $editedSearchString, 'count' => 1];
+            Textsearch::create($inputs);
+        }
+        else{
+            $textsearch = Textsearch::getByTextsearch($editedSearchString);
+            $textsearch->count += 1;
+            $textsearch->save();
+        }
     }
 }
