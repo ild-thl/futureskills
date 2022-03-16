@@ -100,6 +100,27 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a mini listing for offers in management-site.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getOfferMiniDataSet()
+    {
+        $offers = Offer::all()->sortBy("title");
+        $offers = $offers->values()->all();
+        $output = array();
+        foreach ( $offers as $offer ) {
+            $output[] = array(
+                "id" => $offer->id,
+                "title" => $offer->title,
+                "image_path" => $offer->image_path,
+                "visible" => isset( $offer->hubOffer) ? $offer->hubOffer->visible : 0
+            );
+        }
+        return response()->json($output, 200);
+    }
+
+    /**
      * Display a reduced listing for tiles.
      *
      * @return \Illuminate\Http\Response

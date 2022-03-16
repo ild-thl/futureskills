@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('offer', OfferController::class )->except(['index', 'show']);
+    Route::get('manage/offerlist', [ OfferController::class, 'getOfferMiniDataSet']);
     Route::resource('institution', InstitutionController::class )->except(['index', 'show']);
     Route::get('subscription', [ SubscriptionController::class, 'index']); # get all subscriptions
     Route::get('subscription/user/{user_id}', [ UserController::class, 'offers']); # get all subscriptions of user

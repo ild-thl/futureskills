@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased v0.7]
+
+## 2022-03-15/ml
+# added
+- MiniDataSet (id, title, image, visible) for the management sites, that is controlled by middleware
+
 ## 2202-03-14/kw
 ## Added
 -funktion: saving textsearches for filtering offers 
