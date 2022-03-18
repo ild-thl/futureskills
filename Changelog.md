@@ -2,6 +2,10 @@
 
 ## [Unreleased v0.7]
 
+## 2022-03-18/ml
+# changed
+- MiniDataSet (id, title, image, visible + sort_flag), is sorted bei sort_flag
+
 ## 2022-03-15/ml
 # added
 - MiniDataSet (id, title, image, visible) for the management sites, that is controlled by middleware

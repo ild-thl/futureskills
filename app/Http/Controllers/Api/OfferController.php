@@ -106,17 +106,24 @@ class OfferController extends Controller
      */
     public function getOfferMiniDataSet()
     {
-        $offers = Offer::all()->sortBy("title");
+        $offers = Offer::all();
         $offers = $offers->values()->all();
         $output = array();
+        $sort = array();
         foreach ( $offers as $offer ) {
             $output[] = array(
                 "id" => $offer->id,
                 "title" => $offer->title,
                 "image_path" => $offer->image_path,
-                "visible" => isset( $offer->hubOffer) ? $offer->hubOffer->visible : 0
+                "visible" => isset( $offer->hubOffer) ? $offer->hubOffer->visible : 0,
+                "sortflag" => isset( $offer->hubOffer) ? $offer->hubOffer->sort_flag : null,
             );
+            $sort[$offer->id] = null;
+            if ( is_object( $offer->huboffer ) ) {
+                $sort[$offer->id] = $offer->huboffer->sort_flag;
+            }
         }
+        array_multisort($sort, SORT_DESC, $output);
         return response()->json($output, 200);
     }
 
