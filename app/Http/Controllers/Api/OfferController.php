@@ -157,7 +157,7 @@ class OfferController extends Controller
         $offer = Offer::create($validatedData);
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
-
+        $offer = Offer::find($offer->id);
         return response()->json($this->restructureJsonOutput($offer), 201);
     }
 
