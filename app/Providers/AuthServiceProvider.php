@@ -47,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->roles->first()->permissions->contains('name', "store_update_user");
         });
 
+        Gate::define('update_external_course_catalog', function ($user) {
+            return $user->roles->first()->permissions->contains('name', "update_external_catalogs");
+        });
+
         Passport::routes();
         $this->setPassportConfiguration();
     }

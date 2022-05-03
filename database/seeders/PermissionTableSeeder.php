@@ -36,8 +36,8 @@ class PermissionTableSeeder extends Seeder
                 'name' => 'store_update_user',
                 'created_at' => now()
                 ]);
-        } else {
-            echo "Permissions table not empty. Skipping...\n";
+            }   else {
+                echo "Permissions table not empty. Skipping...\n";
         }
     }
 }
