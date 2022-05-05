@@ -44,29 +44,31 @@ class ExternalCourseCatalogController extends Controller
         }
     }
 
-    public function turnOnScheduleForUpdates(){
-
-    }
 
     public function updateExternalCatalogs(ExternalCourseCatalogUpdateRequest $request, int $inst_id){
-       # $request->validated();
-        switch ($inst_id) {
-            case 1:
-                $response = $this->importFutureskillsLMS();
-                break;
-            case 2:
-                $response = $this->importMicrosoft();
-                break;
-            case 3:
-                $response = $this->importOpenVhb();
-                break;
-            case 6:
-                $response = $this->importOpenCampus();
-                break;
-            default :
-                $response = ['message' => 'Institution_Id does not exists'];
-                break;
+        $this->validateArray();
+        if(!Institution::where('id', '=', $inst_id)->exists()){
+            $response = ['message' => 'Institution does not exists'];
+        }else{
+            switch ($inst_id) {
+                case 1:
+                    $response = $this->importFutureskillsLMS();
+                    break;
+                case 2:
+                    $response = $this->importMicrosoft();
+                    break;
+                case 3:
+                    $response = $this->importOpenVhb();
+                    break;
+                case 6:
+                    $response = $this->importOpenCampus();
+                    break;
+                default :
+                    $response = ['message' => 'Institution_Id does not exists'];
+                    break;
+            }
         }
+
         return response($response, 200);
     }
 
@@ -136,9 +138,9 @@ class ExternalCourseCatalogController extends Controller
 
     private function importOpenVhb(){
 
-        $jsonUrl = 'https://open.vhb.org/courses.json';
+        #$jsonUrl = 'https://open.vhb.org/courses.json';
         $institutionId = 3;
-        #$jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/openVHB.json';
+        $jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/openVHB.json';
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['data'];
         $offers = Offer::where('institution_id',$institutionId )->get();
@@ -264,9 +266,15 @@ class ExternalCourseCatalogController extends Controller
             ],
         ];
 
-        Validator::make($input, [
+        $validator = Validator::make($input, [
             'user' => 'array:username',
+            'user' => 'array:id',
+            'user' => 'array:name',
+            'user' => 'array:admin',
         ]);
+
+        $res = $validator->validated($input);
+        print_r($res);
     }
 
 

@@ -17,14 +17,12 @@ class RolePermissionExternalCatalogSeeder extends Seeder
     public function run()
     {
         if (!Permission::where('name', '=', 'update_external_catalogs')->exists()) {
-            $permissions = DB::table('permissions')->get();
+
             DB::table('permissions')->insert([
                 'name' => 'update_external_catalogs',
                 'created_at' => now()
                 ]);
 
-
-            DB::table('permission_role')->get();
             DB::table('permission_role')->insert([
                 'permission_id' => Permission::getByName("update_external_catalogs")->id,
                 'role_id' => Role::getByName("admin")->id,
