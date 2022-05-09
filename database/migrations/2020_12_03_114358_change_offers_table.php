@@ -36,6 +36,7 @@ class ChangeOffersTable extends Migration
             $table->dropColumn('competence_tech');
             $table->dropColumn('competence_digital');
             $table->dropColumn('competence_classic');
+            $table->dropColumn('competence_classic');
         });
         DB::statement("ALTER TABLE offers MODIFY COLUMN type ENUM('online-course', 'webinar','presence-event','presence-series')");
     }

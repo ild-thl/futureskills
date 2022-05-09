@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('apikey/deactivatekey/{institution}', [ ApiKeyController::class, 'deactivateApiKey']); #deactivate apikey for external offers
     Route::post('apikey/activatekey/{institution}', [ ApiKeyController::class, 'activateApiKey']); #activate apikey for external offers
     Route::get('logout',[LogoutController::class,'logout']); # deletes accesstokens and refreshtokens when logging out
-    Route::get('updatecatalog/{institution}', [ExternalCourseCatalogController::class, 'updateExternalCatalogs']); # updates the course catalog of external institutions
+    Route::get('updatecatalog/{institution}', [ExternalCourseCatalogController::class, 'updateExternalCatalogs']); # updates the course catalog of external institutions / admin only
 });
 
 

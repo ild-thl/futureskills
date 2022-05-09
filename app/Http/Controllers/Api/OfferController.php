@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractOfferController;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\FilterRequest;
 use App\Http\Requests\Api\OfferUpdateRequest;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 
 
 
-class OfferController extends Controller
+class OfferController extends AbstractOfferController
 {
 
     /**
@@ -432,105 +433,6 @@ class OfferController extends Controller
         return $ret;
     }
 
-    /**
-     * Save an offer's data in other tables
-     *
-     * @param  \App\Models\Offer $offer
-     * @param  Array $validatedData
-     */
-    private function saveRelatedData( Offer $offer, Array $validatedData ) {
-
-        # Sync pivot tables
-        $competences = Competence::all();
-        $competences_sync = array();
-
-        foreach ( $competences as $c ) {
-
-            if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier]){
-                    $competences_sync[] = $c->id;
-                    $offer->competences()->sync($competences_sync, false);
-
-            }elseif(\key_exists( "competence_".$c->identifier, $validatedData ) && !$validatedData["competence_".$c->identifier]){
-                $offer->competences()->detach($c->id);
-                $offer->competences()->sync($competences_sync, false);
-            }
-        }
-
-        $metas = Meta::all();
-        $meta_sync = array();
-
-        foreach ( $metas as $m ) {
-            if ( \key_exists( $m->description, $validatedData )  ) {
-
-                if(empty ( $validatedData[$m->description] )){
-                    $offer->metas()->detach($m->id);
-                }else{
-                    $meta_sync[ $m->id ] = [ "value" => $validatedData[$m->description] ];
-                }
-            }
-        }
-        $offer->metas()->sync($meta_sync,false);
-
-        # Fill other related tables
-        $hubOffer = Huboffer::where([ "offer_id" => $offer->id ])->first();
-        if ( is_object( $hubOffer ) ) {
-            $hubOffer->fill($validatedData);
-            $hubOffer->save();
-        }  else {
-            $validatedData["offer_id"] = $offer->id;
-            $hubOffer = Huboffer::create($validatedData);
-        }
-
-        $timestamp = Timestamp::where([ "offer_id" => $offer->id ])->first();
-        if ( is_object( $timestamp ) ) {
-            $timestamp->fill($validatedData);
-            $timestamp->save();
-        }  else {
-            $validatedData["offer_id"] = $offer->id;
-            $timestamp = Timestamp::create($validatedData);
-        }
-
-        if ( array_key_exists( "relatedOffers", $validatedData ) ) {
-            $relations = $validatedData["relatedOffers"];
-            $relations_sync = array();
-            foreach ( $relations as $relation ) {
-                # empty array [ 0 => null ]
-                if ( $relation === null && count( $relations ) == 1 ) {
-                    $offer->originalRelations()->detach();
-                } else {
-                    $relations_sync[] = intval($relation);
-                }
-            }
-            $offer->originalRelations()->sync($relations_sync);
-        }
-    }
-
-    /**
-     * Support for using API readable parameterd
-     * 'type' instead of 'offertype_id'
-     * 'language' instead of 'language_id'
-     *
-     * @param  Array $validatedData
-     * @return  Array $validatedData
-     */
-    private function validateRedundantInput( Array $validatedData ) {
-
-        if ( !key_exists ( "offertype_id", $validatedData ) && !empty ( $validatedData["type"] ) ) {
-            $offertype = Offertype::where([ "identifier" => $validatedData["type"] ])->first();
-            if ( is_object( $offertype ) ) {
-                $validatedData["offertype_id"] = $offertype->id;
-            }
-        }
-
-        if ( !key_exists ( "language_id", $validatedData ) && !empty ( $validatedData["language"] ) ) {
-            $language = Language::where([ "identifier" => $validatedData["language"] ])->first();
-            if ( is_object( $language ) ) {
-                $validatedData["language_id"] = $language->id;
-            }
-        }
-        return $validatedData;
-
-    }
 
     /**
      * Remodel the output of an offer for short data list

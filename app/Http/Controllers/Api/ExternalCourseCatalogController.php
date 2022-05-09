@@ -2,22 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AbstractOfferController;
 use App\Models\Offer;
 use App\Models\Institution;
-use App\Models\Offertype;
-use App\Models\Language;
-use App\Models\Competence;
-use App\Models\Meta;
-use App\Models\Huboffer;
-use App\Models\Timestamp;
-use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Api\ExternalCourseCatalogUpdateRequest;
-use Illuminate\Foundation\Http\FormRequest;
 
-class ExternalCourseCatalogController extends Controller
+class ExternalCourseCatalogController extends AbstractOfferController
 {
     /**
      * Delete offer from database if it's not in the catalog
@@ -44,9 +35,15 @@ class ExternalCourseCatalogController extends Controller
         }
     }
 
-
+    /**
+     * Update the specified external catalog by passing institution id.
+     *
+     * @param  \App\Http\Requests\Api\ExternalCourseCatalogUpdateRequest  $request
+     * @param  Integer $inst_id
+     * @return \Illuminate\Http\Response
+     */
     public function updateExternalCatalogs(ExternalCourseCatalogUpdateRequest $request, int $inst_id){
-        $this->validateArray();
+
         if(!Institution::where('id', '=', $inst_id)->exists()){
             $response = ['message' => 'Institution does not exists'];
         }else{
@@ -68,17 +65,19 @@ class ExternalCourseCatalogController extends Controller
                     break;
             }
         }
-
         return response($response, 200);
     }
 
+    /**
+     * Update external Futurskills catalog.
+     *
+     * @return Array
+     */
     private function importFutureskillsLMS(){
         $jsonUrl = 'https://lms.futureskills-sh.de/courses.json';
         $institutionId = 1;
-        #$jsonUrl = "C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/courses.json";
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['data'];
-        $this->validateArray($courses);
         $offers = Offer::where('institution_id',$institutionId )->get();
 
         $this-> synchDBwithCatalog($courses,$offers,"id");
@@ -95,21 +94,28 @@ class ExternalCourseCatalogController extends Controller
                 'time_requirement' => $course['attributes']['processingtime'],
                 'sort_flag' => 100,
                 'externalId' => $course["id"],
-                #'offertype_id' => "error",
                 'offertype_id' => 5,
             ];
-                $inst = Institution::getById($institutionId);
-                $this->updateExternalCatalog($params,$inst,$params['externalId']);
+                if($this->validateArray($params)){
+                    return   ['message' => 'invalid offer parameters'];
+                }else{
+                    $inst = Institution::getById($institutionId);
+                    $this->updateExternalCatalog($params,$inst,$params['externalId']);
+                }
         }
         return   ['message' => 'The Futureskills course catalog has been updated'];
 
     }
 
 
+    /**
+     * Update Microsoft catalog.
+     *
+     * @return Array
+     */
     private function importMicrosoft(){
         $jsonUrl = 'https://docs.microsoft.com/api/learn/catalog/?locale=de-de';
         $institutionId = 2;
-        #$jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/microsoftCourses.json';
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['modules'];
         $offers = Offer::where('institution_id',$institutionId )->get();
@@ -129,17 +135,26 @@ class ExternalCourseCatalogController extends Controller
                 'offertype_id' => 5,
                 'niveau' => $course["levels"][0] === "beginner" ? "Anfänger" : ($course["levels"][0] === "intermediate" ? "Fortgeschrittene Anfänger" : "Fortgeschrittene"),
 	        ];
-            $inst = Institution::getById($institutionId);
-            $this->updateExternalCatalog($params,$inst,$params['externalId']);
+            if($this->validateArray($params)){
+                return   ['message' => 'invalid offer parameters'];
+            }else{
+                $inst = Institution::getById($institutionId);
+                $this->updateExternalCatalog($params,$inst,$params['externalId']);
+            }
         }
         return  ['message' => 'The Microsoft course catalog has been updated'];
 
     }
 
+    /**
+     * Update OpenVhb catalog.
+     *
+     * @return Array
+     */
     private function importOpenVhb(){
 
-        #$jsonUrl = 'https://open.vhb.org/courses.json';
         $institutionId = 3;
+        #$jsonUrl = 'https://open.vhb.org/courses.json';
         $jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/openVHB.json';
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['data'];
@@ -159,10 +174,14 @@ class ExternalCourseCatalogController extends Controller
                 'time_requirement' => $course['attributes']['processingtime'],
                 //'sort_flag' => 100,
                 'externalId' => $course["id"],
-                'offertype_id' => 5,
+                'offertype_id' => "5",
                 ];
-                $inst = Institution::getById($institutionId);
-                $this->updateExternalCatalog($params,$inst,$params['externalId']);
+                if($this->validateArray($params)){
+                    return   ['message' => 'invalid offer parameters'];
+                }else{
+                    $inst = Institution::getById($institutionId);
+                    $this->updateExternalCatalog($params,$inst,$params['externalId']);
+                }
                 #KEINE NEUEN KURSE HINZUFÜGEN
         }
         return ['message' => 'The OpenVHB course catalog has been updated'];
@@ -171,11 +190,14 @@ class ExternalCourseCatalogController extends Controller
 
 
 
-
+    /**
+     * Update OpenCampus catalog.
+     *
+     * @return Array
+     */
     private function importOpenCampus(){
         $jsonUrl = 'https://edu.opencampus.sh/futureskills';
         $institutionId = 6;
-        #$jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/openCampusCourses.json';
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['courses'];
         $offers = Offer::where('institution_id',$institutionId )->get();
@@ -201,8 +223,12 @@ class ExternalCourseCatalogController extends Controller
                 'type' => $course["type"]
             ];
 
-            $inst = Institution::getById($institutionId);
-            $this->updateExternalCatalog($params,$inst,$params['externalId']);
+            if($this->validateArray($params)){
+                return   ['message' => 'invalid offer parameters'];
+            }else{
+                $inst = Institution::getById($institutionId);
+                $this->updateExternalCatalog($params,$inst,$params['externalId']);
+            }
 
         }
         return ['message' => 'The OpenCampus course catalog has been updated'];
@@ -210,10 +236,11 @@ class ExternalCourseCatalogController extends Controller
     }
 
     /**
-     * Update external catalogs via json.
+     * Insert/Update Offer to Database
      *
      * @param  Array $data
      * @param  Institution $institution
+     * @param  String $externalId
      */
     private function updateExternalCatalog(Array $data, Institution $institution, String $externalId){
 
@@ -230,124 +257,71 @@ class ExternalCourseCatalogController extends Controller
         $this->saveRelatedData( $offer, $validatedData );
     }
 
+
     /**
-     * Support for using API readable parameterd
-     * 'type' instead of 'offertype_id'
-     * 'language' instead of 'language_id'
+     * Validate catalog
      *
-     * @param  Array $validatedData
-     * @return  Array $validatedData
+     * @param  Array $offer
+     * @param  Institution $institution
+     * @param  String $externalId
+     * @return Boolean
      */
-    private function validateRedundantInput( Array $validatedData ) {
+    private function validateArray($offer){
+        $rules = [
+            'title' => 'max:255',
+            'offertype_id' => 'integer',
+            'description' => 'nullable|string',
+            'image_path' => 'nullable|string',
+            #'institution_id' disabled
+            'subtitle' => 'nullable|string',
+            'language_id' => 'integer',
+            'hashtag' => 'nullable|string',
+            'author' => 'nullable|string',
+            'target_group' => 'nullable|string',
+            'url' => 'nullable|url',
+            #'externalId' disabled
 
-        if ( !key_exists ( "offertype_id", $validatedData ) && !empty ( $validatedData["type"] ) ) {
-            $offertype = Offertype::where([ "identifier" => $validatedData["type"] ])->first();
-            if ( is_object( $offertype ) ) {
-                $validatedData["offertype_id"] = $offertype->id;
-            }
-        }
+            #COMPETENCES table
+            'competence_tech' => 'nullable|boolean',
+            'competence_digital' => 'nullable|boolean',
+            'competence_classic' => 'nullable|boolean',
 
-        if ( !key_exists ( "language_id", $validatedData ) && !empty ( $validatedData["language"] ) ) {
-            $language = Language::where([ "identifier" => $validatedData["language"] ])->first();
-            if ( is_object( $language ) ) {
-                $validatedData["language_id"] = $language->id;
-            }
-        }
-        return $validatedData;
+            #METAS table
+            'ects' => 'nullable|integer',
+            'time_requirement' => 'nullable|string',
+            'sponsor' => 'nullable|string',
+            'exam' => 'nullable|string',
+            'requirements' => 'nullable|string',
+            'niveau' => 'nullable|string',
+            'location' => 'nullable|string',
 
-    }
-    #validation
-    private function validateArray(){
-        $input = [
-            'user' => [
-                'name' => 'Taylor Otwell',
-                'username' => 'taylorotwell',
-                'admin' => true,
-            ],
+            #HUBOFFERS table disabled
+
+            #TIMESTAMPS table
+            'executed_from' => 'date',
+            'executed_until' => 'nullable|date',
+            'listed_from' => 'date',
+            'listed_until' => 'nullable|date',
+            'active' => 'nullable|boolean',
+
+            #Backwards compatibility
+            'type' => 'string',
+            'language' => 'string',
         ];
 
-        $validator = Validator::make($input, [
-            'user' => 'array:username',
-            'user' => 'array:id',
-            'user' => 'array:name',
-            'user' => 'array:admin',
-        ]);
 
-        $res = $validator->validated($input);
-        print_r($res);
-    }
+        $validator = Validator::make(
+            $offer, $rules
+        );
 
-
-    /**
-     * Save an offer's data in other tables
-     *
-     * @param  \App\Models\Offer $offer
-     * @param  Array $validatedData
-     */
-    private function saveRelatedData( Offer $offer, Array $validatedData ) {
-
-        # Sync pivot tables
-        $competences = Competence::all();
-        $competences_sync = array();
-
-        foreach ( $competences as $c ) {
-
-            if ( \key_exists( "competence_".$c->identifier, $validatedData ) && $validatedData["competence_".$c->identifier]){
-                    $competences_sync[] = $c->id;
-                    $offer->competences()->sync($competences_sync, false);
-
-            }elseif(\key_exists( "competence_".$c->identifier, $validatedData ) && !$validatedData["competence_".$c->identifier]){
-                $offer->competences()->detach($c->id);
-                $offer->competences()->sync($competences_sync, false);
-            }
+        if ($validator->fails()) {
+            return true;
         }
-
-        $metas = Meta::all();
-        $meta_sync = array();
-
-        foreach ( $metas as $m ) {
-            if ( \key_exists( $m->description, $validatedData )  ) {
-
-                if(empty ( $validatedData[$m->description] )){
-                    $offer->metas()->detach($m->id);
-                }else{
-                    $meta_sync[ $m->id ] = [ "value" => $validatedData[$m->description] ];
-                }
-            }
-        }
-        $offer->metas()->sync($meta_sync,false);
-
-        # Fill other related tables
-        $hubOffer = Huboffer::where([ "offer_id" => $offer->id ])->first();
-        if ( is_object( $hubOffer ) ) {
-            $hubOffer->fill($validatedData);
-            $hubOffer->save();
-        }  else {
-            $validatedData["offer_id"] = $offer->id;
-            $hubOffer = Huboffer::create($validatedData);
-        }
-
-        $timestamp = Timestamp::where([ "offer_id" => $offer->id ])->first();
-        if ( is_object( $timestamp ) ) {
-            $timestamp->fill($validatedData);
-            $timestamp->save();
-        }  else {
-            $validatedData["offer_id"] = $offer->id;
-            $timestamp = Timestamp::create($validatedData);
-        }
-
-        if ( array_key_exists( "relatedOffers", $validatedData ) ) {
-            $relations = $validatedData["relatedOffers"];
-            $relations_sync = array();
-            foreach ( $relations as $relation ) {
-                # empty array [ 0 => null ]
-                if ( $relation === null && count( $relations ) == 1 ) {
-                    $offer->originalRelations()->detach();
-                } else {
-                    $relations_sync[] = intval($relation);
-                }
-            }
-            $offer->originalRelations()->sync($relations_sync);
+        else{
+            return false;
         }
     }
+
+
+
 }
