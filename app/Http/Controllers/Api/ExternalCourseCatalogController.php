@@ -50,16 +50,16 @@ class ExternalCourseCatalogController extends AbstractOfferController
         }else{
             switch ($inst_id) {
                 case 1:
-                    $response = response($this->importFutureskillsLMS(), 200);
+                    $response = $this->importFutureskillsLMS();
                     break;
                 case 2:
-                    $response = response($this->importMicrosoft(), 200);
+                    $response = $this->importMicrosoft();
                     break;
                 case 3:
-                    $response = response($this->importOpenVhb(), 200);
+                    $response = $this->importOpenVhb();
                     break;
                 case 6:
-                    $response = response($this->importOpenCampus(), 200);
+                    $response = $this->importOpenCampus();
                     break;
                 default :
                     $response = response(['message' => 'Institution does not exists'], 404);
@@ -98,13 +98,13 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'offertype_id' => 5,
             ];
                 if($this->validateArray($params)){
-                    return   ['message' => 'invalid offer parameters'];
+                    return   response(['message' => 'invalid offer parameters'], 422);
                 }else{
                     $inst = Institution::getById($institutionId);
                     $this->updateExternalCatalog($params,$inst,$params['externalId']);
                 }
         }
-        return   ['message' => 'The Futureskills course catalog has been updated'];
+        return   response(['message' => 'The Futureskills course catalog has been updated'], 200);
 
     }
 
@@ -137,13 +137,13 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'niveau' => $course["levels"][0] === "beginner" ? "Anfänger" : ($course["levels"][0] === "intermediate" ? "Fortgeschrittene Anfänger" : "Fortgeschrittene"),
 	        ];
             if($this->validateArray($params)){
-                return   ['message' => 'invalid offer parameters'];
+                return  response(['message' => 'invalid offer parameters'], 422);
             }else{
                 $inst = Institution::getById($institutionId);
                 $this->updateExternalCatalog($params,$inst,$params['externalId']);
             }
         }
-        return  ['message' => 'The Microsoft course catalog has been updated'];
+        return  response(['message' => 'The Microsoft course catalog has been updated'], 200);
 
     }
 
@@ -177,14 +177,14 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'offertype_id' => "5",
                 ];
                 if($this->validateArray($params)){
-                    return   ['message' => 'invalid offer parameters'];
+                    return  response(['message' => 'invalid offer parameters'], 422);
                 }else{
                     $inst = Institution::getById($institutionId);
                     $this->updateExternalCatalog($params,$inst,$params['externalId']);
                 }
                 #KEINE NEUEN KURSE HINZUFÜGEN
         }
-        return ['message' => 'The OpenVHB course catalog has been updated'];
+        return  response(['message' => 'The OpenVHB course catalog has been updated'], 200) ;
 
         }
 
@@ -224,14 +224,14 @@ class ExternalCourseCatalogController extends AbstractOfferController
             ];
 
             if($this->validateArray($params)){
-                return   ['message' => 'invalid offer parameters'];
+                return  response(['message' => 'invalid offer parameters'], 422);
             }else{
                 $inst = Institution::getById($institutionId);
                 $this->updateExternalCatalog($params,$inst,$params['externalId']);
             }
 
         }
-        return ['message' => 'The OpenCampus course catalog has been updated'];
+        return response(['message' => 'The OpenCampus course catalog has been updated'], 200);
 
     }
 
@@ -247,6 +247,11 @@ class ExternalCourseCatalogController extends AbstractOfferController
         $validatedData = $this->validateRedundantInput( $data );
         $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();
         ## If the offer is not found, create. ID and Institution are set.
+        /*Offer::chunk(200, function ($offers) {
+            foreach ($offers as $offer) {
+
+            }
+        });*/
         if ( ! \is_object( $offer ) ) {
             $offer = Offer::create($validatedData);
         } else {
