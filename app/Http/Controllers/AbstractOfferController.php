@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Offertype;
 use App\Models\Language;
 use App\Models\Competence;
@@ -14,7 +13,7 @@ use App\Models\Offer;
 abstract class AbstractOfferController extends Controller
 {
     /**
-     * Support for using API readable parameterd
+     * Support for using API readable parameter
      * 'type' instead of 'offertype_id'
      * 'language' instead of 'language_id'
      *

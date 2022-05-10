@@ -45,27 +45,28 @@ class ExternalCourseCatalogController extends AbstractOfferController
     public function updateExternalCatalogs(ExternalCourseCatalogUpdateRequest $request, int $inst_id){
 
         if(!Institution::where('id', '=', $inst_id)->exists()){
-            $response = ['message' => 'Institution does not exists'];
+            #$response = ['message' => 'Institution does not exists'];
+            $response = response(['message' => 'Institution does not exists'], 404);
         }else{
             switch ($inst_id) {
                 case 1:
-                    $response = $this->importFutureskillsLMS();
+                    $response = response($this->importFutureskillsLMS(), 200);
                     break;
                 case 2:
-                    $response = $this->importMicrosoft();
+                    $response = response($this->importMicrosoft(), 200);
                     break;
                 case 3:
-                    $response = $this->importOpenVhb();
+                    $response = response($this->importOpenVhb(), 200);
                     break;
                 case 6:
-                    $response = $this->importOpenCampus();
+                    $response = response($this->importOpenCampus(), 200);
                     break;
                 default :
-                    $response = ['message' => 'Institution_Id does not exists'];
+                    $response = response(['message' => 'Institution does not exists'], 404);
                     break;
             }
         }
-        return response($response, 200);
+        return $response;
     }
 
     /**
@@ -154,8 +155,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
     private function importOpenVhb(){
 
         $institutionId = 3;
-        #$jsonUrl = 'https://open.vhb.org/courses.json';
-        $jsonUrl = 'C:/FSkills/fs_api/futureskills/app/Http/Controllers/Api/openVHB.json';
+        $jsonUrl = 'https://open.vhb.org/courses.json';
         $catalog = json_decode(file_get_contents($jsonUrl),true);
         $courses = $catalog['data'];
         $offers = Offer::where('institution_id',$institutionId )->get();
@@ -272,14 +272,12 @@ class ExternalCourseCatalogController extends AbstractOfferController
             'offertype_id' => 'integer',
             'description' => 'nullable|string',
             'image_path' => 'nullable|string',
-            #'institution_id' disabled
             'subtitle' => 'nullable|string',
             'language_id' => 'integer',
             'hashtag' => 'nullable|string',
             'author' => 'nullable|string',
             'target_group' => 'nullable|string',
             'url' => 'nullable|url',
-            #'externalId' disabled
 
             #COMPETENCES table
             'competence_tech' => 'nullable|boolean',
@@ -294,8 +292,6 @@ class ExternalCourseCatalogController extends AbstractOfferController
             'requirements' => 'nullable|string',
             'niveau' => 'nullable|string',
             'location' => 'nullable|string',
-
-            #HUBOFFERS table disabled
 
             #TIMESTAMPS table
             'executed_from' => 'date',

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\AbstractOfferController;
 use App\Http\Requests\Api\OfferStoreRequest;
 use App\Http\Requests\Api\FilterRequest;
@@ -10,12 +9,7 @@ use App\Http\Requests\Api\OfferUpdateRequest;
 use App\Http\Requests\Api\OfferExternalUpdateRequest;
 use App\Models\Offer;
 use App\Models\Institution;
-use App\Models\Competence;
-use App\Models\Meta;
-use App\Models\Language;
 use App\Models\Huboffer;
-use App\Models\Offertype;
-use App\Models\Timestamp;
 use App\Models\Textsearch;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator ;
