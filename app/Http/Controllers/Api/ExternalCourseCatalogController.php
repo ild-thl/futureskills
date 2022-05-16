@@ -7,6 +7,7 @@ use App\Models\Offer;
 use App\Models\Institution;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Api\ExternalCourseCatalogUpdateRequest;
+use Illuminate\Support\Facades\Log;
 
 class ExternalCourseCatalogController extends AbstractOfferController
 {
@@ -44,22 +45,22 @@ class ExternalCourseCatalogController extends AbstractOfferController
      */
     public function updateExternalCatalogs(ExternalCourseCatalogUpdateRequest $request, int $inst_id){
 
+        $updateViaRequest = true;
         if(!Institution::where('id', '=', $inst_id)->exists()){
-            #$response = ['message' => 'Institution does not exists'];
             $response = response(['message' => 'Institution does not exists'], 404);
         }else{
             switch ($inst_id) {
                 case 1:
-                    $response = $this->importFutureskillsLMS();
+                    $response = $this->updateFutureskillsLMS($updateViaRequest);
                     break;
                 case 2:
-                    $response = $this->importMicrosoft();
+                    $response = $this->updateMicrosoft($updateViaRequest);
                     break;
                 case 3:
-                    $response = $this->importOpenVhb();
+                    $response = $this->updateOpenVhb($updateViaRequest);
                     break;
                 case 6:
-                    $response = $this->importOpenCampus();
+                    $response = $this->updateOpenCampus($updateViaRequest);
                     break;
                 default :
                     $response = response(['message' => 'Institution does not exists'], 404);
@@ -74,7 +75,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
      *
      * @return Array
      */
-    private function importFutureskillsLMS(){
+     function updateFutureskillsLMS($updateViaRequest=false){
         $jsonUrl = 'https://lms.futureskills-sh.de/courses.json';
         $institutionId = 1;
         $catalog = json_decode(file_get_contents($jsonUrl),true);
@@ -98,13 +99,21 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'offertype_id' => 5,
             ];
                 if($this->validateArray($params)){
-                    return   response(['message' => 'invalid offer parameters'], 422);
+                    if($updateViaRequest){
+                        return   response(['message' => 'invalid offer parameters'], 422);
+                    }else{
+                        Log::error('futureskills update failed : invalid offer parameters');
+                    }
+
                 }else{
                     $inst = Institution::getById($institutionId);
                     $this->updateExternalCatalog($params,$inst,$params['externalId']);
                 }
         }
-        return   response(['message' => 'The Futureskills course catalog has been updated'], 200);
+        if($updateViaRequest){
+            return   response(['message' => 'The Futureskills course catalog has been updated'], 200);
+        }
+
 
     }
 
@@ -114,7 +123,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
      *
      * @return Array
      */
-    private function importMicrosoft(){
+     function updateMicrosoft($updateViaRequest=false){
         $jsonUrl = 'https://docs.microsoft.com/api/learn/catalog/?locale=de-de';
         $institutionId = 2;
         $catalog = json_decode(file_get_contents($jsonUrl),true);
@@ -137,13 +146,21 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'niveau' => $course["levels"][0] === "beginner" ? "Anfänger" : ($course["levels"][0] === "intermediate" ? "Fortgeschrittene Anfänger" : "Fortgeschrittene"),
 	        ];
             if($this->validateArray($params)){
-                return  response(['message' => 'invalid offer parameters'], 422);
+                if($updateViaRequest){
+                    return   response(['message' => 'invalid offer parameters'], 422);
+                }else{
+                    Log::error('microsoft update failed : invalid offer parameters');
+                }
+
             }else{
                 $inst = Institution::getById($institutionId);
                 $this->updateExternalCatalog($params,$inst,$params['externalId']);
             }
         }
-        return  response(['message' => 'The Microsoft course catalog has been updated'], 200);
+        if($updateViaRequest){
+            return  response(['message' => 'The Microsoft course catalog has been updated'], 200);
+        }
+
 
     }
 
@@ -152,7 +169,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
      *
      * @return Array
      */
-    private function importOpenVhb(){
+     function updateOpenVhb($updateViaRequest=false){
 
         $institutionId = 3;
         $jsonUrl = 'https://open.vhb.org/courses.json';
@@ -177,15 +194,21 @@ class ExternalCourseCatalogController extends AbstractOfferController
                 'offertype_id' => "5",
                 ];
                 if($this->validateArray($params)){
-                    return  response(['message' => 'invalid offer parameters'], 422);
+                    if($updateViaRequest){
+                        return   response(['message' => 'invalid offer parameters'], 422);
+                    }else{
+                        Log::error('openvhb : invalid offer parameters');
+                    }
+
                 }else{
                     $inst = Institution::getById($institutionId);
                     $this->updateExternalCatalog($params,$inst,$params['externalId']);
                 }
                 #KEINE NEUEN KURSE HINZUFÜGEN
         }
-        return  response(['message' => 'The OpenVHB course catalog has been updated'], 200) ;
-
+        if($updateViaRequest){
+            return  response(['message' => 'The OpenVHB course catalog has been updated'], 200) ;
+        }
         }
 
 
@@ -195,7 +218,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
      *
      * @return Array
      */
-    private function importOpenCampus(){
+     function updateOpenCampus($updateViaRequest=false){
         $jsonUrl = 'https://edu.opencampus.sh/futureskills';
         $institutionId = 6;
         $catalog = json_decode(file_get_contents($jsonUrl),true);
@@ -224,15 +247,21 @@ class ExternalCourseCatalogController extends AbstractOfferController
             ];
 
             if($this->validateArray($params)){
-                return  response(['message' => 'invalid offer parameters'], 422);
+                if($updateViaRequest){
+                    return   response(['message' => 'invalid offer parameters'], 422);
+                }else{
+                    Log::error('opencampus update failed : invalid offer parameters');
+                }
+
             }else{
                 $inst = Institution::getById($institutionId);
                 $this->updateExternalCatalog($params,$inst,$params['externalId']);
             }
 
         }
-        return response(['message' => 'The OpenCampus course catalog has been updated'], 200);
-
+        if($updateViaRequest){
+            return response(['message' => 'The OpenCampus course catalog has been updated'], 200);
+        }
     }
 
     /**
@@ -246,12 +275,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
 
         $validatedData = $this->validateRedundantInput( $data );
         $offer = Offer::where(["institution_id" => $institution->id, "externalId" => $externalId ])->first();
-        ## If the offer is not found, create. ID and Institution are set.
-        /*Offer::chunk(200, function ($offers) {
-            foreach ($offers as $offer) {
 
-            }
-        });*/
         if ( ! \is_object( $offer ) ) {
             $offer = Offer::create($validatedData);
         } else {
