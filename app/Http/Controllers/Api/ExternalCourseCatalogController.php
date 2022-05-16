@@ -29,6 +29,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
         }
         foreach($dbOfferIds as $offerId){
             if (! in_array( $offerId, $catalogOfferIds ) ) {
+                #if external id is null offer wont be deleted (internal futureskills offers)
                 if(! is_null($offerId)){
                     Offer::where('externalId', $offerId)->first()->delete();
                 }
