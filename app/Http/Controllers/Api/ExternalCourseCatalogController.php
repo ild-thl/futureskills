@@ -105,7 +105,6 @@ class ExternalCourseCatalogController extends AbstractOfferController
                     }else{
                         Log::error('futureskills update failed : invalid offer parameters');
                     }
-
                 }else{
                     $inst = Institution::getById($institutionId);
                     $this->updateExternalCatalog($params,$inst,$params['externalId']);
@@ -114,8 +113,6 @@ class ExternalCourseCatalogController extends AbstractOfferController
         if($updateViaRequest){
             return   response(['message' => 'The Futureskills course catalog has been updated'], 200);
         }
-
-
     }
 
 
@@ -161,8 +158,6 @@ class ExternalCourseCatalogController extends AbstractOfferController
         if($updateViaRequest){
             return  response(['message' => 'The Microsoft course catalog has been updated'], 200);
         }
-
-
     }
 
     /**
@@ -210,7 +205,7 @@ class ExternalCourseCatalogController extends AbstractOfferController
         if($updateViaRequest){
             return  response(['message' => 'The OpenVHB course catalog has been updated'], 200) ;
         }
-        }
+    }
 
 
 
