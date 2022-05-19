@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased v0.7]
+## [Released v0.7]
 
 ## 2022-03-22/kw
 # changed
