@@ -15,6 +15,7 @@ use App\Models\Language;
 use App\Models\Huboffer;
 use App\Models\Offertype;
 use App\Models\Timestamp;
+use App\Models\Textsearch;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator ;
 use Illuminate\Support\Facades\DB;
@@ -99,6 +100,34 @@ class OfferController extends Controller
     }
 
     /**
+     * Display a mini listing for offers in management-site.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getOfferMiniDataSet()
+    {
+        $offers = Offer::all();
+        $offers = $offers->values()->all();
+        $output = array();
+        $sort = array();
+        foreach ( $offers as $offer ) {
+            $output[] = array(
+                "id" => $offer->id,
+                "title" => $offer->title,
+                "image_path" => $offer->image_path,
+                "visible" => isset( $offer->hubOffer) ? $offer->hubOffer->visible : 0,
+                "sortflag" => isset( $offer->hubOffer) ? $offer->hubOffer->sort_flag : null,
+            );
+            $sort[$offer->id] = null;
+            if ( is_object( $offer->huboffer ) ) {
+                $sort[$offer->id] = $offer->huboffer->sort_flag;
+            }
+        }
+        array_multisort($sort, SORT_DESC, $output);
+        return response()->json($output, 200);
+    }
+
+    /**
      * Display a reduced listing for tiles.
      *
      * @return \Illuminate\Http\Response
@@ -128,7 +157,7 @@ class OfferController extends Controller
         $offer = Offer::create($validatedData);
         $offer->save();
         $this->saveRelatedData( $offer, $validatedData );
-
+        $offer = Offer::find($offer->id);
         return response()->json($this->restructureJsonOutput($offer), 201);
     }
 
@@ -516,9 +545,10 @@ class OfferController extends Controller
 
         $textsearchScores=[];
         $data = $request->except('_token');
+        $searchString ="";
 
         if(array_key_exists("textsearch", $data) && $data["textsearch"] != null && !preg_match('/^[^a-zA-Z0-9]+$/', $data["textsearch"])){
-            $searchString ="";
+
             $substrings = explode(" ", strval($data["textsearch"]));
 
             foreach($substrings as $substr){
@@ -603,7 +633,32 @@ class OfferController extends Controller
             });
             $offerQuery = $offerQuery->orderBy('sort_flag', 'desc');
         }
-
+        #store searchstring in database
+        if($searchString!="")
+        $this->storeTextsearch($searchString);
+        #return paginated offers
         return $offerQuery->Paginate($offerCount);
+    }
+
+    /**
+     * Store textsearch in database
+     * @param  String $textsearch
+     */
+
+    private function storeTextsearch(String $searchString){
+
+        $editedSearchString = preg_replace("/\*/", "", $searchString);
+        $editedSearchString = preg_replace("/^\s/","",$editedSearchString);
+
+        $textsearch = Textsearch::getByTextsearch($editedSearchString);
+        if(! \is_object( $textsearch)){
+            $inputs = ['textsearch' => $editedSearchString, 'count' => 1];
+            Textsearch::create($inputs);
+        }
+        else{
+            $textsearch = Textsearch::getByTextsearch($editedSearchString);
+            $textsearch->count += 1;
+            $textsearch->save();
+        }
     }
 }

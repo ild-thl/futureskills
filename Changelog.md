@@ -1,6 +1,33 @@
 # Changelog
 
+## [Released v0.7]
+
+## 2022-03-22/kw
+# changed
+- response after storing new offer returns complete offer with related data (competences etc)
+
+## 2022-03-18/ml
+# changed
+- MiniDataSet (id, title, image, visible + sort_flag), is sorted bei sort_flag
+
+## 2022-03-15/ml
+# added
+- MiniDataSet (id, title, image, visible) for the management sites, that is controlled by middleware
+
+## 2202-03-14/kw
+## Added
+-funktion: saving textsearches for filtering offers 
+
+## 2022-03-01/kw
+## Changed
+-logout function changed to only delete token passed in request and its corresponding refreshtoken
+
 ## [Released v0.6]
+
+## 2022-02-01/kw
+## Added
+-new route GET::{{url}}/api/logout      added
+-route deletes accesstokens and refreshtokens of user
 
 ## 2022-01-10/kw
 ## Changed
