@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RoleTableSeeder::class,
             PermissionRoleTableSeeder::class,
             RoleUserTableSeeder::class,
+            RolePermissionExternalCatalogSeeder::class,
 
             # offer as last
             OfferTableSeeder::class,

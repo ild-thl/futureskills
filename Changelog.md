@@ -2,6 +2,10 @@
 
 ## [Released v0.7]
 
+## 2022-05-18/kw
+# added
+-update external course catalog (request , cron job)
+
 ## 2022-03-22/kw
 # changed
 - response after storing new offer returns complete offer with related data (competences etc)
